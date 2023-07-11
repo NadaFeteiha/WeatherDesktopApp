@@ -10,14 +10,12 @@ class HomeViewModel : ViewModel() {
     private val _uiState = MutableStateFlow(HomeUIState())
     val uiState = _uiState.asStateFlow()
 
-    init {
+    fun setData() {
         viewModelScope.launch {
-            store.set(
-                listOf(
-                    Location("Seattle", "USA"),
-                    Location("Cairo", "Egypt")
-                )
-            )
+            val cities = store.get()!!.toMutableList()
+            val num = Math.random()
+            cities.add(Location("Cairo$num", "Egypt$num"))
+            store.update { cities }
         }
     }
 

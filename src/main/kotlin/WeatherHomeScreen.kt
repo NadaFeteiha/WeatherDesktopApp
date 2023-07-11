@@ -21,6 +21,13 @@ fun WeatherHomeScreen() {
         }) {
             Text("Get Data")
         }
+
+        Button(onClick = {
+            viewModel.setData()
+        }) {
+            Text("Add more Data")
+        }
+
     }
 
 
