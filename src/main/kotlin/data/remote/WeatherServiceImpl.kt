@@ -7,7 +7,7 @@ import io.ktor.client.request.*
 class WeatherServiceImpl : WeatherService {
 
     override suspend fun getWeatherByCityName(city: String): Weather =
-        WeatherServiceClient.client.get("current.json?q=${city}&aqi=no").body()
+        WeatherServiceClient.client.get("forecast.json?q=${city}&aqi=no").body()
 
 }
 
