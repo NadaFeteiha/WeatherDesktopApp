@@ -29,6 +29,10 @@ dependencies {
 
     //coroutines
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.0")
+
+    //koin
+    implementation("io.insert-koin:koin-core:3.4.2")
+
 }
 
 tasks.withType<KotlinCompile> {
