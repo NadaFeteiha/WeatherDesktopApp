@@ -18,11 +18,8 @@ repositories {
 
 dependencies {
     implementation(compose.desktop.currentOs)
-    api(compose.foundation)
-    api(compose.animation)
 
     val ktor_version = "2.3.1"
-
     implementation("io.ktor:ktor-client-core:$ktor_version")
     implementation("io.ktor:ktor-client-cio:$ktor_version")
     implementation("io.ktor:ktor-serialization-kotlinx-json:$ktor_version")
@@ -32,12 +29,6 @@ dependencies {
 
     //coroutines
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.0")
-
-    //vm + navigation
-    val precompose_version= "1.4.3"
-    api("moe.tlaster:precompose:$precompose_version")
-    api("moe.tlaster:precompose-viewmodel:$precompose_version")
-
 }
 
 tasks.withType<KotlinCompile> {
