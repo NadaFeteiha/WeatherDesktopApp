@@ -6,6 +6,7 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.application
+import data.remote.WeatherServiceClient
 import data.remote.WeatherServiceImpl
 import kotlinx.coroutines.launch
 
@@ -19,7 +20,7 @@ fun App() {
     MaterialTheme {
         Button(onClick = {
             coroutine.launch {
-                print(WeatherServiceImpl().getWeatherByCityName("London").location?.name)
+                print(WeatherServiceImpl(WeatherServiceClient).searchWeatherByCityName("London"))
             }
         }) {
             Text(text)
