@@ -12,14 +12,14 @@ import io.ktor.util.*
 class WeatherServiceImpl : WeatherService {
 
     override suspend fun getWeatherByCityName(city: String): Weather =
-        fetchFromAPI<Weather>(APIS.WEATHER_API, "forecast.json?q=${city}&aqi=no") { get(it) }
+        tryToExecute<Weather>(APIS.WEATHER_API, "forecast.json?q=${city}&aqi=no") { get(it) }
 
 
     override suspend fun getLocation(): LocationFromIP =
-        fetchFromAPI<LocationFromIP>(APIS.LOCATION_API, "check") { get(it) }
+        tryToExecute<LocationFromIP>(APIS.LOCATION_API, "check") { get(it) }
 
 
-    private suspend inline fun <reified T> fetchFromAPI(
+    private suspend inline fun <reified T> tryToExecute(
         api: APIS,
         urlString: String,
         method: HttpClient.(urlString: String) -> HttpResponse
