@@ -33,6 +33,7 @@ dependencies {
     //koin
     implementation("io.insert-koin:koin-core:3.4.2")
 
+    implementation ("io.insert-koin:koin-annotations:1.0.0")
 }
 
 tasks.withType<KotlinCompile> {
