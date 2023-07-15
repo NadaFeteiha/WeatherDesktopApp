@@ -24,9 +24,13 @@ class WeatherServiceImpl : WeatherService {
         urlString: String,
         method: HttpClient.(urlString: String) -> HttpResponse
     ): T {
-        WeatherServiceClient.clientAttributes.put(AttributeKey("API"), api.value)
-        val response = WeatherServiceClient.client.method(urlString)
-        return response.body<T>()
+        try {
+            WeatherServiceClient.clientAttributes.put(AttributeKey("API"), api.value)
+            val response = WeatherServiceClient.client.method(urlString)
+            return response.body<T>()
+        } catch (e: Exception) {
+            throw e
+        }
     }
 
 }
