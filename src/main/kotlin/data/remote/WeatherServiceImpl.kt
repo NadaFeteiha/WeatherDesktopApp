@@ -13,18 +13,14 @@ import org.koin.core.component.KoinComponent
 
 class WeatherServiceImpl(private val client: HttpClient) : WeatherService, KoinComponent {
 
-    override suspend fun getWeatherByCityName(city: String): Weather =
-        tryToExecute<Weather>(APIS.WEATHER_API, "forecast.json?q=${city}&aqi=no") { get(it) }
-
+    override suspend fun getWeatherByCityName(city: String, numDays: Int): Weather =
+        tryToExecute<Weather>(APIS.WEATHER_API, "forecast.json?q=${city}&days=$numDays") { get(it) }
 
     override suspend fun getLocation(): LocationFromIP =
         tryToExecute<LocationFromIP>(APIS.LOCATION_API, "check") { get(it) }
 
     override suspend fun searchWeatherByCityName(city: String): List<SearchItem> =
         tryToExecute<List<SearchItem>>(APIS.WEATHER_API, "search.json?q=${city}") { get(it) }
-    override suspend fun getWeatherByCityName(city: String, numDays: Int): Weather =
-        client.get("forecast.json?q=${city}&days=$numDays").body()
-
 
     private suspend inline fun <reified T> tryToExecute(
         api: APIS,
