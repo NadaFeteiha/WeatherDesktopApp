@@ -45,7 +45,7 @@ fun HomeScreen(
 
         BlurredCard {
             HourlyForecast(
-                modifier = Modifier.width(windowState.size.width),
+                modifier = it.width(windowState.size.width),
                 forecastHourly = state.forecastHourly,
             )
         }
@@ -73,26 +73,27 @@ fun HourlyForecast(
             text = "Hourly Forecast",
             style = MaterialTheme.typography.h1
         )
-
-        LazyRow(
-            state = scrollState,
-            modifier = Modifier.fillMaxWidth().draggable(
-                orientation = Orientation.Horizontal,
-                state = rememberDraggableState { delta ->
-                    coroutineScope.launch {
-                        scrollState.scrollBy(-delta)
-                    }
-                }),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(24.dp),
-            contentPadding = PaddingValues(horizontal = 16.dp)
-        ) {
-            items(forecastHourly) { hourly ->
-                HourlyForecastItem(
-                    time = "5PM",//hourly.time,
-                    temperature = hourly.temp,
-                    icon = hourly.icon
-                )
+        BlurredCard {
+            LazyRow(
+                state = scrollState,
+                modifier = it.fillMaxWidth().padding(vertical = 20.dp).draggable(
+                    orientation = Orientation.Horizontal,
+                    state = rememberDraggableState { delta ->
+                        coroutineScope.launch {
+                            scrollState.scrollBy(-delta)
+                        }
+                    }),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(24.dp),
+                contentPadding = PaddingValues(horizontal = 16.dp)
+            ) {
+                items(forecastHourly) { hourly ->
+                    HourlyForecastItem(
+                        time = "5PM",//hourly.time,
+                        temperature = hourly.temp,
+                        icon = hourly.icon
+                    )
+                }
             }
         }
     }
