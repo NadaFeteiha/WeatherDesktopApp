@@ -20,7 +20,7 @@ fun Compass(
             contentDescription = "JetBrains",
             modifier = Modifier
                 .size(192.dp)
-                .rotate(-290f)
+                .rotate(-state.windDegree)
         )
         Icon(
             painter = painterResource("compass.svg"),
