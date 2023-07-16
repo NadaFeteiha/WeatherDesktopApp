@@ -1,30 +1,40 @@
 // Copyright 2000-2021 JetBrains s.r.o. and contributors. Use of this source code is governed by the Apache 2.0 license that can be found in the LICENSE file.
 import androidx.compose.desktop.ui.tooling.preview.Preview
+import androidx.compose.foundation.layout.Column
 import androidx.compose.material.Button
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.application
-import kotlinx.coroutines.launch
+import controller.HomeController
+import di.initKoin
 
 @Composable
 @Preview
-fun App() {
-    var text by remember { mutableStateOf("Hello, World!") }
-
-    val coroutine = rememberCoroutineScope()
-
+fun App(controller: HomeController = initKoin().koin.get()) {
+    val state by controller.uiState.collectAsState()
     MaterialTheme {
-        Button(onClick = {
-            coroutine.launch {
-//                print(WeatherServiceImpl(WeatherServiceClient).searchWeatherByCityName("London"))
+        Column {
+            Button(onClick = controller::getData) {
+                Text("Get Data")
             }
-        }) {
-            Text(text)
+            if (state.isLoading) {
+                Text(
+                    "Loading ...",
+                    style = TextStyle(fontSize = 18.sp)
+                )
+            }
+
+            Text(state.data)
         }
     }
 }
+
 
 fun main() = application {
     Window(onCloseRequest = ::exitApplication) {

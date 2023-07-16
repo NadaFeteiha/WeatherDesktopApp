@@ -6,7 +6,7 @@ import data.remote.dto.Weather
 
 interface WeatherService {
 
-    suspend fun getWeatherByCityName(city: String): Weather
+    suspend fun getWeatherByCityName(city: String, numDays: Int = 8): Weather
 
     suspend fun searchWeatherByCityName(city: String): List<SearchItem>
 
