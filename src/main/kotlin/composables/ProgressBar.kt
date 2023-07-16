@@ -152,9 +152,3 @@ fun ProgressBarValue(
         fontWeight = FontWeight.Bold
     )
 }
-
-@Composable
-@Preview
-fun CustomComponentPreview() {
-    ProgressBar()
-}
