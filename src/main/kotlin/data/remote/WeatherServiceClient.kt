@@ -10,6 +10,7 @@ import io.ktor.client.request.*
 import io.ktor.http.*
 import io.ktor.serialization.kotlinx.json.*
 import io.ktor.util.*
+import kotlinx.serialization.json.Json
 
 object WeatherServiceClient {
 
@@ -37,7 +38,12 @@ object WeatherServiceClient {
         }
 
         install(ContentNegotiation) {
-            json()
+            json(
+                Json {
+                    isLenient = true
+                    ignoreUnknownKeys = true
+                }
+            )
         }
 
     }

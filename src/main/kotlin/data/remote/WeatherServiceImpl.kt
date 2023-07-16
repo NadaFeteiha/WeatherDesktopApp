@@ -2,6 +2,7 @@ package data.remote
 
 import data.remote.dto.APIS
 import data.remote.dto.LocationFromIP
+import data.remote.dto.SearchItem
 import data.remote.dto.Weather
 import io.ktor.client.*
 import io.ktor.client.call.*
@@ -18,6 +19,9 @@ class WeatherServiceImpl : WeatherService {
     override suspend fun getLocation(): LocationFromIP =
         tryToExecute<LocationFromIP>(APIS.LOCATION_API, "check") { get(it) }
 
+    override suspend fun searchWeatherByCityName(city: String): List<SearchItem> =
+        tryToExecute<List<SearchItem>>(APIS.WEATHER_API, "search.json?q=${city}") { get(it) }
+
 
     private suspend inline fun <reified T> tryToExecute(
         api: APIS,
@@ -32,5 +36,5 @@ class WeatherServiceImpl : WeatherService {
             throw e
         }
     }
-
 }
+
