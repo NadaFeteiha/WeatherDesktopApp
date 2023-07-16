@@ -2,10 +2,14 @@ package viewModel
 
 import data.remote.dto.Hour
 import data.remote.dto.Weather
+import java.util.Date
 
 fun Weather.toUIState(): HomeUIState {
     return HomeUIState(
-        forecastHourly = forecast.forecastday[0].hour?.map { it.toUIState() } ?: emptyList(),
+        forecastHourly = forecast.forecastday[0].hour?.subList(getCurrentHour() + 3, 24)
+            ?.mapIndexed { index, hour ->
+                hour.toUIState(index)
+            } ?: emptyList(),
         windDegree = (current?.windDegree ?: 0).toFloat(),
         windKph = current?.windKph ?: 0.0,
         humidityValue = "${current?.humidity}%",
@@ -16,11 +20,23 @@ fun Weather.toUIState(): HomeUIState {
     )
 }
 
-fun Hour.toUIState() = ForecastHour(
-    time = convertEpochToTimeString(timeEpoch),
+fun Hour.toUIState(index: Int) = ForecastHour(
+    time = if (index == 0) {
+        "Now"
+    } else {
+        convertEpochToTimeString(timeEpoch)
+    },
     icon = condition?.icon ?: "",
     temp = tempC ?: 0.0
 )
+
+fun getCurrentHour(): Int {
+    val currentTime = Date()
+    val currentMillis = currentTime.time
+    val offsetMillis = currentTime.timezoneOffset * 60 * 1000
+    val currentHour = ((currentMillis + offsetMillis) / (1000 * 60 * 60)) % 24
+    return currentHour.toInt()
+}
 
 fun convertEpochToTimeString(epoch: Long): String {
     val hours = (epoch / 3600) % 24 // Calculate hours
