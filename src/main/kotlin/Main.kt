@@ -9,10 +9,7 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.window.Window
-import androidx.compose.ui.window.WindowState
-import androidx.compose.ui.window.application
-import androidx.compose.ui.window.rememberWindowState
+import androidx.compose.ui.window.*
 import di.initKoin
 import ui.HomeScreen
 import ui.theme.LightColor
@@ -43,8 +40,9 @@ fun main() = application {
     Window(
         onCloseRequest = ::exitApplication,
         state = windowState,
+        title = "Weather Application"
     ) {
-        this.window.minimumSize = Dimension(800, 600)
+        this.window.minimumSize = Dimension(800, 700)
         App(windowState)
     }
 }

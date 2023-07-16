@@ -25,13 +25,15 @@ fun Compass(
             painter = painterResource("arrow.svg"),
             contentDescription = "JetBrains",
             modifier = Modifier
-                .size(192.dp)
+                .size(180.dp)
                 .rotate(-windDegree)
         )
+
         Column(horizontalAlignment = Alignment.CenterHorizontally) {
             Text(text = windKph.toString(), style = TextStyle(fontSize = 32.sp))
             Text(text = "Km/h", style = TextStyle(fontSize = 20.sp))
         }
+
         Icon(
             painter = painterResource("compass.svg"),
             contentDescription = "JetBrains",

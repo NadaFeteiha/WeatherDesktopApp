@@ -13,6 +13,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import ui.theme.grey
 
@@ -23,12 +26,12 @@ fun HourlyItem(
     title: String,
     weatherType: String,
     value: String,
-
-    ) {
+    isSmallText: Boolean = false
+) {
 
     Column(
         modifier = modifier.background(
-            color = grey.copy(alpha = 0.4f),
+            color = grey.copy(alpha = 0.7f),
             shape = RoundedCornerShape(24.dp)
         ).padding(16.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -44,6 +47,15 @@ fun HourlyItem(
             )
             Text(title, style = MaterialTheme.typography.h2)
         }
-        Text("$value   $weatherType", style = MaterialTheme.typography.h1)
+
+        if (isSmallText) {
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Text("$value   ", style = MaterialTheme.typography.h1)
+                Text(weatherType, style = MaterialTheme.typography.body2)
+            }
+
+        } else {
+            Text("$value   $weatherType", style = MaterialTheme.typography.h1)
+        }
     }
 }

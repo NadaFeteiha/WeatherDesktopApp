@@ -49,7 +49,7 @@ data class Hour(
     @SerialName("time")
     val time: String,
     @SerialName("time_epoch")
-    val timeEpoch: Int?,
+    val timeEpoch: Long,
     @SerialName("uv")
     val uv: Double?,
     @SerialName("vis_km")

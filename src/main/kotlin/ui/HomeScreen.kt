@@ -1,5 +1,6 @@
 package ui
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.foundation.gestures.draggable
 import androidx.compose.foundation.gestures.rememberDraggableState
@@ -8,6 +9,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -16,11 +18,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.WindowState
-import composables.BlurredCard
-import composables.Compass
-import composables.HourlyForecastItem
-import composables.HourlyItem
+import composables.*
 import kotlinx.coroutines.launch
+import ui.theme.grey
 import viewModel.ForecastHour
 import viewModel.HomeInteractionListener
 import viewModel.HomeUIState
@@ -32,91 +32,40 @@ fun HomeScreen(
     state: HomeUIState,
     listener: HomeInteractionListener
 ) {
-    Column(modifier = modifier.fillMaxSize().width(windowState.size.width).padding(40.dp)) {
+    Column(modifier = modifier.fillMaxSize().width(windowState.size.width).padding(24.dp)) {
 
         BlurredCard {
             HourlyForecast(
-                modifier = it.width(windowState.size.width),
+                modifier = Modifier.background(
+                    color = grey.copy(alpha = 0.4f),
+                    shape = RoundedCornerShape(24.dp)
+                ).width(windowState.size.width),
                 forecastHourly = state.forecastHourly,
+                humidityDescription = state.humidityDescription,
+                humidityValue = state.humidityValue,
+                visibilityAvg = state.visibilityAvg,
+                feelsLike = state.feelsLike,
+                feelDescription = state.feelDescription
             )
         }
 
-        Compass(windKph = state.windKph, windDegree = state.windDegree)
-    }
-}
+        Spacer(Modifier.height(24.dp))
 
-
-@Composable
-fun HourlyForecast(
-    modifier: Modifier = Modifier,
-    forecastHourly: List<ForecastHour>
-) {
-    val scrollState = rememberLazyListState()
-    val coroutineScope = rememberCoroutineScope()
-
-    Column(
-        modifier = modifier.fillMaxWidth().padding(vertical = 16.dp),
-        verticalArrangement = Arrangement.spacedBy(16.dp)
-    ) {
-
-        Text(
-            modifier = Modifier.padding(start = 24.dp),
-            text = "Hourly Forecast",
-            style = MaterialTheme.typography.h1
-        )
-
-        BlurredCard(modifier = Modifier.padding(horizontal = 24.dp)) {
-            LazyRow(
-                state = scrollState,
-                modifier = it.fillMaxWidth()
-                    .padding(vertical = 20.dp).draggable(
-                        orientation = Orientation.Horizontal,
-                        state = rememberDraggableState { delta ->
-                            coroutineScope.launch {
-                                scrollState.scrollBy(-delta)
-                            }
-                        }),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(24.dp),
-                contentPadding = PaddingValues(horizontal = 16.dp)
+        BlurredCard {
+            Column(
+                modifier = Modifier.background(
+                    color = grey.copy(alpha = 0.4f),
+                    shape = RoundedCornerShape(24.dp)
+                ).padding(16.dp),
+                verticalArrangement = Arrangement.spacedBy(16.dp),
+                horizontalAlignment = Alignment.Start
             ) {
-                items(forecastHourly) { hourly ->
-                    HourlyForecastItem(
-                        time = "5PM",//hourly.time,
-                        temperature = hourly.temp,
-                        icon = hourly.icon
-                    )
-                }
+                Text("Wind Status", style = MaterialTheme.typography.h2)
+
+                Compass(windKph = state.windKph, windDegree = state.windDegree)
             }
         }
-
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.SpaceAround
-        ) {
-            HourlyItem(
-                icon = "humidity.svg",
-                title = "Humidity",
-                weatherType = "Normal",
-                value = "13%"
-            )
-
-            HourlyItem(
-                icon = "visibility.svg",
-                title = "Visibility",
-                weatherType = "Average",
-                value = "18 km"
-            )
-
-
-            HourlyItem(
-                icon = "temperature.svg",
-                title = "Visibility",
-                weatherType = "Average",
-                value = "41"
-            )
-
-        }
     }
 }
+
+
