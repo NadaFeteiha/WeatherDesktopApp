@@ -1,10 +1,9 @@
 package viewModel
 
-import data.remote.dto.Hour
-import data.remote.dto.Weather
-
 data class HomeUIState(
-    val forecastHourly: List<ForecastHour> = emptyList()
+    val forecastHourly: List<ForecastHour> = emptyList(),
+    val windKph: Double = 0.0,
+    val windDegree: Float = 0f
 )
 
 data class ForecastHour(
@@ -13,18 +12,7 @@ data class ForecastHour(
     val temp: Double = 0.0
 )
 
-//Mapper
-fun Weather.toUIState(): HomeUIState {
-    return HomeUIState(
-        forecastHourly = forecast.forecastday[0].hour?.map { it.toUIState() } ?: emptyList()
-    )
-}
 
-fun Hour.toUIState() = ForecastHour(
-    time = time.substring(time.indexOf(" ")),
-    icon = condition?.icon ?: "",
-    temp = tempC ?: 0.0
-)
 
 
 

@@ -16,6 +16,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.WindowState
+import composables.Compass
 import composables.HourlyForecastItem
 import kotlinx.coroutines.launch
 import viewModel.ForecastHour
@@ -31,11 +32,14 @@ fun HomeScreen(
 ) {
     Column(modifier = modifier.fillMaxSize().width(windowState.size.width)) {
 
-        Text("Width = ${windowState.size.width}")
-
         HourlyForecast(
             forecastHourly = state.forecastHourly,
             modifier = Modifier.width(windowState.size.width)
+        )
+
+        Compass(
+            windKph = state.windKph,
+            windDegree = state.windDegree
         )
     }
 }

@@ -16,18 +16,20 @@ import androidx.compose.ui.unit.sp
 
 @Composable
 fun Compass(
-    state: CompassUiState
+    modifier: Modifier = Modifier,
+    windKph: Double,
+    windDegree: Float
 ) {
-    Box(modifier = Modifier.size(192.dp), contentAlignment = Alignment.Center) {
+    Box(modifier = modifier.size(192.dp), contentAlignment = Alignment.Center) {
         Icon(
             painter = painterResource("arrow.svg"),
             contentDescription = "JetBrains",
             modifier = Modifier
                 .size(192.dp)
-                .rotate(-state.windDegree)
+                .rotate(-windDegree)
         )
         Column(horizontalAlignment = Alignment.CenterHorizontally) {
-            Text(text = state.windKph.toString(), style = TextStyle(fontSize = 32.sp))
+            Text(text = windKph.toString(), style = TextStyle(fontSize = 32.sp))
             Text(text = "Km/h", style = TextStyle(fontSize = 20.sp))
         }
         Icon(
@@ -38,8 +40,3 @@ fun Compass(
         )
     }
 }
-
-data class CompassUiState(
-    val windKph: Float = 0f,
-    val windDegree: Float = 0f
-)

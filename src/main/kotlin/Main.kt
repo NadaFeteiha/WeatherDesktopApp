@@ -2,15 +2,12 @@
 import androidx.compose.desktop.ui.tooling.preview.Preview
 import androidx.compose.foundation.LocalScrollbarStyle
 import androidx.compose.foundation.ScrollbarStyle
-import androidx.compose.foundation.layout.width
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.WindowState
@@ -31,23 +28,12 @@ fun App(windowState: WindowState, viewModel: HomeViewModel = initKoin().koin.get
         colors = LightColor,
         typography = WeatherTypography
     ) {
-        CompositionLocalProvider(
-            LocalScrollbarStyle provides ScrollbarStyle(
-                minimalHeight = 16.dp,
-                thickness = 8.dp,
-                shape = MaterialTheme.shapes.small,
-                hoverDurationMillis = 300,
-                unhoverColor = MaterialTheme.colors.onSurface.copy(alpha = 0.12f),
-                hoverColor = MaterialTheme.colors.onSurface.copy(alpha = 0.50f)
+        Surface(color = MaterialTheme.colors.background) {
+            HomeScreen(
+                state = state,
+                listener = viewModel,
+                windowState = windowState
             )
-        ) {
-            Surface(color = MaterialTheme.colors.background) {
-                HomeScreen(
-                    state = state,
-                    listener = viewModel,
-                    windowState = windowState
-                )
-            }
         }
     }
 }
