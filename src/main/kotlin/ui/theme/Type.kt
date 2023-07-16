@@ -13,5 +13,11 @@ val WeatherTypography = Typography(
         fontWeight = FontWeight.Bold,
         fontSize = 24.sp,
         color = Color.White
+    ),
+    h2 = TextStyle(
+        fontFamily = FontFamily.Default,
+        fontWeight = FontWeight.Bold,
+        fontSize = 22.sp,
+        color = LightGrey
     )
 )

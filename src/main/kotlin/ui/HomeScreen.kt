@@ -1,6 +1,5 @@
 package ui
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.foundation.gestures.draggable
 import androidx.compose.foundation.gestures.rememberDraggableState
@@ -9,26 +8,18 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.BlurredEdgeTreatment
-import androidx.compose.ui.draw.blur
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.drawWithContent
-import androidx.compose.ui.graphics.BlendMode
-import androidx.compose.ui.graphics.Brush
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.WindowState
 import composables.BlurredCard
 import composables.Compass
 import composables.HourlyForecastItem
+import composables.HourlyItem
 import kotlinx.coroutines.launch
 import viewModel.ForecastHour
 import viewModel.HomeInteractionListener
@@ -41,7 +32,7 @@ fun HomeScreen(
     state: HomeUIState,
     listener: HomeInteractionListener
 ) {
-    Column(modifier = modifier.fillMaxSize().width(windowState.size.width)) {
+    Column(modifier = modifier.fillMaxSize().width(windowState.size.width).padding(40.dp)) {
 
         BlurredCard {
             HourlyForecast(
@@ -69,20 +60,22 @@ fun HourlyForecast(
     ) {
 
         Text(
-            modifier = Modifier.padding(start = 16.dp),
+            modifier = Modifier.padding(start = 24.dp),
             text = "Hourly Forecast",
             style = MaterialTheme.typography.h1
         )
-        BlurredCard {
+
+        BlurredCard(modifier = Modifier.padding(horizontal = 24.dp)) {
             LazyRow(
                 state = scrollState,
-                modifier = it.fillMaxWidth().padding(vertical = 20.dp).draggable(
-                    orientation = Orientation.Horizontal,
-                    state = rememberDraggableState { delta ->
-                        coroutineScope.launch {
-                            scrollState.scrollBy(-delta)
-                        }
-                    }),
+                modifier = it.fillMaxWidth()
+                    .padding(vertical = 20.dp).draggable(
+                        orientation = Orientation.Horizontal,
+                        state = rememberDraggableState { delta ->
+                            coroutineScope.launch {
+                                scrollState.scrollBy(-delta)
+                            }
+                        }),
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.spacedBy(24.dp),
                 contentPadding = PaddingValues(horizontal = 16.dp)
@@ -95,6 +88,35 @@ fun HourlyForecast(
                     )
                 }
             }
+        }
+
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceAround
+        ) {
+            HourlyItem(
+                icon = "humidity.svg",
+                title = "Humidity",
+                weatherType = "Normal",
+                value = "13%"
+            )
+
+            HourlyItem(
+                icon = "visibility.svg",
+                title = "Visibility",
+                weatherType = "Average",
+                value = "18 km"
+            )
+
+
+            HourlyItem(
+                icon = "temperature.svg",
+                title = "Visibility",
+                weatherType = "Average",
+                value = "41"
+            )
+
         }
     }
 }
