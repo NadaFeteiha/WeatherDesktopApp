@@ -1,6 +1,6 @@
 package di
 
-import controller.HomeController
+import viewModel.HomeViewModel
 import data.remote.WeatherService
 import data.remote.WeatherServiceImpl
 import io.ktor.client.*
@@ -55,7 +55,7 @@ val appModules = module {
         serviceModule
     )
     single<WeatherService> { WeatherServiceImpl(get()) }
-    singleOf(::HomeController) { bind<HomeController>() }
+    singleOf(::HomeViewModel) { bind<HomeViewModel>() }
 
 }
 

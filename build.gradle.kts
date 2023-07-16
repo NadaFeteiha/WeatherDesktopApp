@@ -34,10 +34,10 @@ dependencies {
     implementation("io.insert-koin:koin-core:3.4.2")
 
     implementation ("io.insert-koin:koin-annotations:1.0.0")
-}
 
-tasks.withType<KotlinCompile> {
-    kotlinOptions.jvmTarget = "11"
+    //image
+    api("io.github.qdsfdhvh:image-loader:1.2.8")
+
 }
 
 compose.desktop {

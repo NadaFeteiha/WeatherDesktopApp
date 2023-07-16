@@ -1,4 +1,4 @@
-package ui
+package composable
 
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.animateIntAsState
