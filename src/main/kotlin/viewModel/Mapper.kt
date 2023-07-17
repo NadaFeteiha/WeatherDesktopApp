@@ -2,11 +2,13 @@ package viewModel
 
 import data.remote.dto.Hour
 import data.remote.dto.Weather
-import java.util.Date
+import utils.convertTimeToHourAMPM
+import utils.getTimeNowHourOnlyAsInt
+
 
 fun Weather.toUIState(): HomeUIState {
     return HomeUIState(
-        forecastHourly = forecast.forecastday[0].hour
+        forecastHourly = forecast.forecastday[0].hour?.subList(getTimeNowHourOnlyAsInt(), 24)
             ?.mapIndexed { index, hour ->
                 hour.toUIState(index)
             } ?: emptyList(),
@@ -24,28 +26,9 @@ fun Hour.toUIState(index: Int) = ForecastHour(
     time = if (index == 0) {
         "Now"
     } else {
-        convertEpochToTimeString(timeEpoch)
+        convertTimeToHourAMPM(time)
     },
     icon = condition?.icon ?: "",
     temp = tempC ?: 0.0
 )
 
-fun getCurrentHour(): Int {
-    val currentTime = Date()
-    val currentMillis = currentTime.time
-    val offsetMillis = currentTime.timezoneOffset * 60 * 1000
-    val currentHour = ((currentMillis + offsetMillis) / (1000 * 60 * 60)) % 24
-    return currentHour.toInt()
-}
-
-fun convertEpochToTimeString(epoch: Long): String {
-    val hours = (epoch / 3600) % 24 // Calculate hours
-    val amPm = if (hours >= 12) "PM" else "AM" // Determine AM/PM
-
-    val formattedHours = when (hours % 12) {
-        0L -> 12
-        else -> hours % 12
-    }
-
-    return String.format("%d %s", formattedHours, amPm)
-}
