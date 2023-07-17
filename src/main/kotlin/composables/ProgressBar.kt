@@ -22,6 +22,8 @@ import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import kotlin.math.cos
+import kotlin.math.sin
 
 @Composable
 fun ProgressBar(
@@ -86,6 +88,16 @@ fun ProgressBar(
                     dashPathEffect = PathEffect.dashPathEffect(floatArrayOf(5f, 70f), 0f)
                 )
 
+                var angleInDegrees = (sweepAngle * 120.0) + 50.0
+                var radius = (size.height / 2) - 45
+                var x = -(radius * sin(Math.toRadians(angleInDegrees))).toFloat() + (size.width / 2)
+                var y = (radius * cos(Math.toRadians(angleInDegrees))).toFloat() + (size.height / 2)
+
+                drawCircle(
+                    color = Color.White,
+                    radius = 5f,
+                    center = Offset(x, y)
+                )
             },
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
@@ -124,7 +136,6 @@ fun DrawScope.foregroundIndicator(
     indicatorColor: Color,
     indicatorStrokeWidth: Float,
 ) {
-
     drawArc(
         size = componentSize,
         color = indicatorColor,

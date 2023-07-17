@@ -28,7 +28,7 @@ fun ComposeCircularProgressBar(
             .size(150.dp)
             .padding(10.dp)
     ) {
-        // Background Line
+
         drawArc(
             color = backgroundColor,
             140f,
@@ -36,6 +36,15 @@ fun ComposeCircularProgressBar(
             false,
             style = Stroke(strokeWidth.toPx(), cap = StrokeCap.Round),
             size = Size(size.width, size.height)
+        )
+
+        drawArc(
+            color = Color.Red,
+            140f,
+            260f,
+            false,
+            style = Stroke((strokeWidth).toPx(), cap = StrokeCap.Round),
+            size = Size(size.width, size.height)/ 1.45f
         )
 
         drawArc(

@@ -38,7 +38,7 @@ fun HomeScreen(
         modifier = modifier.fillMaxSize().width(windowState.size.width).padding(24.dp),
         horizontalArrangement = Arrangement.spacedBy(16.dp),
     ) {
-        BlurredCard(modifier= Modifier.padding(bottom = 16.dp)) {
+        BlurredCard(modifier = Modifier.padding(bottom = 16.dp)) {
             HourlyForecast(
                 modifier = Modifier.background(
                     color = grey.copy(alpha = 0.4f),
@@ -68,12 +68,16 @@ fun HomeScreen(
             }
         }
 
-        ComposeCircularProgressBar(
-            percentage = 0.80f,
-            fillColor = Color.Cyan,
-            backgroundColor = Color.Gray,
-            strokeWidth = 10.dp
-        )
+        BlurredCard {
+            ProgressBar(
+                modifier =  Modifier.size(250.dp).background(
+                    color = grey.copy(alpha = 0.4f),
+                    shape = RoundedCornerShape(24.dp)
+                )
+            )
+        }
+
+
     }
 }
 
