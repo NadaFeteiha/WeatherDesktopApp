@@ -51,14 +51,13 @@ fun HourlyForecast(
                 modifier = Modifier.background(
                     color = grey.copy(alpha = 0.7f),
                     shape = RoundedCornerShape(24.dp)
-                ).fillMaxWidth()
-                    .padding(vertical = 20.dp).draggable(
-                        orientation = Orientation.Horizontal,
-                        state = rememberDraggableState { delta ->
-                            coroutineScope.launch {
-                                scrollState.scrollBy(-delta)
-                            }
-                        }),
+                ).padding(vertical = 20.dp).draggable(
+                    orientation = Orientation.Horizontal,
+                    state = rememberDraggableState { delta ->
+                        coroutineScope.launch {
+                            scrollState.scrollBy(-delta)
+                        }
+                    }),
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.spacedBy(24.dp),
                 contentPadding = PaddingValues(horizontal = 16.dp)
