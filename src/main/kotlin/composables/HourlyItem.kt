@@ -34,7 +34,7 @@ fun HourlyItem(
             color = grey.copy(alpha = 0.7f),
             shape = RoundedCornerShape(24.dp)
         ).padding(16.dp),
-        horizontalAlignment = Alignment.CenterHorizontally,
+        horizontalAlignment = Alignment.Start,
         verticalArrangement = Arrangement.spacedBy(18.dp)
     ) {
         Row(
