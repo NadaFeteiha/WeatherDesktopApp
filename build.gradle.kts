@@ -15,6 +15,7 @@ repositories {
     google()
     mavenCentral()
     maven("https://maven.pkg.jetbrains.space/public/p/compose/dev")
+
 }
 
 dependencies {
@@ -26,6 +27,7 @@ dependencies {
 //    implementation("io.ktor:ktor-serialization-gson:$ktor_version")
 //    implementation("io.ktor:ktor-client-logging-jvm:1.5.0")
 //    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.2")
+
 
     implementation("io.ktor:ktor-client-core:$ktor_version")
     implementation("io.ktor:ktor-client-cio:$ktor_version")

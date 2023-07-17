@@ -15,18 +15,17 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.*
+import androidx.compose.ui.graphics.drawscope.Fill
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.drawscope.drawIntoCanvas
-import androidx.compose.ui.graphics.drawscope.translate
+import androidx.compose.ui.graphics.painter.BitmapPainter
+import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.platform.LocalDensity
-import androidx.compose.ui.res.loadSvgPainter
-import androidx.compose.ui.res.useResource
+import androidx.compose.ui.res.*
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.unit.Dp
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
+import androidx.compose.ui.unit.*
 import util.Util.getFormattedDateFromUnixTime
 import java.util.*
 import kotlin.math.cos
@@ -37,7 +36,7 @@ import kotlin.math.sin
 @Composable
 fun SunriseSunsetView(
     arcRadius: Dp = 150.dp,
-    strokeWidth: Dp = 2.dp,
+    strokeWidth: Dp = 3.dp,
     animDuration: Int = 1000,
     animDelay: Int = 0,
     sunRadius: Float = 50f,
@@ -53,14 +52,14 @@ fun SunriseSunsetView(
     ),
     sunriseTimeLong: Long = Calendar.getInstance(Locale.getDefault()).apply {
         set(Calendar.SECOND, 0)
-        set(Calendar.MINUTE, 12)
-        set(Calendar.HOUR_OF_DAY, 7)
+        set(Calendar.MINUTE, 18)
+        set(Calendar.HOUR_OF_DAY, 4)
     }.timeInMillis,
 
     sunsetTimeLong: Long = Calendar.getInstance(Locale.getDefault()).apply {
         set(Calendar.SECOND, 0)
-        set(Calendar.MINUTE, 33)
-        set(Calendar.HOUR_OF_DAY, 17)
+        set(Calendar.MINUTE, 18)
+        set(Calendar.HOUR_OF_DAY, 4)
     }.timeInMillis,
     sunriseTimeColor: Color = Color.Black,
 
@@ -73,11 +72,11 @@ fun SunriseSunsetView(
     ),
     timeFormat: String = "HH:mm",
     arcColorArray: Array<Pair<Float, Color>> = arrayOf(
-        0.2f to Color(0xFFBDBCBB),
-        0.5f to Color(0xFFE8EBED)
+        0.2f to Color(0xFFECD179),
+        0.5f to Color(0xbbECD179)
     ),
     sunColorArray: Array<Pair<Float, Color>> = arrayOf(
-        0.3f to Color(0xFFF74822),
+        0.3f to Color(0xFFECD179),
         0.4f to Color(0xFFF5836A),
         0.9f to Color(0xFFFAF1D1),
         1f to Color(0xFFFFFBEE)
@@ -85,17 +84,22 @@ fun SunriseSunsetView(
 
 ) {
 
-//    val density = LocalDensity.current
-//    var ideaLogo = remember {
-//        useResource("sun-icon.svg") { loadSvgPainter(it,density) }
-//    }
+    val image =painterResource("sun_icon.png")
+    val state = rememberUpdatedState(image)
+
+//    val bitmap = useResource("sun_icon.png") { loadImageBitmap(it) }
+//    val dogImage = BitmapPainter(
+//        image= bitmap,
+//        srcOffset= IntOffset(0,0),
+//    srcSize= IntSize(50,50)
+//    )
 
     val currentCalendar = Calendar.getInstance(Locale.getDefault())
     val currentUnixTime = currentCalendar.timeInMillis
 
     val timeDifference = sunsetTimeLong.minus(sunriseTimeLong)
     val percentage =
-        (currentUnixTime.toFloat().minus(sunriseTimeLong.toFloat())).div(timeDifference.toFloat())
+        (1689556720566.toFloat().minus(sunriseTimeLong.toFloat())).div(timeDifference.toFloat())
 
     var animationPlayed by rememberSaveable {
         mutableStateOf(false)
@@ -126,35 +130,36 @@ fun SunriseSunsetView(
 
         ) {
 
-//            drawIntoCanvas {
-//                it.withSave {
-//                    with(ideaLogo) {
-//                        draw(ideaLogo.intrinsicSize)
-//                    }
-//                    it.translate(ideaLogo.intrinsicSize.width, 0f)
-//                    with(ideaLogo) {
-//                        draw(Size(100f, 100f))
-//                    }
-//                }
-//            }
+            drawIntoCanvas {
+                it.withSave {
+                   with(image) {
+                        draw(image.intrinsicSize)
+                    }
+                    it.translate(image.intrinsicSize.width, 0f)
+                   with(image) {
+                       draw(Size(100f, 100f))
+                    }
+                }
+            }
 
             drawArc(
                 brush = Brush.verticalGradient(
                     colorStops = arcColorArray,
                     tileMode = TileMode.Clamp
                 ),
-                startAngle = 180f,
-                sweepAngle = 180f,
-                style = Stroke(strokeWidth.toPx(), cap = StrokeCap.Round),
+                startAngle = 182f,
+                sweepAngle = 182f,
+                style = Stroke(strokeWidth.toPx(), cap = StrokeCap.Round
+                    , pathEffect = PathEffect.dashPathEffect(floatArrayOf(5f, 10f), 0f)),
                 useCenter = false,
             )
 
-            val angleInDegrees = if (((currentPercentage.value * 180.0) + 90) > 270) {
+            val angleInDegrees = if (((percentage * 180.0) + 90) > 270) {
                 270.0
-            } else if ((((currentPercentage.value * 180.0) + 90) < 90)) {
+            } else if ((((percentage * 180.0) + 90) < 90)) {
                 90.0
             } else {
-                (currentPercentage.value * 180.0) + 90
+                (percentage * 180.0) + 90
             }
             val rad = (size.height / 2)
             val x =
@@ -162,24 +167,48 @@ fun SunriseSunsetView(
             val y =
                 (rad * cos(Math.toRadians(angleInDegrees))).toFloat() + (size.height / 2)
 
-            drawCircle(
-                brush = Brush.radialGradient(
-                    colorStops = sunColorArray,
-                    center = Offset(x, y),
-                    radius = sunRadius + 10
-                ),
-                radius = sunRadius,
-                center = Offset(x, y)
+//            drawCircle(
+//                brush = Brush.radialGradient(
+//                    colorStops = sunColorArray,
+//                    center = Offset(x, y),
+//                    radius = sunRadius
+//                ),
+//                radius = sunRadius,
+//                center = Offset(x, y)
+//            )
+
+
+
+            val outerRadius = size / 15F
+            val innerRadius = size / 30F
+            val angle = Math.PI / 5
+
+            // Draw the star
+            val path = Path()
+            for (i in 0 until 5 * 4) {
+                val radius = if (i % 2 == 0) outerRadius else innerRadius
+                val x1 = x + radius.width * cos((angle * i).toFloat())
+                val y1 = y + (radius.height * sin((angle * i).toFloat()))
+
+                if (i == 0) {
+                    path.moveTo(x1.toFloat(), y1.toFloat())
+                } else {
+                    path.lineTo(x1.toFloat(), y1.toFloat())
+                }
+            }
+            path.close()
+            drawPath(
+                path = path,
+                color = Color.Yellow,
+                style = Fill // Use Fill style to fill the star
             )
 
-//
-//            translate(left = x, top = y) {
-//                with(ideaLogo) {
-//                    draw(
-//                        ideaLogo.intrinsicSize
-//                    )
-//                }
-//            }
+            // Draw the circle in the center of the star
+            drawCircle(
+                color = Color(0xffFFC62D), // Use the same color as the star's fill color
+                radius = 10.dp.toPx(),
+                center = Offset(x, y)
+            )
 
         }
 
@@ -191,6 +220,7 @@ fun SunriseSunsetView(
                 .align(Alignment.Center)
                 .wrapContentWidth()
                 .offset(y = 30.dp, x = -arcRadius)
+                .padding(top = 8.dp)
 
 
         ) {
@@ -216,6 +246,7 @@ fun SunriseSunsetView(
                 .align(Alignment.Center)
                 .wrapContentWidth()
                 .offset(y = 30.dp, x = arcRadius)
+                .padding(top = 8.dp)
 
 
         ) {
