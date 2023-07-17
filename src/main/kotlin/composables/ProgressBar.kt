@@ -44,13 +44,8 @@ fun ProgressBar(
         maxIndicatorValue
     }
 
-    var animatedIndicatorValue by remember { mutableStateOf(0f) }
-    LaunchedEffect(key1 = allowedIndicatorValue) {
-        animatedIndicatorValue = allowedIndicatorValue.toFloat()
-    }
-
     val percentage =
-        (animatedIndicatorValue / maxIndicatorValue) * 100
+        (allowedIndicatorValue.toFloat() / maxIndicatorValue) * 100
 
     val sweepAngle by animateFloatAsState(
         targetValue = (2.9 * percentage).toFloat(),
@@ -89,7 +84,7 @@ fun ProgressBar(
                 )
 
                 var angleInDegrees = (sweepAngle * 120.0) + 50.0
-                var radius = (size.height / 2) - 45
+                var radius = (size.height / 2) - 50
                 var x = -(radius * sin(Math.toRadians(angleInDegrees))).toFloat() + (size.width / 2)
                 var y = (radius * cos(Math.toRadians(angleInDegrees))).toFloat() + (size.height / 2)
 
