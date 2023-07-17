@@ -6,7 +6,7 @@ import java.util.Date
 
 fun Weather.toUIState(): HomeUIState {
     return HomeUIState(
-        forecastHourly = forecast.forecastday[0].hour?.subList(getCurrentHour() + 3, 24)
+        forecastHourly = forecast.forecastday[0].hour
             ?.mapIndexed { index, hour ->
                 hour.toUIState(index)
             } ?: emptyList(),
