@@ -35,7 +35,7 @@ fun HourlyForecast(
     val coroutineScope = rememberCoroutineScope()
 
     Column(
-        modifier = modifier.fillMaxWidth().padding(vertical = 16.dp),
+        modifier = modifier.padding(vertical = 16.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
 
@@ -73,9 +73,9 @@ fun HourlyForecast(
         }
 
         Row(
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier.padding(horizontal = 24.dp),
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.SpaceAround
+            horizontalArrangement = Arrangement.spacedBy(16.dp)
         ) {
             HourlyItem(
                 icon = "humidity.svg",

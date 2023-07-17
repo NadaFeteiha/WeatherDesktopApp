@@ -16,6 +16,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.WindowState
 import composables.*
@@ -25,6 +26,7 @@ import viewModel.ForecastHour
 import viewModel.HomeInteractionListener
 import viewModel.HomeUIState
 
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun HomeScreen(
     modifier: Modifier = Modifier,
@@ -32,14 +34,16 @@ fun HomeScreen(
     state: HomeUIState,
     listener: HomeInteractionListener
 ) {
-    Column(modifier = modifier.fillMaxSize().width(windowState.size.width).padding(24.dp)) {
-
-        BlurredCard {
+    FlowRow(
+        modifier = modifier.fillMaxSize().width(windowState.size.width).padding(24.dp),
+        horizontalArrangement = Arrangement.spacedBy(16.dp),
+    ) {
+        BlurredCard(modifier= Modifier.padding(bottom = 16.dp)) {
             HourlyForecast(
                 modifier = Modifier.background(
                     color = grey.copy(alpha = 0.4f),
                     shape = RoundedCornerShape(24.dp)
-                ).width(windowState.size.width),
+                ),
                 forecastHourly = state.forecastHourly,
                 humidityDescription = state.humidityDescription,
                 humidityValue = state.humidityValue,
@@ -48,8 +52,6 @@ fun HomeScreen(
                 feelDescription = state.feelDescription
             )
         }
-
-        Spacer(Modifier.height(24.dp))
 
         BlurredCard {
             Column(
@@ -65,6 +67,13 @@ fun HomeScreen(
                 Compass(windKph = state.windKph, windDegree = state.windDegree)
             }
         }
+
+        ComposeCircularProgressBar(
+            percentage = 0.80f,
+            fillColor = Color.Cyan,
+            backgroundColor = Color.Gray,
+            strokeWidth = 10.dp
+        )
     }
 }
 
