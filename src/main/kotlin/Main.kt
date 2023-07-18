@@ -1,5 +1,7 @@
 // Copyright 2000-2021 JetBrains s.r.o. and contributors. Use of this source code is governed by the Apache 2.0 license that can be found in the LICENSE file.
 import androidx.compose.desktop.ui.tooling.preview.Preview
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
@@ -25,7 +27,7 @@ fun App(windowState: WindowState, viewModel: HomeViewModel = initKoin().koin.get
             HomeScreen(
                 state = state,
                 listener = viewModel,
-                windowState = windowState
+                windowState = windowState,
             )
         }
     }

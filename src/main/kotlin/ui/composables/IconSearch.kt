@@ -24,7 +24,12 @@ import androidx.compose.ui.unit.dp
 @Composable
 fun IconSearch(
     modifier: Modifier = Modifier,
+    suggestion: List<String>,
+    onSearch: (String) -> Unit,
+    onDropDownMenuExpand: (Boolean) -> Unit,
+    isExpandMenuSuggestion: Boolean = false
 ) {
+    val selectedItemId = remember { mutableStateOf(0) }
 
     var text by remember { mutableStateOf("") }
     var expanded by remember { mutableStateOf(false) }
@@ -50,9 +55,10 @@ fun IconSearch(
             .width(boxWidth)
             .height(boxHeight)
             .onPointerEvent(PointerEventType.Enter) { expanded = true }
-            .onPointerEvent(PointerEventType.Exit) { expanded = false }
+            .onPointerEvent(PointerEventType.Exit) { expanded = text.isNotBlank() }
             .background(Color(0xCC1B232A), RoundedCornerShape(24.dp))
     ) {
+
         Icon(
             painter = painterResource("search.svg"),
             contentDescription = "Search",
@@ -67,7 +73,10 @@ fun IconSearch(
 
         TextField(
             value = text,
-            onValueChange = { text = it },
+            onValueChange = {
+                onSearch(it)
+                text = it
+            },
             placeholder = { Text("Search City", color = Color(0x5CFFFFFF)) },
             colors = TextFieldDefaults.textFieldColors(
                 backgroundColor = Color.Transparent,
@@ -83,6 +92,24 @@ fun IconSearch(
             },
             maxLines = 1,
         )
+
+        DropdownMenu(
+            modifier = Modifier.align(Alignment.CenterEnd),
+            expanded = isExpandMenuSuggestion,
+            focusable = false,
+            onDismissRequest = { selectedItemId.value = 0 }
+        ) {
+            suggestion.forEachIndexed { index, item ->
+                DropdownMenuItem(
+                    onClick = {
+                        selectedItemId.value = index
+                        onDropDownMenuExpand(false)
+                    }
+                ) {
+                    Text(item)
+                }
+            }
+        }
     }
 }
 

@@ -14,7 +14,6 @@ repositories {
     google()
     mavenCentral()
     maven("https://maven.pkg.jetbrains.space/public/p/compose/dev")
-//    maven("https://packages.jetbrains.team/maven/p/skija/maven")
 }
 
 dependencies {
@@ -38,7 +37,6 @@ dependencies {
 
     //image
     api("io.github.qdsfdhvh:image-loader:1.2.8")
-//    api ("org.jetbrains.skija:skija-macos-arm64:0.93.6")
 
 }
 

@@ -24,7 +24,11 @@ fun SearchCard(
     cityName: String,
     temperature: String,
     countryName: String,
-    icon: String
+    icon: String,
+    suggestion: List<String>,
+    onSearch: (String) -> Unit,
+    isExpandMenuSuggestion: Boolean = false,
+    onDropDownMenuExpand: (Boolean) -> Unit,
 ) {
 
     Column(
@@ -32,7 +36,13 @@ fun SearchCard(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
 
-        IconSearch(modifier = Modifier.align(Alignment.End))
+        IconSearch(
+            modifier = Modifier.align(Alignment.End),
+            suggestion = suggestion,
+            onSearch = onSearch,
+            isExpandMenuSuggestion = isExpandMenuSuggestion,
+            onDropDownMenuExpand = onDropDownMenuExpand,
+        )
 
         WeatherImageLoader(modifier = Modifier.size(110.dp).padding(top = 16.dp), url = icon)
 

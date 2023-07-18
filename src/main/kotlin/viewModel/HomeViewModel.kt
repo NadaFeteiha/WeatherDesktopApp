@@ -27,16 +27,29 @@ class HomeViewModel(private val service: WeatherService) : HomeInteractionListen
 
     }
 
+    override fun search(keyword: String) {
+        CoroutineScope(Dispatchers.IO).launch {
+            val cities = service.searchWeatherByCityName(keyword).mapNotNull { it.name }
+            println("======================= \n \n $cities")
+            _uiState.update { it.copy(suggestion = cities, isExpandMenuSuggestion = cities.isNotEmpty()) }
+        }
+    }
+
+    override fun onDropDownMenuExpand(expand: Boolean) {
+        CoroutineScope(Dispatchers.IO).launch {
+            _uiState.update { it.copy(isExpandMenuSuggestion = expand) }
+        }
+    }
+
     private fun formatDate() {
         val inputFormat = SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault())
         val outputFormat = SimpleDateFormat("dd MMMM, yyyy h:mm a", Locale.getDefault())
 
         CoroutineScope(Dispatchers.IO).launch {
             val inputDate = service.getWeatherByCityName("lynnwood").location?.localtime
-            println("$inputDate")
             val parsedDate = inputFormat.parse(inputDate)
             val outputDate = outputFormat.format(parsedDate)
-            _uiState.update { it.copy(date =outputDate) }
+            _uiState.update { it.copy(date = outputDate) }
         }
     }
 

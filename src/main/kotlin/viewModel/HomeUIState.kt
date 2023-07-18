@@ -12,10 +12,12 @@ data class HomeUIState(
     val feelDescription: String = "",
     val date: String = "hh",
     val temperature: String = "",
-    val cityName: String = "" ,
-    val countryName : String = "" ,
-    val icon : String = "",
-    val uvValue: Int = 0
+    val cityName: String = "",
+    val countryName: String = "",
+    val icon: String = "",
+    val uvValue: Int = 0,
+    val suggestion: List<String> = emptyList(),
+    val isExpandMenuSuggestion: Boolean = false
 )
 
 data class ForecastHour(

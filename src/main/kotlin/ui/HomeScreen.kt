@@ -21,10 +21,13 @@ fun HomeScreen(
     modifier: Modifier = Modifier,
     windowState: WindowState,
     state: HomeUIState,
-    listener: HomeInteractionListener
+    listener: HomeInteractionListener,
 ) {
     FlowRow(
-        modifier = modifier.fillMaxSize().width(windowState.size.width).padding(24.dp),
+        modifier = modifier
+            .fillMaxSize()
+            .width(windowState.size.width)
+            .padding(24.dp),
         horizontalArrangement = Arrangement.spacedBy(16.dp),
     ) {
 
@@ -38,7 +41,11 @@ fun HomeScreen(
                 cityName = state.cityName,
                 countryName = state.countryName,
                 temperature = state.temperature,
-                icon = state.icon
+                icon = state.icon,
+                suggestion = state.suggestion,
+                onSearch = { listener.search(it) },
+                isExpandMenuSuggestion = state.isExpandMenuSuggestion,
+                onDropDownMenuExpand = listener::onDropDownMenuExpand
             )
         }
 
@@ -82,8 +89,5 @@ fun HomeScreen(
             )
         }
 
-
     }
 }
-
-
