@@ -18,7 +18,8 @@ fun Weather.toUIState(): HomeUIState {
         humidityDescription = "Normal",
         visibilityAvg = "${current?.visKm} Km",
         feelsLike = "${current?.feelslikeC}",
-        feelDescription = current?.condition?.text ?: ""
+        feelDescription = current?.condition?.text ?: "",
+        uvValue = current?.uv ?: 0.0
     )
 }
 

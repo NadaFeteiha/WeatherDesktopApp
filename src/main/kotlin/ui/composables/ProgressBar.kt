@@ -1,9 +1,8 @@
-package composables
+package ui.composables
 
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.animateIntAsState
 import androidx.compose.animation.core.tween
-import androidx.compose.desktop.ui.tooling.preview.Preview
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.aspectRatio

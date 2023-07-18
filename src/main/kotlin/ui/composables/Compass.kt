@@ -1,4 +1,4 @@
-package composables
+package ui.composables
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
