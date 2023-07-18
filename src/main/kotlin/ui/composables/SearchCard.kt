@@ -28,9 +28,7 @@ fun SearchCard(
 ) {
 
     Column(
-        modifier = modifier
-//            .background(gradient, RoundedCornerShape(24.dp))
-            .padding(horizontal = 16.dp, vertical = 24.dp),
+        modifier = modifier.padding(horizontal = 16.dp, vertical = 24.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
 

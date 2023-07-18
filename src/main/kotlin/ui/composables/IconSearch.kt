@@ -4,23 +4,27 @@ import androidx.compose.animation.core.Transition
 import androidx.compose.animation.core.animateDp
 import androidx.compose.animation.core.animateFloat
 import androidx.compose.animation.core.updateTransition
-import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
+import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.input.pointer.*
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 
+@OptIn(ExperimentalFoundationApi::class, ExperimentalComposeUiApi::class)
 @Composable
-fun IconSearch(modifier: Modifier = Modifier) {
+fun IconSearch(
+    modifier: Modifier = Modifier,
+) {
 
     var text by remember { mutableStateOf("") }
     var expanded by remember { mutableStateOf(false) }
@@ -45,14 +49,15 @@ fun IconSearch(modifier: Modifier = Modifier) {
         modifier
             .width(boxWidth)
             .height(boxHeight)
+            .onPointerEvent(PointerEventType.Enter) { expanded = true }
+            .onPointerEvent(PointerEventType.Exit) { expanded = false }
             .background(Color(0xCC1B232A), RoundedCornerShape(24.dp))
-            .clickable { expanded = true }
-
     ) {
         Icon(
             painter = painterResource("search.svg"),
             contentDescription = "Search",
             modifier = Modifier
+                .onClick { expanded = true }
                 .size(24.dp)
                 .offset(0.dp)
                 .rotate(searchIconRotation)
