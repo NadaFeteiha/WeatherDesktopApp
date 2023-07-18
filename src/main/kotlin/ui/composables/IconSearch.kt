@@ -27,8 +27,10 @@ fun IconSearch(
     suggestion: List<String>,
     onSearch: (String) -> Unit,
     onDropDownMenuExpand: (Boolean) -> Unit,
-    isExpandMenuSuggestion: Boolean = false
-) {
+    onSearchCitySelected: (String) -> Unit,
+    isExpandMenuSuggestion: Boolean = false,
+
+    ) {
     val selectedItemId = remember { mutableStateOf(0) }
 
     var text by remember { mutableStateOf("") }
@@ -103,6 +105,7 @@ fun IconSearch(
                 DropdownMenuItem(
                     onClick = {
                         selectedItemId.value = index
+                        onSearchCitySelected(suggestion[index])
                         onDropDownMenuExpand(false)
                     }
                 ) {

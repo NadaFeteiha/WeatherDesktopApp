@@ -43,9 +43,8 @@ fun HomeScreen(
                 temperature = state.temperature,
                 icon = state.icon,
                 suggestion = state.suggestion,
-                onSearch = { listener.search(it) },
                 isExpandMenuSuggestion = state.isExpandMenuSuggestion,
-                onDropDownMenuExpand = listener::onDropDownMenuExpand
+                listener = listener
             )
         }
 

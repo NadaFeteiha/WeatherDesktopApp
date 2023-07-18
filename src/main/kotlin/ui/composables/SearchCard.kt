@@ -15,6 +15,7 @@ import ui.theme.Black
 import ui.theme.Blue
 import ui.theme.Orange
 import ui.theme.Yellow
+import viewModel.HomeInteractionListener
 
 
 @Composable
@@ -26,9 +27,8 @@ fun SearchCard(
     countryName: String,
     icon: String,
     suggestion: List<String>,
-    onSearch: (String) -> Unit,
     isExpandMenuSuggestion: Boolean = false,
-    onDropDownMenuExpand: (Boolean) -> Unit,
+    listener: HomeInteractionListener,
 ) {
 
     Column(
@@ -39,9 +39,10 @@ fun SearchCard(
         IconSearch(
             modifier = Modifier.align(Alignment.End),
             suggestion = suggestion,
-            onSearch = onSearch,
+            onSearch = listener::search,
             isExpandMenuSuggestion = isExpandMenuSuggestion,
-            onDropDownMenuExpand = onDropDownMenuExpand,
+            onDropDownMenuExpand = listener::onDropDownMenuExpand,
+            onSearchCitySelected = listener::onSearchCitySelected
         )
 
         WeatherImageLoader(modifier = Modifier.size(110.dp).padding(top = 16.dp), url = icon)

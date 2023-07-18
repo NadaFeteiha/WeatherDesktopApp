@@ -23,10 +23,6 @@ class HomeViewModel(private val service: WeatherService) : HomeInteractionListen
         }
     }
 
-    override fun getData() {
-
-    }
-
     override fun search(keyword: String) {
         CoroutineScope(Dispatchers.IO).launch {
             val cities = service.searchWeatherByCityName(keyword).mapNotNull { it.name }
@@ -41,12 +37,18 @@ class HomeViewModel(private val service: WeatherService) : HomeInteractionListen
         }
     }
 
+    override fun onSearchCitySelected(city: String) {
+        CoroutineScope(Dispatchers.IO).launch {
+            _uiState.emit(service.getWeatherByCityName(city).toUIState())
+        }
+    }
+
     private fun formatDate() {
         val inputFormat = SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault())
         val outputFormat = SimpleDateFormat("dd MMMM, yyyy h:mm a", Locale.getDefault())
 
         CoroutineScope(Dispatchers.IO).launch {
-            val inputDate = service.getWeatherByCityName("lynnwood").location?.localtime
+            val inputDate = service.getWeatherByCityName(city = "lynnwood").location?.localtime
             val parsedDate = inputFormat.parse(inputDate)
             val outputDate = outputFormat.format(parsedDate)
             _uiState.update { it.copy(date = outputDate) }

@@ -4,6 +4,8 @@ import data.remote.dto.Hour
 import data.remote.dto.Weather
 import utils.convertTimeToHourAMPM
 import utils.getTimeNowHourOnlyAsInt
+import java.text.SimpleDateFormat
+import java.util.*
 
 fun Weather.toUIState(): HomeUIState {
     return HomeUIState(
@@ -18,10 +20,10 @@ fun Weather.toUIState(): HomeUIState {
         visibilityAvg = "${current?.visKm} Km",
         feelsLike = "${current?.feelslikeC}",
         feelDescription = current?.condition?.text ?: "",
-        date = location?.localtime ?: "" ,
-        temperature = current?.tempC.toString() ,
-        cityName = location?.name ?: "" ,
-        countryName = location?.country ?: "" ,
+        date = convertDate(location?.localtime ?: ""),
+        temperature = current?.tempC.toString(),
+        cityName = location?.name ?: "",
+        countryName = location?.country ?: "",
         icon = current?.condition?.icon ?: "",
         uvValue = (current?.uv?.toInt() ?: 0) * 10
     )
@@ -37,3 +39,11 @@ fun Hour.toUIState(index: Int) = ForecastHour(
     temp = tempC ?: 0.0
 )
 
+
+fun convertDate(inputDate: String): String {
+    val inputFormat = SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault())
+    val outputFormat = SimpleDateFormat("dd MMMM, yyyy h:mm a", Locale.getDefault())
+
+    val parsedDate = inputFormat.parse(inputDate)
+    return outputFormat.format(parsedDate)
+}
