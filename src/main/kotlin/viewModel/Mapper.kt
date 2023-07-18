@@ -5,7 +5,6 @@ import data.remote.dto.Weather
 import utils.convertTimeToHourAMPM
 import utils.getTimeNowHourOnlyAsInt
 
-
 fun Weather.toUIState(): HomeUIState {
     return HomeUIState(
         forecastHourly = forecast.forecastday[0].hour?.subList(getTimeNowHourOnlyAsInt(), 24)
@@ -18,7 +17,12 @@ fun Weather.toUIState(): HomeUIState {
         humidityDescription = "Normal",
         visibilityAvg = "${current?.visKm} Km",
         feelsLike = "${current?.feelslikeC}",
-        feelDescription = current?.condition?.text ?: ""
+        feelDescription = current?.condition?.text ?: "",
+        date = location?.localtime ?: "" ,
+        temperature = current?.tempC.toString() ,
+        cityName = location?.name ?: "" ,
+        countryName = location?.country ?: "" ,
+        icon = current?.condition?.icon ?: ""
     )
 }
 

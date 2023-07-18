@@ -9,7 +9,12 @@ data class HomeUIState(
     val humidityValue: String = "",
     val visibilityAvg: String = "",
     val feelsLike: String = "",
-    val feelDescription: String = ""
+    val feelDescription: String = "",
+    val date: String = "hh",
+    val temperature: String = "",
+    val cityName: String = "" ,
+    val countryName : String = "" ,
+    val icon : String = ""
 )
 
 data class ForecastHour(
