@@ -15,6 +15,7 @@ data class HomeUIState(
     val cityName: String = "" ,
     val countryName : String = "" ,
     val icon : String = ""
+    val uvValue: Int = 0
 )
 
 data class ForecastHour(

@@ -22,7 +22,8 @@ fun Weather.toUIState(): HomeUIState {
         temperature = current?.tempC.toString() ,
         cityName = location?.name ?: "" ,
         countryName = location?.country ?: "" ,
-        icon = current?.condition?.icon ?: ""
+        icon = current?.condition?.icon ?: "",
+        uvValue = (current?.uv?.toInt() ?: 0) * 10
     )
 }
 

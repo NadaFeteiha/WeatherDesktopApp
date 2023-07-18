@@ -1,4 +1,4 @@
-package composables
+package ui.composables
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.Orientation
