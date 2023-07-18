@@ -19,7 +19,7 @@ fun Weather.toUIState(): HomeUIState {
         visibilityAvg = "${current?.visKm} Km",
         feelsLike = "${current?.feelslikeC}",
         feelDescription = current?.condition?.text ?: "",
-        uvValue = current?.uv ?: 0.0
+        uvValue = (current?.uv?.toInt() ?: 0) * 10
     )
 }
 

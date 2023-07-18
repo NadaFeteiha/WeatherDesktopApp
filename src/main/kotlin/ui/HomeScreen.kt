@@ -59,10 +59,11 @@ fun HomeScreen(
 
         BlurredCard {
             ProgressBar(
-                modifier =  Modifier.size(250.dp).background(
+                modifier = Modifier.size(250.dp).background(
                     color = grey.copy(alpha = 0.4f),
-                    shape = RoundedCornerShape(24.dp)
-                )
+                    shape = RoundedCornerShape(24.dp),
+                ),
+                indicatorValue = state.uvValue
             )
         }
 

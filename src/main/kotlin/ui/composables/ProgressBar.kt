@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -29,8 +30,8 @@ fun ProgressBar(
     modifier: Modifier = Modifier,
     backgroundIndicatorStrokeWidth: Float = 30f,
     foregroundIndicatorStrokeWidth: Float = 30f,
-    indicatorValue: Int = 50,
-    maxIndicatorValue: Int = 100,
+    indicatorValue: Int,
+    maxIndicatorValue: Int = 50,
     backgroundIndicatorColor: Color = Color(0xFFD9D9D9),
     foregroundIndicatorColor: Color = Color(0xFF3D96C2),
 ) {
@@ -96,7 +97,7 @@ fun ProgressBar(
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        ProgressBarValue(value = receivedValue)
+        ProgressBarValue(value = indicatorValue)
     }
 }
 
@@ -148,12 +149,12 @@ fun DrawScope.foregroundIndicator(
 }
 
 @Composable
-fun ProgressBarValue(
+private fun ProgressBarValue(
     value: Int
 ) {
     Text(
-        text = "$value High",
+        text = "${value/10.0} \n\n High",
         textAlign = TextAlign.Center,
-        fontWeight = FontWeight.Bold
+        style = MaterialTheme.typography.h1
     )
 }
