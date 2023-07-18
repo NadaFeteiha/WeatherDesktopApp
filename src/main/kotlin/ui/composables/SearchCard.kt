@@ -1,4 +1,4 @@
-package composables
+package ui.composables
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -18,18 +18,18 @@ import ui.theme.Yellow
 
 
 @Composable
-fun SearchCard(date: String, cityName: String, temperature: String, countryName: String, icon: String) {
-
-    SearchCardContent(date, cityName, temperature, countryName, icon)
-
-}
-
-
-@Composable
-private fun SearchCardContent(date: String, cityName: String, temperature: String, countryName: String, icon: String) {
+fun SearchCard(
+    modifier: Modifier = Modifier,
+    date: String,
+    cityName: String,
+    temperature: String,
+    countryName: String,
+    icon: String
+) {
 
     Column(
-        modifier = Modifier.width(374.dp).height(378.dp).background(gradient, RoundedCornerShape(24.dp))
+        modifier = modifier
+//            .background(gradient, RoundedCornerShape(24.dp))
             .padding(horizontal = 16.dp, vertical = 24.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
@@ -54,16 +54,5 @@ private fun SearchCardContent(date: String, cityName: String, temperature: Strin
             text = date,
             modifier = Modifier.align(Alignment.Start).padding(top = 16.dp)
         )
-
     }
 }
-
-val gradient = Brush.horizontalGradient(
-    listOf(
-        Black.copy(alpha = 0.1f),
-        Yellow.copy(alpha = 0.2f),
-        Blue.copy(alpha = 0.2f),
-        Orange.copy(alpha = 0.2f),
-        Black.copy(alpha = 0.1f),
-    )
-)

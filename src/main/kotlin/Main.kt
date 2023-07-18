@@ -38,7 +38,7 @@ fun main() = application {
         state = windowState,
         title = "Weather Application"
     ) {
-        this.window.minimumSize = Dimension(800, 700)
+        this.window.minimumSize = Dimension(1200, 700)
         App(windowState)
     }
 }

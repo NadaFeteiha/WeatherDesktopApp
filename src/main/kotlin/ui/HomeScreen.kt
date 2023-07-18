@@ -27,9 +27,24 @@ fun HomeScreen(
         modifier = modifier.fillMaxSize().width(windowState.size.width).padding(24.dp),
         horizontalArrangement = Arrangement.spacedBy(16.dp),
     ) {
+
+        BlurredCard(modifier = Modifier.padding(bottom = 16.dp)) {
+            SearchCard(
+                modifier = Modifier.background(
+                    color = grey.copy(alpha = 0.4f),
+                    shape = RoundedCornerShape(24.dp)
+                ),
+                date = state.date,
+                cityName = state.cityName,
+                countryName = state.countryName,
+                temperature = state.temperature,
+                icon = state.icon
+            )
+        }
+
         BlurredCard(modifier = Modifier.padding(bottom = 16.dp)) {
             HourlyForecast(
-                modifier = Modifier.background(
+                modifier = Modifier.width(700.dp).background(
                     color = grey.copy(alpha = 0.4f),
                     shape = RoundedCornerShape(24.dp)
                 ),

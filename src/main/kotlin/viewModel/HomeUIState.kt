@@ -14,7 +14,7 @@ data class HomeUIState(
     val temperature: String = "",
     val cityName: String = "" ,
     val countryName : String = "" ,
-    val icon : String = ""
+    val icon : String = "",
     val uvValue: Int = 0
 )
 

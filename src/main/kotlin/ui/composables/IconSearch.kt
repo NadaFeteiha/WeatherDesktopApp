@@ -1,4 +1,4 @@
-package composables
+package ui.composables
 
 import androidx.compose.animation.core.Transition
 import androidx.compose.animation.core.animateDp
