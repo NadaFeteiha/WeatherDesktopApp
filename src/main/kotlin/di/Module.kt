@@ -1,6 +1,6 @@
 package di
 
-import controller.HomeController
+import viewModel.HomeViewModel
 import data.remote.WeatherService
 import data.remote.WeatherServiceClient
 import data.remote.WeatherServiceImpl
@@ -19,7 +19,7 @@ val appModules = module {
         serviceModule
     )
     single<WeatherService> { WeatherServiceImpl(get()) }
-    singleOf(::HomeController) { bind<HomeController>() }
+    singleOf(::HomeViewModel) { bind<HomeViewModel>() }
 
 }
 

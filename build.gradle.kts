@@ -14,6 +14,7 @@ repositories {
     google()
     mavenCentral()
     maven("https://maven.pkg.jetbrains.space/public/p/compose/dev")
+//    maven("https://packages.jetbrains.team/maven/p/skija/maven")
 }
 
 dependencies {
@@ -25,7 +26,7 @@ dependencies {
     implementation("io.ktor:ktor-serialization-kotlinx-json:$ktor_version")
     implementation("io.ktor:ktor-client-logging:$ktor_version")
     implementation("io.ktor:ktor-client-content-negotiation:$ktor_version")
-    implementation ("org.slf4j:slf4j-simple:1.7.26")
+    implementation("org.slf4j:slf4j-simple:1.7.26")
 
     //coroutines
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.0")
@@ -33,10 +34,12 @@ dependencies {
     //koin
     implementation("io.insert-koin:koin-core:3.4.2")
 
-}
+    implementation("io.insert-koin:koin-annotations:1.0.0")
 
-tasks.withType<KotlinCompile> {
-    kotlinOptions.jvmTarget = "11"
+    //image
+    api("io.github.qdsfdhvh:image-loader:1.2.8")
+//    api ("org.jetbrains.skija:skija-macos-arm64:0.93.6")
+
 }
 
 compose.desktop {
