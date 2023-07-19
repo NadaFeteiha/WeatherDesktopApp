@@ -18,7 +18,8 @@ data class HomeUIState(
     val uvValue: Int = 0,
     val suggestion: List<String> = emptyList(),
     val keyword: String = "",
-    val isExpandMenuSuggestion: Boolean = false
+    val isExpandMenuSuggestion: Boolean = false,
+    val daysForecastUiState: List<DayForecastUiState> = emptyList()
 )
 
 data class ForecastHour(
@@ -27,9 +28,10 @@ data class ForecastHour(
     val temp: Double = 0.0
 )
 
-
-
-
-
-
-
+data class DayForecastUiState(
+    val minTemperature: String = "",
+    val maxTemperature: String = "",
+    val dateOfDay: String = "",
+    val day: String = "",
+    val iconUrl: String = ""
+)
