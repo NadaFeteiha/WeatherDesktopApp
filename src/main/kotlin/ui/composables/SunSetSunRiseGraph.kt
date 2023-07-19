@@ -1,10 +1,11 @@
-package ui.composable
+package ui.composables
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.desktop.ui.tooling.preview.Preview
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -15,20 +16,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.*
-import androidx.compose.ui.graphics.drawscope.Fill
 import androidx.compose.ui.graphics.drawscope.Stroke
-import androidx.compose.ui.graphics.drawscope.drawIntoCanvas
-import androidx.compose.ui.graphics.drawscope.translate
-import androidx.compose.ui.graphics.painter.BitmapPainter
 import androidx.compose.ui.res.*
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.*
-import io.ktor.http.ContentDisposition.Parameters.Size
 import util.Util.getFormattedDateFromUnixTime
 import java.util.*
-import javax.swing.text.StyleConstants.Size
 import kotlin.math.cos
 import kotlin.math.sin
 
@@ -61,13 +56,12 @@ fun SunriseSunsetView(
     sunsetTimeColor: Color = Color.Black,
     timeFormat: String = "HH:mm",
     arcColorArray: Array<Pair<Float, Color>> = arrayOf(
-        0.2f to Color(0xFFECD179),
-        0.5f to Color(0xbbECD179)
+        0.1f to Color(0xccECD179),
+        0.2f to Color(0xccECD179)
     ),
     backGroundArray: Array<Pair<Float, Color>> = arrayOf(
-        0.05f to Color(0xFFECD179),
-        0.4f to Color(0xFFECD179),
-        0.9f to Color(0xFFF5D879),
+        0.1f to Color(0xCCFFFFFF),
+        0.2f to Color(0xFFF5D879),
     )
 
 ) {
@@ -102,25 +96,25 @@ fun SunriseSunsetView(
     Box(
         contentAlignment = Alignment.Center,
         modifier = Modifier
-            .size(arcRadius * 2.5f)
+            .size(arcRadius * 1.8f,arcRadius * 1.7f)
     ) {
 
         Canvas(
             modifier = Modifier
-                .size(arcRadius * 2)
+                .size(arcRadius * 1.3f)
 
         ) {
 
 
             drawArc(
-                brush = Brush.verticalGradient(
+                brush = Brush.radialGradient(
                     colorStops = arcColorArray,
                     tileMode = TileMode.Clamp,
                 ),
                 startAngle = 180f,
                 sweepAngle = 182f,
                 style = Stroke(strokeWidth.toPx(), cap = StrokeCap.Round
-                    , pathEffect = PathEffect.dashPathEffect(floatArrayOf(5f, 15f), 0f)),
+                    , pathEffect = PathEffect.dashPathEffect(floatArrayOf(5f, 8f), 0f)),
                 useCenter = false,
             )
 
@@ -142,18 +136,19 @@ fun SunriseSunsetView(
                     topLeft = Offset(x-20f, y-20f), // Set the desired offsets here
                 )
 
-            drawRoundRect( brush = Brush.radialGradient(
+            drawRoundRect( brush = Brush.horizontalGradient(
                 colorStops = backGroundArray,
                 tileMode = TileMode.Clamp,
             ),
-                alpha = 0.09f,
+                alpha = 0.02f,
                 cornerRadius = CornerRadius(0f),
                 topLeft = Offset.Zero,
-                size = this.size.copy(x,210f),)
+                size = this.size.copy(x,145f),)
         }
         Box(modifier =Modifier.padding(top=24.dp)){
             Column {
-                Row (modifier = Modifier.fillMaxWidth().padding(start = 30.dp, end = 30.dp), horizontalArrangement = Arrangement.SpaceBetween){
+                Row (modifier = Modifier.fillMaxWidth().padding(start = 30.dp, end = 30.dp)
+                    , horizontalArrangement = Arrangement.SpaceBetween){
                     Image(painter = painterResource("rectangle_small.png"),
                         contentDescription ="",
                         modifier = Modifier.size(18.dp,10.dp)
@@ -178,7 +173,7 @@ fun SunriseSunsetView(
             modifier = Modifier
                 .align(Alignment.Center)
                 .wrapContentWidth()
-                .offset(y = 30.dp, x = -arcRadius)
+                .offset(y = 40.dp, x = (-90).dp)
                 .padding(top = 12.dp)
 
 
@@ -186,15 +181,15 @@ fun SunriseSunsetView(
             Text(
                 text = sunriseTextString,
                 color = sunriseTextColor,
-                modifier = Modifier.align(Alignment.CenterHorizontally)
-
+                modifier = Modifier.align(Alignment.CenterHorizontally),
 
             )
             Text(
                 text = sunriseTimeLong.getFormattedDateFromUnixTime(timeFormat),
-                color = sunriseTimeColor,
+                color = Color.White,
                 textAlign = TextAlign.Center,
-                modifier = Modifier.align(Alignment.CenterHorizontally)
+                modifier = Modifier.align(Alignment.CenterHorizontally),
+                style = MaterialTheme.typography.body1
             )
         }
 
@@ -202,7 +197,7 @@ fun SunriseSunsetView(
             modifier = Modifier
                 .align(Alignment.Center)
                 .wrapContentWidth()
-                .offset(y = 30.dp, x = arcRadius)
+                .offset(y = 40.dp, x = 90.dp)
                 .padding(top = 12.dp)
 
 
@@ -215,7 +210,8 @@ fun SunriseSunsetView(
             Text(
                 text = sunsetTimeLong.getFormattedDateFromUnixTime(timeFormat),
                 modifier = Modifier.align(Alignment.CenterHorizontally),
-                color = sunsetTimeColor,
+                color = Color.White,
+                style = MaterialTheme.typography.body1
 
                 )
 

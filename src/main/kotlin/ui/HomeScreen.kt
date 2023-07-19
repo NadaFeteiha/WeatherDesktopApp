@@ -8,6 +8,7 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.WindowState
 import ui.composables.*
@@ -87,6 +88,15 @@ fun HomeScreen(
                 ),
                 indicatorValue = state.uvValue
             )
+        }
+        BlurredCard {
+            Column {
+                Text("SunRise&SunSet",
+                    style = MaterialTheme.typography.h2,
+                    modifier=Modifier.padding(top = 16.dp, start = 24.dp)
+                    )
+                SunriseSunsetView()
+            }
         }
 
     }
