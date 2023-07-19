@@ -16,7 +16,7 @@ class HomeViewModel(private val service: WeatherService) : HomeInteractionListen
 
     init {
         CoroutineScope(Dispatchers.IO).launch {
-            _uiState.emit(service.getWeatherByCityName("lynnwood").toUIState())
+            _uiState.emit(service.getWeatherByCityName("cairo").toUIState())
         }
     }
 

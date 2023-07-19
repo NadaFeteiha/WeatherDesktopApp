@@ -31,31 +31,11 @@ fun ProgressBar(
     backgroundIndicatorStrokeWidth: Float = 30f,
     foregroundIndicatorStrokeWidth: Float = 30f,
     indicatorValue: Int,
-    maxIndicatorValue: Int = 50,
-    backgroundIndicatorColor: Color = Color(0xFFD9D9D9),
+    maxIndicatorValue: Int = 100,
+    backgroundIndicatorColor: Color = Color(0x1A7AD3FF),
     foregroundIndicatorColor: Color = Color(0xFF3D96C2),
 ) {
-    var allowedIndicatorValue by remember {
-        mutableStateOf(maxIndicatorValue)
-    }
-    allowedIndicatorValue = if (indicatorValue <= maxIndicatorValue) {
-        indicatorValue
-    } else {
-        maxIndicatorValue
-    }
-
-    val percentage =
-        (allowedIndicatorValue.toFloat() / maxIndicatorValue) * 100
-
-    val sweepAngle by animateFloatAsState(
-        targetValue = (2.9 * percentage).toFloat(),
-        animationSpec = tween(1000), label = ""
-    )
-
-    val receivedValue by animateIntAsState(
-        targetValue = allowedIndicatorValue,
-        animationSpec = tween(1000), label = ""
-    )
+    val percentage = ((indicatorValue.toFloat() / maxIndicatorValue) * 100 * 3)
 
     Column(
         modifier = modifier
@@ -70,7 +50,7 @@ fun ProgressBar(
                 )
 
                 foregroundIndicator(
-                    sweepAngle = sweepAngle,
+                    sweepAngle = percentage,
                     componentSize = componentSize,
                     indicatorColor = foregroundIndicatorColor,
                     indicatorStrokeWidth = foregroundIndicatorStrokeWidth,
@@ -83,15 +63,18 @@ fun ProgressBar(
                     dashPathEffect = PathEffect.dashPathEffect(floatArrayOf(5f, 70f), 0f)
                 )
 
-                var angleInDegrees = (sweepAngle * 120.0) + 50.0
-                var radius = (size.height / 2) - 50
-                var x = -(radius * sin(Math.toRadians(angleInDegrees))).toFloat() + (size.width / 2)
-                var y = (radius * cos(Math.toRadians(angleInDegrees))).toFloat() + (size.height / 2)
+                val sweepAngleRadians = Math.toRadians(120.0 + percentage.toDouble())
+                val centerX = size.width / 2
+                val centerY = size.height / 2
+                val radius = (size.width / 2) - 50
+
+                val endX = centerX + (radius * cos(sweepAngleRadians)).toFloat()
+                val endY = centerY + (radius * sin(sweepAngleRadians)).toFloat()
 
                 drawCircle(
                     color = Color.White,
                     radius = 5f,
-                    center = Offset(x, y)
+                    center = Offset(endX, endY)
                 )
             },
         verticalArrangement = Arrangement.Center,
@@ -153,7 +136,7 @@ private fun ProgressBarValue(
     value: Int
 ) {
     Text(
-        text = "${value/10.0} \n\n High",
+        text = "${value / 10.0} \n\n High",
         textAlign = TextAlign.Center,
         style = MaterialTheme.typography.h1
     )
