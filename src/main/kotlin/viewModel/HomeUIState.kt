@@ -10,7 +10,15 @@ data class HomeUIState(
     val visibilityAvg: String = "",
     val feelsLike: String = "",
     val feelDescription: String = "",
-    val uvValue: Int = 0
+    val date: String = "hh",
+    val temperature: String = "",
+    val cityName: String = "",
+    val countryName: String = "",
+    val icon: String = "",
+    val uvValue: Int = 0,
+    val suggestion: List<String> = emptyList(),
+    val keyword: String = "",
+    val isExpandMenuSuggestion: Boolean = false
 )
 
 data class ForecastHour(

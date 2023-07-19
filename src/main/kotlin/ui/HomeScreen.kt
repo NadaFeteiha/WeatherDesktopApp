@@ -21,15 +21,37 @@ fun HomeScreen(
     modifier: Modifier = Modifier,
     windowState: WindowState,
     state: HomeUIState,
-    listener: HomeInteractionListener
+    listener: HomeInteractionListener,
 ) {
     FlowRow(
-        modifier = modifier.fillMaxSize().width(windowState.size.width).padding(24.dp),
+        modifier = modifier
+            .fillMaxSize()
+            .width(windowState.size.width)
+            .padding(24.dp),
         horizontalArrangement = Arrangement.spacedBy(16.dp),
     ) {
+
+        BlurredCard(modifier = Modifier.padding(bottom = 16.dp)) {
+            SearchCard(
+                modifier = Modifier.width(380.dp).background(
+                    color = grey.copy(alpha = 0.4f),
+                    shape = RoundedCornerShape(24.dp)
+                ),
+                date = state.date,
+                cityName = state.cityName,
+                countryName = state.countryName,
+                temperature = state.temperature,
+                icon = state.icon,
+                keyword = state.keyword,
+                suggestion = state.suggestion,
+                isExpandMenuSuggestion = state.isExpandMenuSuggestion,
+                listener = listener
+            )
+        }
+
         BlurredCard(modifier = Modifier.padding(bottom = 16.dp)) {
             HourlyForecast(
-                modifier = Modifier.background(
+                modifier = Modifier.width(700.dp).background(
                     color = grey.copy(alpha = 0.4f),
                     shape = RoundedCornerShape(24.dp)
                 ),
@@ -67,8 +89,5 @@ fun HomeScreen(
             )
         }
 
-
     }
 }
-
-

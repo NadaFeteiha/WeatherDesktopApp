@@ -1,15 +1,10 @@
 package utils
 
-import java.util.Date
-import java.time.format.DateTimeFormatter
 import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 
-fun getTimeNowHourOnlyAsInt(): Int {
-    val dateTime = LocalDateTime.now()
-    val formatter = DateTimeFormatter.ofPattern("HH")
-    val hour = dateTime.format(formatter).toInt()
-    return hour
-}
+import java.text.SimpleDateFormat
+import java.util.*
 
 fun convertTimeToHourAMPM(timeString: String): String {
     val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")
@@ -22,4 +17,25 @@ fun convertTimeToHourAMPM(timeString: String): String {
         hour - 12
     }
     return "$currentHour $amPm"
+}
+
+fun convertDate(inputDate: String): String {
+    val inputFormat = SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault())
+    val outputFormat = SimpleDateFormat("dd MMMM, yyyy h:mm a", Locale.getDefault())
+
+    val parsedDate = inputFormat.parse(inputDate)
+    return outputFormat.format(parsedDate)
+}
+
+fun getHourNow(inputDate: String): Int {
+    val inputFormat = SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault())
+    val outputFormat = SimpleDateFormat("h", Locale.getDefault())
+    val outputFormat2 = SimpleDateFormat("a", Locale.getDefault())
+
+    var time = outputFormat.format(inputFormat.parse(inputDate)).toInt()
+
+    if (outputFormat2.format(inputFormat.parse(inputDate)) == "PM") {
+        time = time + 12
+    }
+    return time
 }
