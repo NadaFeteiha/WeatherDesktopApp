@@ -2,14 +2,15 @@ package viewModel
 
 import data.remote.dto.Hour
 import data.remote.dto.Weather
+import utils.convertDate
 import utils.convertTimeToHourAMPM
-import utils.getTimeNowHourOnlyAsInt
+import utils.getHourNow
 import java.text.SimpleDateFormat
 import java.util.*
 
 fun Weather.toUIState(): HomeUIState {
     return HomeUIState(
-        forecastHourly = forecast.forecastday[0].hour?.subList(getTimeNowHourOnlyAsInt(), 24)
+        forecastHourly = forecast.forecastday[0].hour?.subList(getHourNow(location?.localtime ?: ""), 24)
             ?.mapIndexed { index, hour ->
                 hour.toUIState(index)
             } ?: emptyList(),
@@ -40,10 +41,3 @@ fun Hour.toUIState(index: Int) = ForecastHour(
 )
 
 
-fun convertDate(inputDate: String): String {
-    val inputFormat = SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault())
-    val outputFormat = SimpleDateFormat("dd MMMM, yyyy h:mm a", Locale.getDefault())
-
-    val parsedDate = inputFormat.parse(inputDate)
-    return outputFormat.format(parsedDate)
-}

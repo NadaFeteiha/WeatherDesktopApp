@@ -33,7 +33,7 @@ fun HomeScreen(
 
         BlurredCard(modifier = Modifier.padding(bottom = 16.dp)) {
             SearchCard(
-                modifier = Modifier.background(
+                modifier = Modifier.width(380.dp).background(
                     color = grey.copy(alpha = 0.4f),
                     shape = RoundedCornerShape(24.dp)
                 ),
