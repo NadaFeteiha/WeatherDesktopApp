@@ -3,6 +3,7 @@ import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.desktop.ui.tooling.preview.Preview
 import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -12,6 +13,7 @@ import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.*
@@ -44,48 +46,35 @@ fun SunriseSunsetView(
     sunriseTextColor: Color = Color(0xFF737679),
     sunsetTextString: String = "Sunset",
     sunsetTextColor: Color = Color(0xFF737679),
-    sunriseTextTextStyle: TextStyle = TextStyle(fontSize = 14.sp, fontWeight = FontWeight.Normal),
-    sunsetTextTextStyle: TextStyle = TextStyle(
-        fontSize = 14.sp,
-        fontWeight = FontWeight.Normal,
-        textAlign = TextAlign.End
-    ),
     sunriseTimeLong: Long = Calendar.getInstance(Locale.getDefault()).apply {
         set(Calendar.SECOND, 0)
         set(Calendar.MINUTE, 18)
-        set(Calendar.HOUR_OF_DAY, 4)
+        set(Calendar.HOUR_OF_DAY, 6)
     }.timeInMillis,
 
     sunsetTimeLong: Long = Calendar.getInstance(Locale.getDefault()).apply {
         set(Calendar.SECOND, 0)
         set(Calendar.MINUTE, 18)
-        set(Calendar.HOUR_OF_DAY, 4)
+        set(Calendar.HOUR_OF_DAY, 18)
     }.timeInMillis,
     sunriseTimeColor: Color = Color.Black,
 
     sunsetTimeColor: Color = Color.Black,
-    sunriseTimeTextStyle: TextStyle = TextStyle(fontSize = 14.sp, fontWeight = FontWeight.SemiBold),
-    sunsetTimeTextStyle: TextStyle = TextStyle(
-        fontSize = 14.sp,
-        fontWeight = FontWeight.SemiBold,
-        textAlign = TextAlign.End
-    ),
     timeFormat: String = "HH:mm",
     arcColorArray: Array<Pair<Float, Color>> = arrayOf(
         0.2f to Color(0xFFECD179),
         0.5f to Color(0xbbECD179)
     ),
-    sunColorArray: Array<Pair<Float, Color>> = arrayOf(
-        0.3f to Color(0xFFECD179),
-        0.4f to Color(0xFFF5836A),
-        0.9f to Color(0xFFFAF1D1),
-        1f to Color(0xFFFFFBEE)
+    backGroundArray: Array<Pair<Float, Color>> = arrayOf(
+        0.05f to Color(0xFFECD179),
+        0.4f to Color(0xFFECD179),
+        0.9f to Color(0xFFF5D879),
     )
 
 ) {
 
-    val image =painterResource("sun_icon.png")
-    val state = rememberUpdatedState(image)
+//    val image =painterResource("sun_icon.png")
+//    val state = rememberUpdatedState(image)
 
 //    val bitmap = useResource("sun_icon.png") { loadImageBitmap(it) }
 //    val dogImage = BitmapPainter(
@@ -93,13 +82,18 @@ fun SunriseSunsetView(
 //        srcOffset= IntOffset(0,0),
 //    srcSize= IntSize(50,50)
 //    )
-
+    var xOffset by remember {
+        mutableStateOf(0f)
+    }
+    var yOffset by remember {
+        mutableStateOf(0f)
+    }
     val currentCalendar = Calendar.getInstance(Locale.getDefault())
     val currentUnixTime = currentCalendar.timeInMillis
 
     val timeDifference = sunsetTimeLong.minus(sunriseTimeLong)
     val percentage =
-        (1689556720566.toFloat().minus(sunriseTimeLong.toFloat())).div(timeDifference.toFloat())
+        (currentUnixTime.toFloat().minus(sunriseTimeLong.toFloat())).div(timeDifference.toFloat())
 
     var animationPlayed by rememberSaveable {
         mutableStateOf(false)
@@ -130,24 +124,24 @@ fun SunriseSunsetView(
 
         ) {
 
-            drawIntoCanvas {
-                it.withSave {
-                   with(image) {
-                        draw(image.intrinsicSize)
-                    }
-                    it.translate(image.intrinsicSize.width, 0f)
-                   with(image) {
-                       draw(Size(100f, 100f))
-                    }
-                }
-            }
+//            drawIntoCanvas {
+//                it.withSave {
+//                   with(image) {
+//                        draw(image.intrinsicSize)
+//                    }
+//                    it.translate(image.intrinsicSize.width, 0f)
+//                   with(image) {
+//                       draw(Size(100f, 100f))
+//                    }
+//                }
+//            }
 
             drawArc(
                 brush = Brush.verticalGradient(
                     colorStops = arcColorArray,
-                    tileMode = TileMode.Clamp
+                    tileMode = TileMode.Clamp,
                 ),
-                startAngle = 182f,
+                startAngle = 180f,
                 sweepAngle = 182f,
                 style = Stroke(strokeWidth.toPx(), cap = StrokeCap.Round
                     , pathEffect = PathEffect.dashPathEffect(floatArrayOf(5f, 10f), 0f)),
@@ -166,6 +160,7 @@ fun SunriseSunsetView(
                 -(rad * sin(Math.toRadians(angleInDegrees))).toFloat() + (size.width / 2)
             val y =
                 (rad * cos(Math.toRadians(angleInDegrees))).toFloat() + (size.height / 2)
+
 
 //            drawCircle(
 //                brush = Brush.radialGradient(
@@ -209,24 +204,49 @@ fun SunriseSunsetView(
                 radius = 10.dp.toPx(),
                 center = Offset(x, y)
             )
+            drawRoundRect( brush = Brush.radialGradient(
+                colorStops = backGroundArray,
+                tileMode = TileMode.Clamp,
+            ),
+                alpha = 0.01f,
+                cornerRadius = CornerRadius(0f),
+                topLeft = Offset.Zero,
+                size = this.size.copy(x,450f),)
+        }
+        Box(modifier =Modifier.padding(top=24.dp)){
+            Column {
+                Row (modifier = Modifier.fillMaxWidth().padding(start = 30.dp, end = 30.dp), horizontalArrangement = Arrangement.SpaceBetween){
+                    Image(painter = painterResource("rectangle_small.png"),
+                        contentDescription ="",
+                        modifier = Modifier.size(18.dp,10.dp)
+
+                    )
+                    Image(painter = painterResource("rectangle_small.png"),
+                        contentDescription ="",
+                        modifier = Modifier.size(18.dp,10.dp)
+                    )
+                }
+                Image(painter = painterResource("rectangle_tall.png"),
+                    contentDescription = "",
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(4.dp)
+                )
+            }
+
 
         }
-
-
-
-
         Column(
             modifier = Modifier
                 .align(Alignment.Center)
                 .wrapContentWidth()
                 .offset(y = 30.dp, x = -arcRadius)
-                .padding(top = 8.dp)
+                .padding(top = 12.dp)
 
 
         ) {
             Text(
                 text = sunriseTextString,
-                style = sunriseTextTextStyle,
                 color = sunriseTextColor,
                 modifier = Modifier.align(Alignment.CenterHorizontally)
 
@@ -234,7 +254,6 @@ fun SunriseSunsetView(
             )
             Text(
                 text = sunriseTimeLong.getFormattedDateFromUnixTime(timeFormat),
-                style = sunriseTimeTextStyle,
                 color = sunriseTimeColor,
                 textAlign = TextAlign.Center,
                 modifier = Modifier.align(Alignment.CenterHorizontally)
@@ -246,20 +265,18 @@ fun SunriseSunsetView(
                 .align(Alignment.Center)
                 .wrapContentWidth()
                 .offset(y = 30.dp, x = arcRadius)
-                .padding(top = 8.dp)
+                .padding(top = 12.dp)
 
 
         ) {
             Text(
                 text = sunsetTextString,
                 modifier = Modifier.align(Alignment.CenterHorizontally),
-                style = sunsetTextTextStyle,
                 color = sunsetTextColor,
             )
             Text(
                 text = sunsetTimeLong.getFormattedDateFromUnixTime(timeFormat),
                 modifier = Modifier.align(Alignment.CenterHorizontally),
-                style = sunsetTimeTextStyle,
                 color = sunsetTimeColor,
 
                 )

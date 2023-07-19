@@ -6,6 +6,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.application
+import composable.SunriseSunsetView
 import data.remote.WeatherServiceImpl
 import kotlinx.coroutines.launch
 
@@ -21,6 +22,7 @@ fun App() {
 
     MaterialTheme {
         Card {
+            SunriseSunsetView()
             Text(text)
         }
     }
