@@ -1,4 +1,4 @@
-package composable
+package ui.composable
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.desktop.ui.tooling.preview.Preview
@@ -20,16 +20,15 @@ import androidx.compose.ui.graphics.*
 import androidx.compose.ui.graphics.drawscope.Fill
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.drawscope.drawIntoCanvas
+import androidx.compose.ui.graphics.drawscope.translate
 import androidx.compose.ui.graphics.painter.BitmapPainter
-import androidx.compose.ui.graphics.vector.rememberVectorPainter
-import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.*
-import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.*
+import io.ktor.http.ContentDisposition.Parameters.Size
 import util.Util.getFormattedDateFromUnixTime
 import java.util.*
+import javax.swing.text.StyleConstants.Size
 import kotlin.math.cos
 import kotlin.math.sin
 
@@ -73,21 +72,9 @@ fun SunriseSunsetView(
 
 ) {
 
-//    val image =painterResource("sun_icon.png")
-//    val state = rememberUpdatedState(image)
+    val bitmap = useResource("sun_icon_re.png") { loadImageBitmap(it)}
 
-//    val bitmap = useResource("sun_icon.png") { loadImageBitmap(it) }
-//    val dogImage = BitmapPainter(
-//        image= bitmap,
-//        srcOffset= IntOffset(0,0),
-//    srcSize= IntSize(50,50)
-//    )
-    var xOffset by remember {
-        mutableStateOf(0f)
-    }
-    var yOffset by remember {
-        mutableStateOf(0f)
-    }
+
     val currentCalendar = Calendar.getInstance(Locale.getDefault())
     val currentUnixTime = currentCalendar.timeInMillis
 
@@ -124,17 +111,6 @@ fun SunriseSunsetView(
 
         ) {
 
-//            drawIntoCanvas {
-//                it.withSave {
-//                   with(image) {
-//                        draw(image.intrinsicSize)
-//                    }
-//                    it.translate(image.intrinsicSize.width, 0f)
-//                   with(image) {
-//                       draw(Size(100f, 100f))
-//                    }
-//                }
-//            }
 
             drawArc(
                 brush = Brush.verticalGradient(
@@ -144,7 +120,7 @@ fun SunriseSunsetView(
                 startAngle = 180f,
                 sweepAngle = 182f,
                 style = Stroke(strokeWidth.toPx(), cap = StrokeCap.Round
-                    , pathEffect = PathEffect.dashPathEffect(floatArrayOf(5f, 10f), 0f)),
+                    , pathEffect = PathEffect.dashPathEffect(floatArrayOf(5f, 15f), 0f)),
                 useCenter = false,
             )
 
@@ -161,57 +137,19 @@ fun SunriseSunsetView(
             val y =
                 (rad * cos(Math.toRadians(angleInDegrees))).toFloat() + (size.height / 2)
 
+                drawImage(
+                    image = bitmap,
+                    topLeft = Offset(x-20f, y-20f), // Set the desired offsets here
+                )
 
-//            drawCircle(
-//                brush = Brush.radialGradient(
-//                    colorStops = sunColorArray,
-//                    center = Offset(x, y),
-//                    radius = sunRadius
-//                ),
-//                radius = sunRadius,
-//                center = Offset(x, y)
-//            )
-
-
-
-            val outerRadius = size / 15F
-            val innerRadius = size / 30F
-            val angle = Math.PI / 5
-
-            // Draw the star
-            val path = Path()
-            for (i in 0 until 5 * 4) {
-                val radius = if (i % 2 == 0) outerRadius else innerRadius
-                val x1 = x + radius.width * cos((angle * i).toFloat())
-                val y1 = y + (radius.height * sin((angle * i).toFloat()))
-
-                if (i == 0) {
-                    path.moveTo(x1.toFloat(), y1.toFloat())
-                } else {
-                    path.lineTo(x1.toFloat(), y1.toFloat())
-                }
-            }
-            path.close()
-            drawPath(
-                path = path,
-                color = Color.Yellow,
-                style = Fill // Use Fill style to fill the star
-            )
-
-            // Draw the circle in the center of the star
-            drawCircle(
-                color = Color(0xffFFC62D), // Use the same color as the star's fill color
-                radius = 10.dp.toPx(),
-                center = Offset(x, y)
-            )
             drawRoundRect( brush = Brush.radialGradient(
                 colorStops = backGroundArray,
                 tileMode = TileMode.Clamp,
             ),
-                alpha = 0.01f,
+                alpha = 0.09f,
                 cornerRadius = CornerRadius(0f),
                 topLeft = Offset.Zero,
-                size = this.size.copy(x,450f),)
+                size = this.size.copy(x,210f),)
         }
         Box(modifier =Modifier.padding(top=24.dp)){
             Column {
