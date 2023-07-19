@@ -39,10 +39,7 @@ fun HomeScreen(
 
         BlurredCard(modifier = Modifier.padding(bottom = 16.dp)) {
             SearchCard(
-                modifier = Modifier.width(380.dp).background(
-                    color = grey.copy(alpha = 0.4f),
-                    shape = RoundedCornerShape(24.dp)
-                ),
+                modifier = Modifier.width(380.dp),
                 date = state.date,
                 cityName = state.cityName,
                 countryName = state.countryName,

@@ -40,7 +40,7 @@ fun BlurredCard(
         } else {
             Box(
                 modifier = Modifier
-                    .blur(100.dp, edgeTreatment = BlurredEdgeTreatment.Unbounded)
+                    .blur(70.dp, edgeTreatment = BlurredEdgeTreatment.Unbounded)
                     .matchParentSize()
                     .drawBehind {
                         drawCircle(
@@ -54,7 +54,7 @@ fun BlurredCard(
             modifier = Modifier
                 .matchParentSize()
                 .blur(24.dp, edgeTreatment = BlurredEdgeTreatment.Unbounded)
-                .alpha(0.05f)
+                .alpha(0.2f)
                 .background(color = color)
         )
         content()
