@@ -1,20 +1,13 @@
 package ui.composables
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import ui.theme.Black
-import ui.theme.Blue
-import ui.theme.Orange
-import ui.theme.Yellow
 import viewModel.HomeInteractionListener
 
 
@@ -26,6 +19,7 @@ fun SearchCard(
     temperature: String,
     countryName: String,
     icon: String,
+    keyword: String,
     suggestion: List<String>,
     isExpandMenuSuggestion: Boolean = false,
     listener: HomeInteractionListener,
@@ -42,7 +36,8 @@ fun SearchCard(
             onSearch = listener::search,
             isExpandMenuSuggestion = isExpandMenuSuggestion,
             onDropDownMenuExpand = listener::onDropDownMenuExpand,
-            onSearchCitySelected = listener::onSearchCitySelected
+            onSearchCitySelected = listener::onSearchCitySelected,
+            keyword = keyword
         )
 
         WeatherImageLoader(modifier = Modifier.size(110.dp).padding(top = 16.dp), url = icon)

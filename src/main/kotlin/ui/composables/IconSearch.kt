@@ -29,11 +29,9 @@ fun IconSearch(
     onDropDownMenuExpand: (Boolean) -> Unit,
     onSearchCitySelected: (String) -> Unit,
     isExpandMenuSuggestion: Boolean = false,
+    keyword: String
+) {
 
-    ) {
-    val selectedItemId = remember { mutableStateOf(0) }
-
-    var text by remember { mutableStateOf("") }
     var expanded by remember { mutableStateOf(false) }
     val transition: Transition<State> = updateTransition(if (expanded) State.EXPANDED else State.COLLAPSED)
     val searchIconRotation: Float by transition.animateFloat {
@@ -57,7 +55,7 @@ fun IconSearch(
             .width(boxWidth)
             .height(boxHeight)
             .onPointerEvent(PointerEventType.Enter) { expanded = true }
-            .onPointerEvent(PointerEventType.Exit) { expanded = text.isNotBlank() }
+            .onPointerEvent(PointerEventType.Exit) { expanded = keyword.isNotBlank() }
             .background(Color(0xCC1B232A), RoundedCornerShape(24.dp))
     ) {
 
@@ -74,10 +72,9 @@ fun IconSearch(
         )
 
         TextField(
-            value = text,
+            value = keyword,
             onValueChange = {
                 onSearch(it)
-                text = it
             },
             placeholder = { Text("Search City", color = Color(0x5CFFFFFF)) },
             colors = TextFieldDefaults.textFieldColors(
@@ -99,12 +96,11 @@ fun IconSearch(
             modifier = Modifier.align(Alignment.CenterEnd),
             expanded = isExpandMenuSuggestion,
             focusable = false,
-            onDismissRequest = { selectedItemId.value = 0 }
+            onDismissRequest = { }
         ) {
             suggestion.forEachIndexed { index, item ->
                 DropdownMenuItem(
                     onClick = {
-                        selectedItemId.value = index
                         onSearchCitySelected(suggestion[index])
                         onDropDownMenuExpand(false)
                     }

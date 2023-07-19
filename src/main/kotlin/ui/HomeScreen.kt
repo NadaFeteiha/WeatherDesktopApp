@@ -42,6 +42,7 @@ fun HomeScreen(
                 countryName = state.countryName,
                 temperature = state.temperature,
                 icon = state.icon,
+                keyword = state.keyword,
                 suggestion = state.suggestion,
                 isExpandMenuSuggestion = state.isExpandMenuSuggestion,
                 listener = listener

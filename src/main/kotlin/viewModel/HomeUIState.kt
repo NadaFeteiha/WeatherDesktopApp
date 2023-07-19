@@ -17,6 +17,7 @@ data class HomeUIState(
     val icon: String = "",
     val uvValue: Int = 0,
     val suggestion: List<String> = emptyList(),
+    val keyword: String = "",
     val isExpandMenuSuggestion: Boolean = false
 )
 

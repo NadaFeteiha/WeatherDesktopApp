@@ -25,8 +25,8 @@ class HomeViewModel(private val service: WeatherService) : HomeInteractionListen
 
     override fun search(keyword: String) {
         CoroutineScope(Dispatchers.IO).launch {
+            _uiState.update { it.copy(keyword = keyword) }
             val cities = service.searchWeatherByCityName(keyword).mapNotNull { it.name }
-            println("======================= \n \n $cities")
             _uiState.update { it.copy(suggestion = cities, isExpandMenuSuggestion = cities.isNotEmpty()) }
         }
     }
