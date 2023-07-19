@@ -1,10 +1,11 @@
 package viewModel
 
 data class HomeUIState(
+    val isLoading:Boolean = false,
+    val error:String= "",
     val forecastHourly: List<ForecastHour> = emptyList(),
     val windKph: Double = 0.0,
     val windDegree: Float = 0f,
-
     val humidityDescription: String = "",
     val humidityValue: String = "",
     val visibilityAvg: String = "",

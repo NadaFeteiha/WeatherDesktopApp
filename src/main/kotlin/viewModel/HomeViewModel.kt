@@ -16,7 +16,8 @@ class HomeViewModel(private val service: WeatherService) : HomeInteractionListen
 
     init {
         CoroutineScope(Dispatchers.IO).launch {
-            _uiState.emit(service.getWeatherByCityName("cairo").toUIState())
+            _uiState.update { it.copy(isLoading = true) }
+            _uiState.emit(service.getWeatherByCityName("lynnwood").toUIState())
         }
     }
 
@@ -35,6 +36,7 @@ class HomeViewModel(private val service: WeatherService) : HomeInteractionListen
     }
 
     override fun onSearchCitySelected(city: String) {
+        _uiState.update { it.copy(isLoading = true) }
         CoroutineScope(Dispatchers.IO).launch {
             _uiState.emit(service.getWeatherByCityName(city).toUIState())
         }

@@ -8,18 +8,27 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.BlurredEdgeTreatment
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.blur
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.WindowState
 import composables.DayForecast
+import com.seiko.imageloader.asImageBitmap
+import org.jetbrains.skia.Bitmap
+import org.jetbrains.skia.Codec
+import org.jetbrains.skia.Data
 import ui.composables.*
 import ui.theme.grey
 import viewModel.HomeInteractionListener
 import viewModel.HomeUIState
+import java.net.URL
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
@@ -36,6 +45,22 @@ fun HomeScreen(
             .padding(24.dp),
         horizontalArrangement = Arrangement.spacedBy(16.dp),
     ) {
+        if (state.isLoading) {
+            Box(
+                modifier = Modifier.fillMaxSize(),
+                contentAlignment = Alignment.Center
+            ) {
+
+                Text("Loading.....")
+//                val codec = remember {
+//                    val bytes =
+//                        URL("https://media.emailonacid.com/wp-content/uploads/2019/03/2019-GifsInEmail.gif").readBytes()
+//                    Codec.makeFromData(Data.makeFromBytes(bytes))
+//                }
+//                GifAnimation(codec, Modifier.size(100.dp))
+
+            }
+        }
 
         BlurredCard(modifier = Modifier.padding(bottom = 16.dp), blurBackground = {
             WeatherImageLoader(
@@ -114,5 +139,29 @@ fun HomeScreen(
             }
         }
 
+@Composable
+fun GifAnimation(codec: Codec, modifier: Modifier) {
+    val transition = rememberInfiniteTransition()
+    val frameIndex by transition.animateValue(
+        initialValue = 0,
+        targetValue = codec.frameCount - 1,
+        Int.VectorConverter,
+        animationSpec = infiniteRepeatable(
+            animation = keyframes {
+                durationMillis = 10
+                for ((index, frame) in codec.framesInfo.withIndex()) {
+                    index at durationMillis
+                    durationMillis += frame.duration
+                }
+            }
+        )
+    )
+
+    val bitmap = remember { Bitmap().apply { allocPixels(codec.imageInfo) } }
+    Canvas(modifier) {
+        codec.readPixels(bitmap, frameIndex)
+        drawImage(bitmap.asImageBitmap())
+    }
+}
     }
 }
