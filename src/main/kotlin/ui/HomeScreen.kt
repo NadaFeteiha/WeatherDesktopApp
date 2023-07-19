@@ -2,9 +2,10 @@ package ui
 
 import androidx.compose.animation.core.*
 import androidx.compose.foundation.Canvas
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
@@ -13,19 +14,18 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.draw.BlurredEdgeTreatment
+import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.draw.blur
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.WindowState
 import com.seiko.imageloader.asImageBitmap
 import org.jetbrains.skia.Bitmap
 import org.jetbrains.skia.Codec
-import org.jetbrains.skia.Data
 import ui.composables.*
 import ui.theme.grey
 import viewModel.HomeInteractionListener
 import viewModel.HomeUIState
-import java.net.URL
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
@@ -42,7 +42,6 @@ fun HomeScreen(
             .padding(24.dp),
         horizontalArrangement = Arrangement.spacedBy(16.dp),
     ) {
-
         if (state.isLoading) {
             Box(
                 modifier = Modifier.fillMaxSize(),
@@ -59,12 +58,16 @@ fun HomeScreen(
 
             }
         }
-        BlurredCard(modifier = Modifier.padding(bottom = 16.dp)) {
+
+        BlurredCard(modifier = Modifier.padding(bottom = 16.dp), blurBackground = {
+            WeatherImageLoader(
+                url = state.icon,
+                modifier = Modifier.size(300.dp).blur(70.dp, edgeTreatment = BlurredEdgeTreatment.Unbounded)
+                    .alpha(0.5f),
+            )
+        }) {
             SearchCard(
-                modifier = Modifier.width(380.dp).background(
-                    color = grey.copy(alpha = 0.4f),
-                    shape = RoundedCornerShape(24.dp)
-                ),
+                modifier = Modifier.width(380.dp),
                 date = state.date,
                 cityName = state.cityName,
                 countryName = state.countryName,
@@ -79,10 +82,7 @@ fun HomeScreen(
 
         BlurredCard(modifier = Modifier.padding(bottom = 16.dp)) {
             HourlyForecast(
-                modifier = Modifier.width(700.dp).background(
-                    color = grey.copy(alpha = 0.4f),
-                    shape = RoundedCornerShape(24.dp)
-                ),
+                modifier = Modifier.padding(24.dp),
                 forecastHourly = state.forecastHourly,
                 humidityDescription = state.humidityDescription,
                 humidityValue = state.humidityValue,
@@ -94,10 +94,7 @@ fun HomeScreen(
 
         BlurredCard {
             Column(
-                modifier = Modifier.background(
-                    color = grey.copy(alpha = 0.4f),
-                    shape = RoundedCornerShape(24.dp)
-                ).padding(16.dp),
+                modifier = Modifier.padding(16.dp),
                 verticalArrangement = Arrangement.spacedBy(16.dp),
                 horizontalAlignment = Alignment.Start
             ) {
@@ -117,6 +114,27 @@ fun HomeScreen(
             )
         }
 
+        BlurredCard(
+            blurBackground = {
+                if (state.daysForecastUiState.isNotEmpty()) {
+                    WeatherImageLoader(
+                        url = state.daysForecastUiState[0].iconUrl,
+                        modifier = Modifier.size(300.dp).blur(80.dp, edgeTreatment = BlurredEdgeTreatment.Unbounded)
+                            .alpha(0.5f),
+                    )
+                }
+            }
+        ) {
+            LazyColumn(
+                verticalArrangement = Arrangement.spacedBy(20.dp),
+                modifier = Modifier.height(300.dp),
+                contentPadding = PaddingValues(start = 16.dp, end = 16.dp, top = 24.dp, bottom = 8.dp)
+            ) {
+                items(state.daysForecastUiState) { dayForecastUiState ->
+                    DayForecast(state = dayForecastUiState)
+                }
+            }
+        }
     }
 }
 

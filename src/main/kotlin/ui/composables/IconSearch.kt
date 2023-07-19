@@ -105,7 +105,7 @@ fun IconSearch(
                         onDropDownMenuExpand(false)
                     }
                 ) {
-                    Text(item)
+                    Text(item , color = Color.Black)
                 }
             }
         }

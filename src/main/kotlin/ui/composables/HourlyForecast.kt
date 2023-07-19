@@ -1,6 +1,5 @@
 package ui.composables
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.foundation.gestures.draggable
 import androidx.compose.foundation.gestures.rememberDraggableState
@@ -9,7 +8,6 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -18,7 +16,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.launch
-import ui.theme.grey
 import viewModel.ForecastHour
 
 @Composable
@@ -35,8 +32,8 @@ fun HourlyForecast(
     val coroutineScope = rememberCoroutineScope()
 
     Column(
-        modifier = modifier.padding(vertical = 16.dp),
-        verticalArrangement = Arrangement.spacedBy(16.dp)
+        verticalArrangement = Arrangement.spacedBy(16.dp),
+        modifier = modifier.width(700.dp)
     ) {
 
         Text(
@@ -45,35 +42,31 @@ fun HourlyForecast(
             style = MaterialTheme.typography.h1
         )
 
-        BlurredCard(modifier = Modifier.padding(horizontal = 24.dp)) {
-            LazyRow(
-                state = scrollState,
-                modifier = Modifier.background(
-                    color = grey.copy(alpha = 0.7f),
-                    shape = RoundedCornerShape(24.dp)
-                ).padding(vertical = 20.dp).draggable(
+        LazyRow(
+            state = scrollState,
+            modifier = Modifier
+                .padding(vertical = 20.dp)
+                .draggable(
                     orientation = Orientation.Horizontal,
                     state = rememberDraggableState { delta ->
                         coroutineScope.launch {
                             scrollState.scrollBy(-delta)
                         }
                     }),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(24.dp),
-                contentPadding = PaddingValues(horizontal = 16.dp)
-            ) {
-                items(forecastHourly) { hourly ->
-                    HourlyForecastItem(
-                        time = hourly.time,
-                        temperature = hourly.temp,
-                        icon = hourly.icon
-                    )
-                }
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(24.dp),
+            contentPadding = PaddingValues(horizontal = 16.dp)
+        ) {
+            items(forecastHourly) { hourly ->
+                HourlyForecastItem(
+                    time = hourly.time,
+                    temperature = hourly.temp,
+                    icon = hourly.icon
+                )
             }
         }
 
         Row(
-            modifier = Modifier.padding(horizontal = 24.dp),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.spacedBy(16.dp)
         ) {
