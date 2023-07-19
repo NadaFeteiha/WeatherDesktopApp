@@ -19,10 +19,9 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.*
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.res.*
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.*
-import util.Util.getFormattedDateFromUnixTime
+import utils.Util.getFormattedDateFromUnixTime
 import java.util.*
 import kotlin.math.cos
 import kotlin.math.sin
@@ -57,7 +56,7 @@ fun SunriseSunsetView(
     timeFormat: String = "HH:mm",
     arcColorArray: Array<Pair<Float, Color>> = arrayOf(
         0.1f to Color(0xccECD179),
-        0.2f to Color(0xccECD179)
+        0.2f to Color(0xccF1DFA5)
     ),
     backGroundArray: Array<Pair<Float, Color>> = arrayOf(
         0.1f to Color(0xCCFFFFFF),

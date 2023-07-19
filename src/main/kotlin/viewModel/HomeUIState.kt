@@ -18,7 +18,9 @@ data class HomeUIState(
     val uvValue: Int = 0,
     val suggestion: List<String> = emptyList(),
     val keyword: String = "",
-    val isExpandMenuSuggestion: Boolean = false
+    val isExpandMenuSuggestion: Boolean = false,
+    val sunSet:String="",
+    val sunRise:String="",
 )
 
 data class ForecastHour(

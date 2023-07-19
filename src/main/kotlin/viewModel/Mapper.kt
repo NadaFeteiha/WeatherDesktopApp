@@ -1,5 +1,6 @@
 package viewModel
 
+import data.remote.dto.Astro
 import data.remote.dto.Hour
 import data.remote.dto.Weather
 import utils.convertDate
@@ -26,7 +27,9 @@ fun Weather.toUIState(): HomeUIState {
         cityName = location?.name ?: "",
         countryName = location?.country ?: "",
         icon = current?.condition?.icon ?: "",
-        uvValue = (current?.uv?.toInt() ?: 0) * 10
+        uvValue = (current?.uv?.toInt() ?: 0) * 10,
+        sunSet = astro?.sunset?:"",
+        sunRise = astro?.sunrise?:""
     )
 }
 

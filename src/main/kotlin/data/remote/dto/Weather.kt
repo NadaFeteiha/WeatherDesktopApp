@@ -11,5 +11,7 @@ data class Weather(
     @SerialName("forecast")
     val forecast: Forecast,
     @SerialName("location")
-    val location: Location?
+    val location: Location?,
+    @SerialName("astro")
+    val astro: Astro?
 )
