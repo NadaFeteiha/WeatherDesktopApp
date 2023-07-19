@@ -37,7 +37,13 @@ fun HomeScreen(
         horizontalArrangement = Arrangement.spacedBy(16.dp),
     ) {
 
-        BlurredCard(modifier = Modifier.padding(bottom = 16.dp)) {
+        BlurredCard(modifier = Modifier.padding(bottom = 16.dp), blurBackground = {
+            WeatherImageLoader(
+                url = state.icon,
+                modifier = Modifier.size(300.dp).blur(70.dp, edgeTreatment = BlurredEdgeTreatment.Unbounded)
+                    .alpha(0.5f),
+            )
+        }) {
             SearchCard(
                 modifier = Modifier.width(380.dp),
                 date = state.date,
