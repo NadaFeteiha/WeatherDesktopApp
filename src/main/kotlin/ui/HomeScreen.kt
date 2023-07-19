@@ -1,5 +1,7 @@
 package ui
 
+import androidx.compose.animation.core.*
+import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -15,20 +17,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.BlurredEdgeTreatment
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.blur
-import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.WindowState
-import composables.DayForecast
 import com.seiko.imageloader.asImageBitmap
 import org.jetbrains.skia.Bitmap
 import org.jetbrains.skia.Codec
-import org.jetbrains.skia.Data
 import ui.composables.*
 import ui.theme.grey
 import viewModel.HomeInteractionListener
 import viewModel.HomeUIState
-import java.net.URL
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
@@ -138,6 +135,8 @@ fun HomeScreen(
                 }
             }
         }
+    }
+}
 
 @Composable
 fun GifAnimation(codec: Codec, modifier: Modifier) {
@@ -161,7 +160,5 @@ fun GifAnimation(codec: Codec, modifier: Modifier) {
     Canvas(modifier) {
         codec.readPixels(bitmap, frameIndex)
         drawImage(bitmap.asImageBitmap())
-    }
-}
     }
 }
