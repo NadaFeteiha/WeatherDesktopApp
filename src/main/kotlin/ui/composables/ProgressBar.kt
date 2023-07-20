@@ -3,7 +3,7 @@ package ui.composables
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawBehind
@@ -22,8 +22,8 @@ import kotlin.math.sin
 @Composable
 fun ProgressBar(
     modifier: Modifier = Modifier,
-    backgroundIndicatorStrokeWidth: Float = 15f,
-    foregroundIndicatorStrokeWidth: Float = 15f,
+    backgroundIndicatorStrokeWidth: Float = 30f,
+    foregroundIndicatorStrokeWidth: Float = 30f,
     indicatorValue: Int,
     uvDescription: String,
     maxIndicatorValue: Int = 100,
