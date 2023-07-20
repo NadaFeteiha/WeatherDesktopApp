@@ -80,7 +80,7 @@ fun HomeScreen(
             )
         }) {
             SearchCard(
-                modifier = Modifier.width(380.dp).height(378.dp),
+                modifier = Modifier.width(374.dp).height(378.dp),
                 date = state.date,
                 cityName = state.cityName,
                 countryName = state.countryName,
@@ -118,7 +118,7 @@ fun HomeScreen(
             }
         ) {
             Column(
-                modifier = Modifier.height(344.dp)
+                modifier = Modifier.height(344.dp).width(374.dp)
             ) {
                 Text(
                     text = "10 Day Forecast",
