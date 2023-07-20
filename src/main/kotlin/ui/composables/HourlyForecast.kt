@@ -1,5 +1,6 @@
 package ui.composables
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.foundation.gestures.draggable
 import androidx.compose.foundation.gestures.rememberDraggableState
@@ -8,6 +9,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -16,6 +18,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.launch
+import ui.theme.grey
 import viewModel.ForecastHour
 
 @Composable
@@ -45,6 +48,10 @@ fun HourlyForecast(
         LazyRow(
             state = scrollState,
             modifier = Modifier
+                .background(
+                    color = grey.copy(alpha = 0.7f),
+                    shape = RoundedCornerShape(24.dp)
+                )
                 .padding(vertical = 20.dp)
                 .draggable(
                     orientation = Orientation.Horizontal,
