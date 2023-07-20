@@ -1,7 +1,7 @@
 package ui
 
 import androidx.compose.animation.core.*
-import androidx.compose.foundation.*
+import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.foundation.gestures.draggable
 import androidx.compose.foundation.gestures.rememberDraggableState
@@ -10,11 +10,10 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.progressSemantics
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -28,16 +27,10 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.WindowState
-import com.seiko.imageloader.asImageBitmap
 import kotlinx.coroutines.launch
-import org.jetbrains.skia.Bitmap
-import org.jetbrains.skia.Codec
-import org.jetbrains.skia.Data
 import ui.composables.*
-import ui.theme.grey
 import viewModel.HomeInteractionListener
 import viewModel.HomeUIState
-import java.net.URL
 
 
 @OptIn(ExperimentalLayoutApi::class)
@@ -159,10 +152,7 @@ fun HomeScreen(
 
         BlurredCard {
             ProgressBar(
-                modifier = Modifier.size(300.dp).background(
-                    color = grey.copy(alpha = 0.4f),
-                    shape = RoundedCornerShape(24.dp),
-                ),
+                modifier = Modifier.size(300.dp),
                 indicatorValue = state.uvValue,
                 uvDescription = state.uvIndexDescription
             )
