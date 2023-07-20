@@ -176,7 +176,7 @@ fun HomeScreen(
 
         BlurredCard {
             Column {
-                Text("SunRise&SunSet",
+                Text("Sunrise & Sunset",
                     style = MaterialTheme.typography.h2,
                     modifier=Modifier.padding(top = 16.dp, start = 24.dp)
                 )

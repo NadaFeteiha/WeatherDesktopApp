@@ -96,7 +96,7 @@ fun SunriseSunsetView(
     Box(
         contentAlignment = Alignment.Center,
         modifier = Modifier
-            .size(arcRadius * 1.8f, arcRadius * 1.7f)
+            .size(arcRadius * 1.8f, arcRadius * 2f)
     ) {
 
         Canvas(
