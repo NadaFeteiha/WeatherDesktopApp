@@ -30,7 +30,9 @@ fun Weather.toUIState(): HomeUIState {
         icon = current?.condition?.icon ?: "",
         uvValue = (current?.uv?.toInt() ?: 0) * 10,
         uvIndexDescription = getUvIndexDescription(current?.uv ?: 0.0),
-        daysForecastUiState = forecast.forecastday.toUIState()
+        daysForecastUiState = forecast.forecastday.toUIState(),
+        sunSet = forecast.forecastday[0].astro?.sunset!!,
+        sunRise = forecast.forecastday[0].astro?.sunrise!!,
     )
 }
 
