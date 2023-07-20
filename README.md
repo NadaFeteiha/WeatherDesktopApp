@@ -2,7 +2,7 @@
 <h5 align="center"> Weather desktop app using Jetpack compose</h5>
 
 ## Video
-[![Final video of fixing issues in your code in VS Code](http://img.youtube.com/vi/id/maxresdefault.jpg)](https://www.youtube.com/watch?v=id?autoplay=1) 
+[![Final video of fixing issues in your code in VS Code](http://img.youtube.com/vi/gT2Sx0LAYGc/maxresdefault.jpg)](https://www.youtube.com/watch?v=gT2Sx0LAYGc?autoplay=1) 
 
 ## Tech stack
 - [Ktor](https://ktor.io/docs/getting-started-ktor-client.html) a modern asynchronous framework backed by Kotlin coroutines, used to make HTTP network requests to an API  
