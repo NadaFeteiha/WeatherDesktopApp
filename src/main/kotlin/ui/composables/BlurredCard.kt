@@ -2,6 +2,7 @@ package ui.composables
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -19,7 +20,7 @@ fun BlurredCard(
     modifier: Modifier = Modifier,
     color: Color = Color.DarkGray,
     blurBackground: (@Composable () -> Unit)? = null,
-    content: @Composable () -> Unit
+    content: @Composable BoxScope.() -> Unit
 ) {
     val gradient = Brush.linearGradient(
         listOf(
