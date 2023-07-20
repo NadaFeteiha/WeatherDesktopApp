@@ -1,8 +1,8 @@
 package viewModel
 
 data class HomeUIState(
-    val isLoading:Boolean = false,
-    val error:String= "",
+    val isLoading: Boolean = false,
+    val error: String = "",
     val forecastHourly: List<ForecastHour> = emptyList(),
     val windKph: Double = 0.0,
     val windDegree: Float = 0f,
@@ -17,9 +17,11 @@ data class HomeUIState(
     val countryName: String = "",
     val icon: String = "",
     val uvValue: Int = 0,
+    val uvIndexDescription: String = "",
     val suggestion: List<String> = emptyList(),
     val keyword: String = "",
     val isExpandMenuSuggestion: Boolean = false,
+    val isSearchExpanded: Boolean = false,
     val daysForecastUiState: List<DayForecastUiState> = emptyList()
 )
 

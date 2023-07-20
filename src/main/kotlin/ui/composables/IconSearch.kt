@@ -28,12 +28,13 @@ fun IconSearch(
     onSearch: (String) -> Unit,
     onDropDownMenuExpand: (Boolean) -> Unit,
     onSearchCitySelected: (String) -> Unit,
+    onSearchExpand: (Boolean) -> Unit,
     isExpandMenuSuggestion: Boolean = false,
+    isSearchExpanded: Boolean,
     keyword: String
 ) {
 
-    var expanded by remember { mutableStateOf(false) }
-    val transition: Transition<State> = updateTransition(if (expanded) State.EXPANDED else State.COLLAPSED)
+    val transition: Transition<State> = updateTransition(if (isSearchExpanded) State.EXPANDED else State.COLLAPSED)
     val searchIconRotation: Float by transition.animateFloat {
         if (it == State.EXPANDED) 45f else 0f
     }
@@ -54,8 +55,8 @@ fun IconSearch(
         modifier
             .width(boxWidth)
             .height(boxHeight)
-            .onPointerEvent(PointerEventType.Enter) { expanded = true }
-            .onPointerEvent(PointerEventType.Exit) { expanded = keyword.isNotBlank() }
+            .onPointerEvent(PointerEventType.Enter) { onSearchExpand(true) }
+            .onPointerEvent(PointerEventType.Exit) { onSearchExpand(keyword.isNotEmpty()) }
             .background(Color(0xCC1B232A), RoundedCornerShape(24.dp))
     ) {
 
@@ -63,7 +64,7 @@ fun IconSearch(
             painter = painterResource("search.svg"),
             contentDescription = "Search",
             modifier = Modifier
-                .onClick { expanded = true }
+                .onClick { onSearchExpand(true) }
                 .size(24.dp)
                 .offset(0.dp)
                 .rotate(searchIconRotation)
@@ -87,7 +88,11 @@ fun IconSearch(
             ),
             modifier = Modifier.alpha(searchFieldAlpha).background(Color.Transparent),
             leadingIcon = {
-                Icon(painterResource("search.svg"), contentDescription = null, tint = Color(0x5CFFFFFF))
+                Icon(
+                    painterResource("search.svg"),
+                    contentDescription = null,
+                    tint = Color(0x5CFFFFFF)
+                )
             },
             maxLines = 1,
         )
@@ -105,7 +110,7 @@ fun IconSearch(
                         onDropDownMenuExpand(false)
                     }
                 ) {
-                    Text(item , color = Color.Black)
+                    Text(item, color = Color.Black)
                 }
             }
         }

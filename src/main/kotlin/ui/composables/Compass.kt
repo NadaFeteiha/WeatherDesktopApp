@@ -1,8 +1,6 @@
 package ui.composables
 
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.*
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -20,7 +18,10 @@ fun Compass(
     windKph: Double,
     windDegree: Float
 ) {
-    Box(modifier = modifier.size(192.dp), contentAlignment = Alignment.Center) {
+    Box(
+        modifier = modifier.fillMaxWidth().aspectRatio(1f),
+        contentAlignment = Alignment.Center
+    ) {
         Icon(
             painter = painterResource("arrow.svg"),
             contentDescription = "JetBrains",
