@@ -116,7 +116,7 @@ fun SunriseSunsetView(
         Box(modifier = Modifier.padding(top = 24.dp)) {
             Column {
                 Row(
-                    modifier = Modifier.fillMaxWidth().padding(start = 30.dp, end = 30.dp),
+                    modifier = Modifier.fillMaxWidth().padding(start = 21.dp, end = 21.dp),
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
                     Image(
