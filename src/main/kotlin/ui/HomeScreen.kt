@@ -1,8 +1,5 @@
 package ui
 
-import androidx.compose.animation.core.*
-import androidx.compose.foundation.Canvas
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.foundation.gestures.draggable
 import androidx.compose.foundation.gestures.rememberDraggableState
@@ -11,21 +8,17 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.foundation.progressSemantics
-import androidx.compose.material.*
+import androidx.compose.material.Button
+import androidx.compose.material.ButtonDefaults
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.BlurredEdgeTreatment
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.blur
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.StrokeCap
-import androidx.compose.ui.graphics.drawscope.Stroke
-import androidx.compose.ui.platform.LocalDensity
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.WindowState
 import kotlinx.coroutines.launch
@@ -34,8 +27,7 @@ import utils.timeToMilliseconds
 import viewModel.HomeInteractionListener
 import viewModel.HomeUIState
 
-
-@OptIn(ExperimentalLayoutApi::class, ExperimentalFoundationApi::class)
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun HomeScreen(
     modifier: Modifier = Modifier,
@@ -183,6 +175,7 @@ fun HomeScreen(
                     style = MaterialTheme.typography.h2,
                     modifier = Modifier.padding(top = 16.dp, start = 24.dp)
                 )
+
                 SunriseSunsetView(
                     sunriseTimeLong = sunRiseTime,
                     sunsetTimeLong = sunSetTime,
@@ -192,53 +185,5 @@ fun HomeScreen(
                 )
             }
         }
-
-    }
-
-}
-
-@Composable
-fun LoadingAnimation(
-    size: Dp = 64.dp,
-    sweepAngle: Float = 90f,
-    color: Color = MaterialTheme.colors.secondary,
-    strokeWidth: Dp = ProgressIndicatorDefaults.StrokeWidth
-) {
-    val transition = rememberInfiniteTransition()
-
-    val currentArcStartAngle by transition.animateValue(
-        0,
-        360,
-        Int.VectorConverter,
-        infiniteRepeatable(
-            animation = tween(
-                durationMillis = 1100,
-                easing = LinearEasing
-            )
-        )
-    )
-
-
-    val stroke = with(LocalDensity.current) {
-        Stroke(width = strokeWidth.toPx(), cap = StrokeCap.Square)
-    }
-
-    // draw on canvas
-    Canvas(
-        Modifier
-            .progressSemantics() // (optional) for Accessibility services
-            .size(size) // canvas size
-            .padding(strokeWidth / 2) //padding. otherwise, not the whole circle will fit in the canvas
-    ) {
-        drawCircle(Color.LightGray, style = stroke)
-
-        // draw arc with the same stroke
-        drawArc(
-            color,
-            startAngle = currentArcStartAngle.toFloat() - 90,
-            sweepAngle = sweepAngle,
-            useCenter = false,
-            style = stroke
-        )
     }
 }

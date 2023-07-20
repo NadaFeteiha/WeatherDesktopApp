@@ -2,7 +2,6 @@ package utils
 
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
-
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -34,11 +33,13 @@ fun getHourNow(inputDate: String): Int {
 
     var time = outputFormat.format(inputFormat.parse(inputDate)).toInt()
 
-    if (outputFormat2.format(inputFormat.parse(inputDate)) == "PM") {
+    if (outputFormat2.format(inputFormat.parse(inputDate)) == "PM"
+        && time>12) {
         time = time + 12
     }
     return time
 }
+
 fun timeToMilliseconds(timeStr: String): Long {
     val dateFormat = SimpleDateFormat("hh:mm a")
     val time = dateFormat.parse(timeStr)
@@ -56,7 +57,6 @@ fun timeToMilliseconds(timeStr: String): Long {
 
         return currentTime.timeInMillis
     }
-
     return 0L
 }
 

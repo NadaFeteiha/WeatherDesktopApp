@@ -9,14 +9,12 @@ import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.*
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.res.*
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.*
-import utils.Util.getFormattedDateFromUnixTime
 import java.util.*
 import kotlin.math.*
 
@@ -25,33 +23,23 @@ import kotlin.math.*
 fun SunriseSunsetView(
     arcRadius: Dp = 150.dp,
     strokeWidth: Dp = 3.dp,
-    sunriseTextString: String = "Sunrise",
     sunriseTextColor: Color = Color(0xFF737679),
-    sunsetTextString: String = "Sunset",
     sunsetTextColor: Color = Color(0xFF737679),
     sunriseTimeLong: Long,
     sunsetTimeLong: Long,
     sunriseTime: String,
     sunsetTime: String,
     currentTime: Long,
-    timeFormat: String = "HH:mm",
     arcColorArray: Array<Pair<Float, Color>> = arrayOf(
         0.1f to Color(0xccECD179),
         0.2f to Color(0xccF1DFA5)
-    ),
-    backGroundArray: Array<Pair<Float, Color>> = arrayOf(
-        0.1f to Color(0xCCFFFFFF),
-        0.2f to Color(0xFFF5D879),
     )
 ) {
     val bitmap = useResource("sun_icon_re.png") { loadImageBitmap(it) }
 
-    val currentCalendar = Calendar.getInstance()
-    val currentUnixTime =currentTime// currentCalendar.timeInMillis
-
     val timeDifference = sunsetTimeLong.minus(sunriseTimeLong)
     val percentage =
-        (currentUnixTime.toFloat().minus(sunriseTimeLong.toFloat())).div(timeDifference.toFloat())
+        (currentTime.toFloat().minus(sunriseTimeLong.toFloat())).div(timeDifference.toFloat())
 
     var animationPlayed by rememberSaveable {
         mutableStateOf(false)
@@ -100,19 +88,6 @@ fun SunriseSunsetView(
                 image = bitmap,
                 topLeft = Offset(x - 20f, y - 20f), // Set the desired offsets here
             )
-
-            if (currentUnixTime < sunsetTimeLong) {
-//                drawRoundRect(
-//                    brush = Brush.horizontalGradient(
-//                        colorStops = backGroundArray,
-//                        tileMode = TileMode.Clamp,
-//                    ),
-//                    alpha = 0.05f,
-//                    cornerRadius = CornerRadius(0f),
-//                    topLeft = Offset.Zero,
-//                    size = this.size.copy(x, 145f),
-//                )
-            }
         }
 
         Box(modifier = Modifier.padding(top = 24.dp)) {
@@ -151,12 +126,12 @@ fun SunriseSunsetView(
                 .padding(top = 12.dp)
         ) {
             Text(
-                text = sunriseTextString,
+                text = "Sunrise",
                 color = sunriseTextColor,
                 modifier = Modifier.align(Alignment.CenterHorizontally),
             )
             Text(
-                text = sunriseTime,//sunriseTimeLong.getFormattedDateFromUnixTime(timeFormat),
+                text = sunriseTime,
                 color = Color.White,
                 textAlign = TextAlign.Center,
                 modifier = Modifier.align(Alignment.CenterHorizontally),
@@ -172,17 +147,16 @@ fun SunriseSunsetView(
                 .padding(top = 12.dp)
         ) {
             Text(
-                text = sunsetTextString,
+                text = "Sunset",
                 modifier = Modifier.align(Alignment.CenterHorizontally),
                 color = sunsetTextColor,
             )
             Text(
-                text = sunsetTime,//sunsetTimeLong.getFormattedDateFromUnixTime(timeFormat),
+                text = sunsetTime,
                 modifier = Modifier.align(Alignment.CenterHorizontally),
                 color = Color.White,
                 style = MaterialTheme.typography.body2
             )
         }
     }
-
 }

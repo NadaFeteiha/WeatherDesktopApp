@@ -15,7 +15,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
 @Composable
-fun TextWithIcon(modifier: Modifier = Modifier, icon: Painter, text: String) {
+fun TextWithIcon(
+    modifier: Modifier = Modifier,
+    icon: Painter,
+    text: String
+) {
     Row(modifier = modifier, verticalAlignment = Alignment.CenterVertically) {
         Icon(painter = icon, contentDescription = null)
         Text(

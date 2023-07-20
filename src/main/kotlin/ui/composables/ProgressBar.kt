@@ -16,6 +16,7 @@ import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import ui.theme.TransporterBlue
 import kotlin.math.cos
 import kotlin.math.sin
 
@@ -27,7 +28,7 @@ fun ProgressBar(
     indicatorValue: Int,
     uvDescription: String,
     maxIndicatorValue: Int = 100,
-    backgroundIndicatorColor: Color = Color(0x1A7AD3FF),
+    backgroundIndicatorColor: Color = TransporterBlue,
     foregroundIndicatorColor: Color = MaterialTheme.colors.secondary,
 ) {
     val percentage = ((indicatorValue.toFloat() / maxIndicatorValue) * 100 * 3)
