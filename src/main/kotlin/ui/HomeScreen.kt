@@ -1,7 +1,8 @@
 package ui
 
 import androidx.compose.animation.core.*
-import androidx.compose.foundation.*
+import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.foundation.gestures.draggable
 import androidx.compose.foundation.gestures.rememberDraggableState
@@ -10,11 +11,10 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.progressSemantics
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -28,19 +28,14 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.WindowState
-import com.seiko.imageloader.asImageBitmap
 import kotlinx.coroutines.launch
-import org.jetbrains.skia.Bitmap
-import org.jetbrains.skia.Codec
-import org.jetbrains.skia.Data
 import ui.composables.*
-import ui.theme.grey
+import utils.timeToMilliseconds
 import viewModel.HomeInteractionListener
 import viewModel.HomeUIState
-import java.net.URL
 
 
-@OptIn(ExperimentalLayoutApi::class)
+@OptIn(ExperimentalLayoutApi::class, ExperimentalFoundationApi::class)
 @Composable
 fun HomeScreen(
     modifier: Modifier = Modifier,
@@ -48,6 +43,9 @@ fun HomeScreen(
     state: HomeUIState,
     listener: HomeInteractionListener,
 ) {
+    val sunRiseTime = timeToMilliseconds(state.sunRise)
+    val sunSetTime = timeToMilliseconds(state.sunSet)
+
     FlowRow(
         modifier = modifier
             .fillMaxSize()
@@ -86,7 +84,7 @@ fun HomeScreen(
             )
         }) {
             SearchCard(
-                modifier = Modifier.width(380.dp),
+                modifier = Modifier.width(374.dp).height(378.dp),
                 date = state.date,
                 cityName = state.cityName,
                 countryName = state.countryName,
@@ -102,7 +100,7 @@ fun HomeScreen(
 
         BlurredCard(modifier = Modifier.padding(bottom = 16.dp)) {
             HourlyForecast(
-                modifier = Modifier.padding(24.dp),
+                modifier = Modifier.height(378.dp).width(782.dp).padding(horizontal = 24.dp, vertical = 16.dp),
                 forecastHourly = state.forecastHourly,
                 humidityDescription = state.humidityDescription,
                 humidityValue = state.humidityValue,
@@ -111,6 +109,7 @@ fun HomeScreen(
                 feelDescription = state.feelDescription
             )
         }
+
         BlurredCard(
             blurBackground = {
                 if (state.daysForecastUiState.isNotEmpty()) {
@@ -122,36 +121,46 @@ fun HomeScreen(
                 }
             }
         ) {
-            val scrollState = rememberLazyListState()
-            val coroutineScope = rememberCoroutineScope()
-            LazyColumn(
-                state = scrollState,
-                verticalArrangement = Arrangement.spacedBy(20.dp),
-                modifier = Modifier
-                    .height(300.dp)
-                    .widthIn(390.dp)
-                    .draggable(
-                        orientation = Orientation.Vertical,
-                        state = rememberDraggableState { delta ->
-                            coroutineScope.launch {
-                                scrollState.scrollBy(-delta)
-                            }
-                        }),
-                contentPadding = PaddingValues(start = 16.dp, end = 16.dp, top = 24.dp, bottom = 8.dp)
+            Column(
+                modifier = Modifier.height(344.dp).width(374.dp)
             ) {
-                items(state.daysForecastUiState) { dayForecastUiState ->
-                    DayForecast(state = dayForecastUiState)
+                Text(
+                    text = "10 Day Forecast",
+                    style = MaterialTheme.typography.h2,
+                    modifier = Modifier.padding(16.dp)
+                )
+
+                val scrollState = rememberLazyListState()
+                val coroutineScope = rememberCoroutineScope()
+                LazyColumn(
+                    state = scrollState,
+                    verticalArrangement = Arrangement.spacedBy(20.dp),
+                    modifier = Modifier
+                        .widthIn(390.dp)
+                        .draggable(
+                            orientation = Orientation.Vertical,
+                            state = rememberDraggableState { delta ->
+                                coroutineScope.launch {
+                                    scrollState.scrollBy(-delta)
+                                }
+                            }),
+                    contentPadding = PaddingValues(start = 16.dp, end = 16.dp, bottom = 8.dp)
+                ) {
+                    items(state.daysForecastUiState) { dayForecastUiState ->
+                        DayForecast(state = dayForecastUiState)
+                    }
                 }
             }
         }
 
+
         BlurredCard {
             Column(
-                modifier = Modifier.size(300.dp).padding(16.dp),
+                modifier = Modifier.width(250.dp).height(344.dp).padding(16.dp),
                 verticalArrangement = Arrangement.spacedBy(16.dp),
                 horizontalAlignment = Alignment.Start
             ) {
-                Text("Wind Status", style = MaterialTheme.typography.h2)
+                Text("Wind Status", style = MaterialTheme.typography.h2, modifier = Modifier.padding(bottom = 16.dp))
 
                 Compass(windKph = state.windKph, windDegree = state.windDegree)
             }
@@ -159,13 +168,29 @@ fun HomeScreen(
 
         BlurredCard {
             ProgressBar(
-                modifier = Modifier.size(300.dp).background(
-                    color = grey.copy(alpha = 0.4f),
-                    shape = RoundedCornerShape(24.dp),
-                ),
+                modifier = Modifier.width(250.dp).height(344.dp),
                 indicatorValue = state.uvValue,
                 uvDescription = state.uvIndexDescription
             )
+        }
+
+        BlurredCard {
+            Column(
+                modifier = Modifier.width(250.dp).height(344.dp),
+            ) {
+                Text(
+                    "Sunrise & Sunset",
+                    style = MaterialTheme.typography.h2,
+                    modifier = Modifier.padding(top = 16.dp, start = 24.dp)
+                )
+                SunriseSunsetView(
+                    sunriseTimeLong = sunRiseTime,
+                    sunsetTimeLong = sunSetTime,
+                    currentTime = state.currentTime,
+                    sunsetTime = state.sunsetTime,
+                    sunriseTime = state.sunriseTime
+                )
+            }
         }
 
     }

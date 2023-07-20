@@ -39,3 +39,29 @@ fun getHourNow(inputDate: String): Int {
     }
     return time
 }
+fun timeToMilliseconds(timeStr: String): Long {
+    val dateFormat = SimpleDateFormat("hh:mm a")
+    val time = dateFormat.parse(timeStr)
+
+    if (time != null) {
+        val calendar = java.util.Calendar.getInstance()
+        val currentTime = java.util.Calendar.getInstance()
+
+        calendar.time = time
+
+        currentTime.set(java.util.Calendar.HOUR_OF_DAY, calendar.get(java.util.Calendar.HOUR_OF_DAY))
+        currentTime.set(java.util.Calendar.MINUTE, calendar.get(java.util.Calendar.MINUTE))
+        currentTime.set(java.util.Calendar.SECOND, 0)
+        currentTime.set(java.util.Calendar.MILLISECOND, 0)
+
+        return currentTime.timeInMillis
+    }
+
+    return 0L
+}
+
+fun convertDateToMilliseconds(dateTimeString: String): Long {
+    val dateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm")
+    val date = dateFormat.parse(dateTimeString)
+    return date?.time ?: -1L
+}
