@@ -4,6 +4,7 @@ import data.remote.dto.Forecastday
 import data.remote.dto.Astro
 import data.remote.dto.Hour
 import data.remote.dto.Weather
+import io.ktor.http.HttpHeaders.Date
 import utils.convertDate
 import utils.convertTimeToHourAMPM
 import utils.getHourNow
@@ -29,8 +30,12 @@ fun Weather.toUIState(): HomeUIState {
         countryName = location?.country ?: "",
         icon = current?.condition?.icon ?: "",
         uvValue = (current?.uv?.toInt() ?: 0) * 10,
+
         sunSet = forecast.forecastday[0].astro?.sunset!!,
         sunRise = forecast.forecastday[0].astro?.sunrise!!,
+
+        uvIndexDescription = getUvIndexDescription(current?.uv ?: 0.0),
+
         daysForecastUiState = forecast.forecastday.toUIState()
     )
 }
@@ -46,16 +51,20 @@ fun Hour.toUIState(index: Int) = ForecastHour(
 )
 
 fun List<Forecastday>.toUIState(): List<DayForecastUiState> {
-    println(this[0].day?.condition?.icon)
-    return map {
+    return mapIndexed { index, forecastday ->
         DayForecastUiState(
-            day = convertEpochMillisecondsToDate(it.dateEpoch ?: 0),
-            iconUrl = it.day?.condition?.icon ?: "",
-            minTemperature = (it.day?.mintempC ?: 0.0).toString(),
-            maxTemperature = (it.day?.maxtempC ?: 0.0).toString(),
-            dateOfDay = getDayOfWeek(it.dateEpoch ?: 0)
+            day = convertEpochMillisecondsToDate(forecastday.dateEpoch ?: 0),
+            iconUrl = forecastday.day?.condition?.icon ?: "",
+            minTemperature = (forecastday.day?.mintempC ?: 0.0).toString(),
+            maxTemperature = (forecastday.day?.maxtempC ?: 0.0).toString(),
+            dateOfDay = if (index == 0) {
+                "Today"
+            } else {
+                getDayOfWeek(forecastday.dateEpoch ?: 0)
+            }
         )
     }
+
 }
 
 private fun convertEpochMillisecondsToDate(epochMilliseconds: Int): String {
@@ -66,4 +75,13 @@ private fun convertEpochMillisecondsToDate(epochMilliseconds: Int): String {
 
 private fun getDayOfWeek(timestamp: Int): String {
     return SimpleDateFormat("EEEE", Locale.ENGLISH).format(timestamp * 1000)
+}
+
+
+private fun getUvIndexDescription(uvIndex: Double): String {
+    return when {
+        uvIndex > 5 -> "High"
+        uvIndex < 5 -> "Low"
+        else -> "Medium"
+    }
 }

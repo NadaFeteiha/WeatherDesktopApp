@@ -31,7 +31,7 @@ class WeatherServiceImpl(private val client: HttpClient) : WeatherService, KoinC
             WeatherServiceClient.clientAttributes.put(AttributeKey("API"), api.value)
             val response = WeatherServiceClient.client.method(urlString)
             return response.body<T>()
-        } catch (e: Exception) {
+        } catch (e: Throwable) {
             throw e
         }
     }
