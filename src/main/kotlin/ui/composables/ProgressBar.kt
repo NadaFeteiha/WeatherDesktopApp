@@ -25,6 +25,7 @@ fun ProgressBar(
     backgroundIndicatorStrokeWidth: Float = 30f,
     foregroundIndicatorStrokeWidth: Float = 30f,
     indicatorValue: Int,
+    uvDescription: String,
     maxIndicatorValue: Int = 100,
     backgroundIndicatorColor: Color = Color(0x1A7AD3FF),
     foregroundIndicatorColor: Color = MaterialTheme.colors.secondary,
@@ -81,7 +82,10 @@ fun ProgressBar(
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            ProgressBarValue(value = indicatorValue)
+            ProgressBarValue(
+                value = indicatorValue,
+                uvDescription = uvDescription
+            )
         }
     }
 }
@@ -135,10 +139,11 @@ fun DrawScope.foregroundIndicator(
 
 @Composable
 private fun ProgressBarValue(
-    value: Int
+    value: Int,
+    uvDescription: String
 ) {
     Text(
-        text = "${value / 10.0} \n\n High",
+        text = "${value / 10.0} \n\n $uvDescription",
         textAlign = TextAlign.Center,
         style = MaterialTheme.typography.h1
     )

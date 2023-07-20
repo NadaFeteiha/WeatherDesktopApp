@@ -163,7 +163,8 @@ fun HomeScreen(
                     color = grey.copy(alpha = 0.4f),
                     shape = RoundedCornerShape(24.dp),
                 ),
-                indicatorValue = state.uvValue
+                indicatorValue = state.uvValue,
+                uvDescription = state.uvIndexDescription
             )
         }
 

@@ -3,6 +3,7 @@ package viewModel
 import data.remote.dto.Forecastday
 import data.remote.dto.Hour
 import data.remote.dto.Weather
+import io.ktor.http.HttpHeaders.Date
 import utils.convertDate
 import utils.convertTimeToHourAMPM
 import utils.getHourNow
@@ -28,6 +29,7 @@ fun Weather.toUIState(): HomeUIState {
         countryName = location?.country ?: "",
         icon = current?.condition?.icon ?: "",
         uvValue = (current?.uv?.toInt() ?: 0) * 10,
+        uvIndexDescription = getUvIndexDescription(current?.uv ?: 0.0),
         daysForecastUiState = forecast.forecastday.toUIState()
     )
 }
@@ -67,4 +69,13 @@ private fun convertEpochMillisecondsToDate(epochMilliseconds: Int): String {
 
 private fun getDayOfWeek(timestamp: Int): String {
     return SimpleDateFormat("EEEE", Locale.ENGLISH).format(timestamp * 1000)
+}
+
+
+private fun getUvIndexDescription(uvIndex: Double): String {
+    return when {
+        uvIndex > 5 -> "High"
+        uvIndex < 5 -> "Low"
+        else -> "Medium"
+    }
 }
