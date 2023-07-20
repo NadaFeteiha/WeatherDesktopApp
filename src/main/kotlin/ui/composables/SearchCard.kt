@@ -22,6 +22,7 @@ fun SearchCard(
     keyword: String,
     suggestion: List<String>,
     isExpandMenuSuggestion: Boolean = false,
+    isSearchExpanded: Boolean = false,
     listener: HomeInteractionListener,
 ) {
 
@@ -37,7 +38,9 @@ fun SearchCard(
             isExpandMenuSuggestion = isExpandMenuSuggestion,
             onDropDownMenuExpand = listener::onDropDownMenuExpand,
             onSearchCitySelected = listener::onSearchCitySelected,
-            keyword = keyword
+            keyword = keyword,
+            isSearchExpanded = isSearchExpanded,
+            onSearchExpand = listener::onSearchExpand
         )
 
         WeatherImageLoader(modifier = Modifier.size(110.dp).padding(top = 16.dp), url = icon)

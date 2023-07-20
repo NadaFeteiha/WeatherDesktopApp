@@ -1,8 +1,5 @@
 package ui.composables
 
-import androidx.compose.animation.core.animateFloatAsState
-import androidx.compose.animation.core.animateIntAsState
-import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
@@ -17,7 +14,6 @@ import androidx.compose.ui.graphics.PathEffect
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.graphics.drawscope.Stroke
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import kotlin.math.cos
@@ -31,7 +27,7 @@ fun ProgressBar(
     indicatorValue: Int,
     maxIndicatorValue: Int = 100,
     backgroundIndicatorColor: Color = Color(0x1A7AD3FF),
-    foregroundIndicatorColor: Color = Color(0xFF3D96C2),
+    foregroundIndicatorColor: Color = MaterialTheme.colors.secondary,
 ) {
     val percentage = ((indicatorValue.toFloat() / maxIndicatorValue) * 100 * 3)
 
