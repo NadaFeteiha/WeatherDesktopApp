@@ -178,14 +178,17 @@ fun HomeScreen(
             Column(
                 modifier = Modifier.width(250.dp).height(344.dp),
             ) {
-                Text("Sunrise & Sunset",
+                Text(
+                    "Sunrise & Sunset",
                     style = MaterialTheme.typography.h2,
-                    modifier=Modifier.padding(top = 16.dp, start = 24.dp)
+                    modifier = Modifier.padding(top = 16.dp, start = 24.dp)
                 )
                 SunriseSunsetView(
                     sunriseTimeLong = sunRiseTime,
                     sunsetTimeLong = sunSetTime,
-                    currentTime= state.currentTime
+                    currentTime = state.currentTime,
+                    sunsetTime = state.sunsetTime,
+                    sunriseTime = state.sunriseTime
                 )
             }
         }

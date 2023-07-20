@@ -34,6 +34,8 @@ fun Weather.toUIState(): HomeUIState {
         daysForecastUiState = forecast.forecastday.toUIState(),
         sunSet = forecast.forecastday[0].astro?.sunset!!,
         sunRise = forecast.forecastday[0].astro?.sunrise!!,
+        sunsetTime = forecast.forecastday[0].astro?.sunset!!,
+        sunriseTime = forecast.forecastday[0].astro?.sunrise!!,
         currentTime = convertDateToMilliseconds(location?.localtime?:"")
     )
 }

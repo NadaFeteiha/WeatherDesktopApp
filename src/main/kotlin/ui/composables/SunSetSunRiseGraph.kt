@@ -31,6 +31,8 @@ fun SunriseSunsetView(
     sunsetTextColor: Color = Color(0xFF737679),
     sunriseTimeLong: Long,
     sunsetTimeLong: Long,
+    sunriseTime: String,
+    sunsetTime: String,
     currentTime: Long,
     timeFormat: String = "HH:mm",
     arcColorArray: Array<Pair<Float, Color>> = arrayOf(
@@ -154,11 +156,11 @@ fun SunriseSunsetView(
                 modifier = Modifier.align(Alignment.CenterHorizontally),
             )
             Text(
-                text = sunriseTimeLong.getFormattedDateFromUnixTime(timeFormat),
+                text = sunriseTime,//sunriseTimeLong.getFormattedDateFromUnixTime(timeFormat),
                 color = Color.White,
                 textAlign = TextAlign.Center,
                 modifier = Modifier.align(Alignment.CenterHorizontally),
-                style = MaterialTheme.typography.body1
+                style = MaterialTheme.typography.body2
             )
         }
 
@@ -175,10 +177,10 @@ fun SunriseSunsetView(
                 color = sunsetTextColor,
             )
             Text(
-                text = sunsetTimeLong.getFormattedDateFromUnixTime(timeFormat),
+                text = sunsetTime,//sunsetTimeLong.getFormattedDateFromUnixTime(timeFormat),
                 modifier = Modifier.align(Alignment.CenterHorizontally),
                 color = Color.White,
-                style = MaterialTheme.typography.body1
+                style = MaterialTheme.typography.body2
             )
         }
     }

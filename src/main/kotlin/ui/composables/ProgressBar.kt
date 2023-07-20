@@ -68,7 +68,7 @@ fun ProgressBar(
                     val sweepAngleRadians = Math.toRadians(120.0 + percentage.toDouble())
                     val centerX = size.width / 2
                     val centerY = size.height / 2
-                    val radius = (size.width / 2) - 50
+                    val radius = (size.width / 2) - 45
 
                     val endX = centerX + (radius * cos(sweepAngleRadians)).toFloat()
                     val endY = centerY + (radius * sin(sweepAngleRadians)).toFloat()

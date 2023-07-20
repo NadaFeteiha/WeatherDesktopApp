@@ -47,6 +47,7 @@ fun DayForecast(
 
         Text(
             text = state.dateOfDay,
+            maxLines = 1,
             style = MaterialTheme.typography.body1,
         )
 
