@@ -2,6 +2,7 @@ package ui
 
 import androidx.compose.animation.core.*
 import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.foundation.gestures.draggable
 import androidx.compose.foundation.gestures.rememberDraggableState
@@ -33,7 +34,7 @@ import viewModel.HomeInteractionListener
 import viewModel.HomeUIState
 
 
-@OptIn(ExperimentalLayoutApi::class)
+@OptIn(ExperimentalLayoutApi::class, ExperimentalFoundationApi::class)
 @Composable
 fun HomeScreen(
     modifier: Modifier = Modifier,
@@ -104,34 +105,33 @@ fun HomeScreen(
                 feelDescription = state.feelDescription
             )
         }
-        Column(
-            modifier = Modifier.height(344.dp)
-        ) {
 
-            Text(
-                text = "10 Day Forecast",
-                style = MaterialTheme.typography.h2,
-                modifier = Modifier.padding(bottom = 16.dp)
-            )
-
-            BlurredCard(
-                blurBackground = {
-                    if (state.daysForecastUiState.isNotEmpty()) {
-                        WeatherImageLoader(
-                            url = state.daysForecastUiState[0].iconUrl,
-                            modifier = Modifier.size(300.dp).blur(80.dp, edgeTreatment = BlurredEdgeTreatment.Unbounded)
-                                .alpha(0.5f),
-                        )
-                    }
+        BlurredCard(
+            blurBackground = {
+                if (state.daysForecastUiState.isNotEmpty()) {
+                    WeatherImageLoader(
+                        url = state.daysForecastUiState[0].iconUrl,
+                        modifier = Modifier.size(300.dp).blur(80.dp, edgeTreatment = BlurredEdgeTreatment.Unbounded)
+                            .alpha(0.5f),
+                    )
                 }
+            }
+        ) {
+            Column(
+                modifier = Modifier.height(344.dp)
             ) {
+                Text(
+                    text = "10 Day Forecast",
+                    style = MaterialTheme.typography.h2,
+                    modifier = Modifier.padding(16.dp)
+                )
+
                 val scrollState = rememberLazyListState()
                 val coroutineScope = rememberCoroutineScope()
                 LazyColumn(
                     state = scrollState,
                     verticalArrangement = Arrangement.spacedBy(20.dp),
                     modifier = Modifier
-                        .height(300.dp)
                         .widthIn(390.dp)
                         .draggable(
                             orientation = Orientation.Vertical,
@@ -140,7 +140,7 @@ fun HomeScreen(
                                     scrollState.scrollBy(-delta)
                                 }
                             }),
-                    contentPadding = PaddingValues(start = 16.dp, end = 16.dp, top = 24.dp, bottom = 8.dp)
+                    contentPadding = PaddingValues(start = 16.dp, end = 16.dp, bottom = 8.dp)
                 ) {
                     items(state.daysForecastUiState) { dayForecastUiState ->
                         DayForecast(state = dayForecastUiState)
@@ -148,6 +148,7 @@ fun HomeScreen(
                 }
             }
         }
+
 
         BlurredCard {
             Column(
