@@ -5,6 +5,7 @@ import data.remote.dto.Hour
 import data.remote.dto.Weather
 import io.ktor.http.HttpHeaders.Date
 import utils.convertDate
+import utils.convertDateToMilliseconds
 import utils.convertTimeToHourAMPM
 import utils.getHourNow
 import java.text.SimpleDateFormat
@@ -33,6 +34,7 @@ fun Weather.toUIState(): HomeUIState {
         daysForecastUiState = forecast.forecastday.toUIState(),
         sunSet = forecast.forecastday[0].astro?.sunset!!,
         sunRise = forecast.forecastday[0].astro?.sunrise!!,
+        currentTime = convertDateToMilliseconds(location?.localtime?:"")
     )
 }
 

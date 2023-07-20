@@ -40,21 +40,28 @@ fun getHourNow(inputDate: String): Int {
     return time
 }
 fun timeToMilliseconds(timeStr: String): Long {
-    val timeComponents = timeStr.split(" ")
-    val time = timeComponents[0]
-    val amPm = timeComponents[1]
+    val dateFormat = SimpleDateFormat("hh:mm a")
+    val time = dateFormat.parse(timeStr)
 
-    val (hours, minutes) = time.split(":")
+    if (time != null) {
+        val calendar = java.util.Calendar.getInstance()
+        val currentTime = java.util.Calendar.getInstance()
 
-    val hoursInt = hours.toInt()
-    val minutesInt = minutes.toInt()
+        calendar.time = time
 
-    val adjustedHours = if (amPm.equals("PM", ignoreCase = true)) hoursInt + 12 else hoursInt
+        currentTime.set(java.util.Calendar.HOUR_OF_DAY, calendar.get(java.util.Calendar.HOUR_OF_DAY))
+        currentTime.set(java.util.Calendar.MINUTE, calendar.get(java.util.Calendar.MINUTE))
+        currentTime.set(java.util.Calendar.SECOND, 0)
+        currentTime.set(java.util.Calendar.MILLISECOND, 0)
 
-    val hoursMs = adjustedHours * 60 * 60 * 1000
-    val minutesMs = minutesInt * 60 * 1000
+        return currentTime.timeInMillis
+    }
 
-    val totalMs = hoursMs + minutesMs
+    return 0L
+}
 
-    return totalMs.toLong()
+fun convertDateToMilliseconds(dateTimeString: String): Long {
+    val dateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm")
+    val date = dateFormat.parse(dateTimeString)
+    return date?.time ?: -1L
 }

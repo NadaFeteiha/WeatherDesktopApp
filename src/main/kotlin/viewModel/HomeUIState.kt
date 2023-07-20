@@ -25,6 +25,7 @@ data class HomeUIState(
     val daysForecastUiState: List<DayForecastUiState> = emptyList(),
     val sunSet:String="00:00 PM",
     val sunRise:String="00:00 AM",
+    val currentTime:Long = 0L
 )
 
 data class ForecastHour(
