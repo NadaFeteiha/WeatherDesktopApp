@@ -39,3 +39,22 @@ fun getHourNow(inputDate: String): Int {
     }
     return time
 }
+fun timeToMilliseconds(timeStr: String): Long {
+    val timeComponents = timeStr.split(" ")
+    val time = timeComponents[0]
+    val amPm = timeComponents[1]
+
+    val (hours, minutes) = time.split(":")
+
+    val hoursInt = hours.toInt()
+    val minutesInt = minutes.toInt()
+
+    val adjustedHours = if (amPm.equals("PM", ignoreCase = true)) hoursInt + 12 else hoursInt
+
+    val hoursMs = adjustedHours * 60 * 60 * 1000
+    val minutesMs = minutesInt * 60 * 1000
+
+    val totalMs = hoursMs + minutesMs
+
+    return totalMs.toLong()
+}

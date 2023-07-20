@@ -35,6 +35,7 @@ import org.jetbrains.skia.Codec
 import org.jetbrains.skia.Data
 import ui.composables.*
 import ui.theme.grey
+import utils.timeToMilliseconds
 import viewModel.HomeInteractionListener
 import viewModel.HomeUIState
 import java.net.URL
@@ -48,6 +49,9 @@ fun HomeScreen(
     state: HomeUIState,
     listener: HomeInteractionListener,
 ) {
+    val sunRiseTime = timeToMilliseconds(state.sunRise)
+    val sunSetTime = timeToMilliseconds(state.sunSet)
+
     FlowRow(
         modifier = modifier
             .fillMaxSize()
@@ -154,6 +158,18 @@ fun HomeScreen(
                 Text("Wind Status", style = MaterialTheme.typography.h2)
 
                 Compass(windKph = state.windKph, windDegree = state.windDegree)
+            }
+        }
+        BlurredCard {
+            Column {
+                Text("SunRise&SunSet",
+                    style = MaterialTheme.typography.h2,
+                    modifier=Modifier.padding(top = 16.dp, start = 24.dp)
+                )
+                SunriseSunsetView(
+                    sunriseTimeLong = sunRiseTime,
+                    sunsetTimeLong = sunSetTime,
+                )
             }
         }
 
