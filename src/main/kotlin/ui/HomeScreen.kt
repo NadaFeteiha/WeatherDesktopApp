@@ -22,8 +22,10 @@ import androidx.compose.ui.window.WindowState
 import com.seiko.imageloader.asImageBitmap
 import org.jetbrains.skia.Bitmap
 import org.jetbrains.skia.Codec
+import org.jetbrains.skia.impl.Log
 import ui.composables.*
 import ui.theme.grey
+import utils.timeToMilliseconds
 import viewModel.HomeInteractionListener
 import viewModel.HomeUIState
 
@@ -35,6 +37,8 @@ fun HomeScreen(
     state: HomeUIState,
     listener: HomeInteractionListener,
 ) {
+    val sunRiseTime = timeToMilliseconds(state.sunRise)
+    val sunSetTime = timeToMilliseconds(state.sunSet)
     FlowRow(
         modifier = modifier
             .fillMaxSize()
@@ -47,6 +51,7 @@ fun HomeScreen(
                 modifier = Modifier.fillMaxSize(),
                 contentAlignment = Alignment.Center
             ) {
+
 
                 Text("Loading.....")
 //                val codec = remember {
@@ -113,6 +118,18 @@ fun HomeScreen(
                 indicatorValue = state.uvValue
             )
         }
+        BlurredCard {
+            Column {
+                Text("SunRise&SunSet+",
+                    style = MaterialTheme.typography.h2,
+                    modifier=Modifier.padding(top = 16.dp, start = 24.dp)
+                )
+                SunriseSunsetView(
+                    sunriseTimeLong = sunRiseTime,
+                    sunsetTimeLong = sunSetTime,
+                )
+            }
+        }
 
         BlurredCard(
             blurBackground = {
@@ -162,3 +179,5 @@ fun GifAnimation(codec: Codec, modifier: Modifier) {
         drawImage(bitmap.asImageBitmap())
     }
 }
+
+

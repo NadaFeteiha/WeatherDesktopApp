@@ -29,8 +29,8 @@ fun Weather.toUIState(): HomeUIState {
         countryName = location?.country ?: "",
         icon = current?.condition?.icon ?: "",
         uvValue = (current?.uv?.toInt() ?: 0) * 10,
-        sunSet = astro?.sunset?:"",
-        sunRise = astro?.sunrise?:"",
+        sunSet = forecast.forecastday[0].astro?.sunset!!,
+        sunRise = forecast.forecastday[0].astro?.sunrise!!,
         daysForecastUiState = forecast.forecastday.toUIState()
     )
 }

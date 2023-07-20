@@ -21,8 +21,8 @@ data class HomeUIState(
     val keyword: String = "",
     val daysForecastUiState: List<DayForecastUiState> = emptyList(),
     val isExpandMenuSuggestion: Boolean = false,
-    val sunSet:String="",
-    val sunRise:String="",
+    val sunSet:String="00:00 PM",
+    val sunRise:String="00:00 AM",
 )
 
 data class ForecastHour(

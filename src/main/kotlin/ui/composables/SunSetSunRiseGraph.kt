@@ -1,4 +1,5 @@
 package ui.composables
+
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.desktop.ui.tooling.preview.Preview
@@ -16,16 +17,17 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.*
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.res.*
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.*
+import io.ktor.http.ContentDisposition.Parameters.Size
 import utils.Util.getFormattedDateFromUnixTime
 import java.util.*
-import kotlin.math.cos
-import kotlin.math.sin
-
+import javax.swing.text.StyleConstants.Size
+import kotlin.math.*
 
 
 @Composable
@@ -51,7 +53,6 @@ fun SunriseSunsetView(
         set(Calendar.HOUR_OF_DAY, 18)
     }.timeInMillis,
     sunriseTimeColor: Color = Color.Black,
-
     sunsetTimeColor: Color = Color.Black,
     timeFormat: String = "HH:mm",
     arcColorArray: Array<Pair<Float, Color>> = arrayOf(
@@ -65,10 +66,10 @@ fun SunriseSunsetView(
 
 ) {
 
-    val bitmap = useResource("sun_icon_re.png") { loadImageBitmap(it)}
+    val bitmap = useResource("sun_icon_re.png") { loadImageBitmap(it) }
 
 
-    val currentCalendar = Calendar.getInstance(Locale.getDefault())
+    val currentCalendar = Calendar.getInstance()
     val currentUnixTime = currentCalendar.timeInMillis
 
     val timeDifference = sunsetTimeLong.minus(sunriseTimeLong)
@@ -95,7 +96,7 @@ fun SunriseSunsetView(
     Box(
         contentAlignment = Alignment.Center,
         modifier = Modifier
-            .size(arcRadius * 1.8f,arcRadius * 1.7f)
+            .size(arcRadius * 1.8f, arcRadius * 1.7f)
     ) {
 
         Canvas(
@@ -112,8 +113,11 @@ fun SunriseSunsetView(
                 ),
                 startAngle = 180f,
                 sweepAngle = 182f,
-                style = Stroke(strokeWidth.toPx(), cap = StrokeCap.Round
-                    , pathEffect = PathEffect.dashPathEffect(floatArrayOf(5f, 8f), 0f)),
+                style = Stroke(
+                    strokeWidth.toPx(),
+                    cap = StrokeCap.Round,
+                    pathEffect = PathEffect.dashPathEffect(floatArrayOf(5f, 8f), 0f)
+                ),
                 useCenter = false,
             )
 
@@ -129,36 +133,49 @@ fun SunriseSunsetView(
                 -(rad * sin(Math.toRadians(angleInDegrees))).toFloat() + (size.width / 2)
             val y =
                 (rad * cos(Math.toRadians(angleInDegrees))).toFloat() + (size.height / 2)
+            fun rectangularToPolar(x: Float, y: Float): List<Float> {
+                val r = sqrt(x.pow(2) + y.pow(2))
+                val theta = (atan2(y, x))
+                return listOf(r, theta)
+            }
+            val polarForm =rectangularToPolar(x,y)
 
-                drawImage(
-                    image = bitmap,
-                    topLeft = Offset(x-20f, y-20f), // Set the desired offsets here
-                )
+            drawImage(
+                image = bitmap,
+                topLeft = Offset(x - 20f, y - 20f), // Set the desired offsets here
+            )
 
-            drawRoundRect( brush = Brush.horizontalGradient(
-                colorStops = backGroundArray,
-                tileMode = TileMode.Clamp,
-            ),
+            drawRoundRect(
+                brush = Brush.horizontalGradient(
+                    colorStops = backGroundArray,
+                    tileMode = TileMode.Clamp,
+                ),
                 alpha = 0.02f,
                 cornerRadius = CornerRadius(0f),
                 topLeft = Offset.Zero,
-                size = this.size.copy(x,145f),)
+                size = this.size.copy(x, 145f),
+            )
         }
-        Box(modifier =Modifier.padding(top=24.dp)){
+        Box(modifier = Modifier.padding(top = 24.dp)) {
             Column {
-                Row (modifier = Modifier.fillMaxWidth().padding(start = 30.dp, end = 30.dp)
-                    , horizontalArrangement = Arrangement.SpaceBetween){
-                    Image(painter = painterResource("rectangle_small.png"),
-                        contentDescription ="",
-                        modifier = Modifier.size(18.dp,10.dp)
+                Row(
+                    modifier = Modifier.fillMaxWidth().padding(start = 30.dp, end = 30.dp),
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
+                    Image(
+                        painter = painterResource("rectangle_small.png"),
+                        contentDescription = "",
+                        modifier = Modifier.size(18.dp, 10.dp)
 
                     )
-                    Image(painter = painterResource("rectangle_small.png"),
-                        contentDescription ="",
-                        modifier = Modifier.size(18.dp,10.dp)
+                    Image(
+                        painter = painterResource("rectangle_small.png"),
+                        contentDescription = "",
+                        modifier = Modifier.size(18.dp, 10.dp)
                     )
                 }
-                Image(painter = painterResource("rectangle_tall.png"),
+                Image(
+                    painter = painterResource("rectangle_tall.png"),
                     contentDescription = "",
                     modifier = Modifier
                         .fillMaxWidth()
@@ -182,7 +199,7 @@ fun SunriseSunsetView(
                 color = sunriseTextColor,
                 modifier = Modifier.align(Alignment.CenterHorizontally),
 
-            )
+                )
             Text(
                 text = sunriseTimeLong.getFormattedDateFromUnixTime(timeFormat),
                 color = Color.White,
@@ -212,14 +229,15 @@ fun SunriseSunsetView(
                 color = Color.White,
                 style = MaterialTheme.typography.body1
 
-                )
+            )
 
         }
     }
 
 }
+
 @Preview
 @Composable
-fun GraphPreview(){
+fun GraphPreview() {
     SunriseSunsetView()
 }
