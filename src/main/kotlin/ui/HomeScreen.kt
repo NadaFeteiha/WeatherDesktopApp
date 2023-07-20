@@ -96,7 +96,7 @@ fun HomeScreen(
 
         BlurredCard(modifier = Modifier.padding(bottom = 16.dp)) {
             HourlyForecast(
-                modifier = Modifier.height(378.dp).padding(horizontal = 24.dp, vertical = 16.dp),
+                modifier = Modifier.height(378.dp).width(782.dp).padding(horizontal = 24.dp, vertical = 16.dp),
                 forecastHourly = state.forecastHourly,
                 humidityDescription = state.humidityDescription,
                 humidityValue = state.humidityValue,
@@ -152,11 +152,11 @@ fun HomeScreen(
 
         BlurredCard {
             Column(
-                modifier = Modifier.width(300.dp).height(344.dp).padding(16.dp),
+                modifier = Modifier.width(250.dp).height(344.dp).padding(16.dp),
                 verticalArrangement = Arrangement.spacedBy(16.dp),
                 horizontalAlignment = Alignment.Start
             ) {
-                Text("Wind Status", style = MaterialTheme.typography.h2)
+                Text("Wind Status", style = MaterialTheme.typography.h2, modifier = Modifier.padding(bottom = 16.dp))
 
                 Compass(windKph = state.windKph, windDegree = state.windDegree)
             }
@@ -164,7 +164,7 @@ fun HomeScreen(
 
         BlurredCard {
             ProgressBar(
-                modifier = Modifier.width(300.dp).height(344.dp),
+                modifier = Modifier.width(250.dp).height(344.dp),
                 indicatorValue = state.uvValue,
                 uvDescription = state.uvIndexDescription
             )
