@@ -26,7 +26,7 @@ fun Compass(
             painter = painterResource("arrow.svg"),
             contentDescription = "JetBrains",
             modifier = Modifier
-                .size(180.dp)
+                .size(210.dp)
                 .rotate(-windDegree)
         )
 
@@ -39,7 +39,7 @@ fun Compass(
             painter = painterResource("compass.svg"),
             contentDescription = "JetBrains",
             modifier = Modifier
-                .size(192.dp)
+                .size(230.dp)
         )
     }
 }
