@@ -3,10 +3,7 @@ package ui.composables
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.animateIntAsState
 import androidx.compose.animation.core.tween
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.aspectRatio
-import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.*
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
@@ -22,6 +19,7 @@ import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.dp
 import kotlin.math.cos
 import kotlin.math.sin
 
@@ -40,47 +38,55 @@ fun ProgressBar(
     Column(
         modifier = modifier
             .fillMaxWidth()
-            .aspectRatio(1f)
-            .drawBehind {
-                val componentSize = size / 1.25f
-                backgroundIndicator(
-                    componentSize = componentSize,
-                    indicatorColor = backgroundIndicatorColor,
-                    indicatorStrokeWidth = backgroundIndicatorStrokeWidth,
-                )
-
-                foregroundIndicator(
-                    sweepAngle = percentage,
-                    componentSize = componentSize,
-                    indicatorColor = foregroundIndicatorColor,
-                    indicatorStrokeWidth = foregroundIndicatorStrokeWidth,
-                )
-
-                backgroundIndicator(
-                    componentSize = size / 1.45f,
-                    indicatorColor = foregroundIndicatorColor,
-                    indicatorStrokeWidth = 5f,
-                    dashPathEffect = PathEffect.dashPathEffect(floatArrayOf(5f, 70f), 0f)
-                )
-
-                val sweepAngleRadians = Math.toRadians(120.0 + percentage.toDouble())
-                val centerX = size.width / 2
-                val centerY = size.height / 2
-                val radius = (size.width / 2) - 50
-
-                val endX = centerX + (radius * cos(sweepAngleRadians)).toFloat()
-                val endY = centerY + (radius * sin(sweepAngleRadians)).toFloat()
-
-                drawCircle(
-                    color = Color.White,
-                    radius = 5f,
-                    center = Offset(endX, endY)
-                )
-            },
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
+            .padding(16.dp)
     ) {
-        ProgressBarValue(value = indicatorValue)
+        Text("UV Index", style = MaterialTheme.typography.h2)
+
+        Column(
+            modifier = modifier
+                .fillMaxWidth()
+                .aspectRatio(1f)
+                .drawBehind {
+                    val componentSize = size / 1.25f
+                    backgroundIndicator(
+                        componentSize = componentSize,
+                        indicatorColor = backgroundIndicatorColor,
+                        indicatorStrokeWidth = backgroundIndicatorStrokeWidth,
+                    )
+
+                    foregroundIndicator(
+                        sweepAngle = percentage,
+                        componentSize = componentSize,
+                        indicatorColor = foregroundIndicatorColor,
+                        indicatorStrokeWidth = foregroundIndicatorStrokeWidth,
+                    )
+
+                    backgroundIndicator(
+                        componentSize = size / 1.45f,
+                        indicatorColor = foregroundIndicatorColor,
+                        indicatorStrokeWidth = 5f,
+                        dashPathEffect = PathEffect.dashPathEffect(floatArrayOf(5f, 70f), 0f)
+                    )
+
+                    val sweepAngleRadians = Math.toRadians(120.0 + percentage.toDouble())
+                    val centerX = size.width / 2
+                    val centerY = size.height / 2
+                    val radius = (size.width / 2) - 50
+
+                    val endX = centerX + (radius * cos(sweepAngleRadians)).toFloat()
+                    val endY = centerY + (radius * sin(sweepAngleRadians)).toFloat()
+
+                    drawCircle(
+                        color = Color.White,
+                        radius = 5f,
+                        center = Offset(endX, endY)
+                    )
+                },
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            ProgressBarValue(value = indicatorValue)
+        }
     }
 }
 

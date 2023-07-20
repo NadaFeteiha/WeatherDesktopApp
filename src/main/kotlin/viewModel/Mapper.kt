@@ -43,16 +43,20 @@ fun Hour.toUIState(index: Int) = ForecastHour(
 )
 
 fun List<Forecastday>.toUIState(): List<DayForecastUiState> {
-    println(this[0].day?.condition?.icon)
-    return map {
+    return mapIndexed { index, forecastday ->
         DayForecastUiState(
-            day = convertEpochMillisecondsToDate(it.dateEpoch ?: 0),
-            iconUrl = it.day?.condition?.icon ?: "",
-            minTemperature = (it.day?.mintempC ?: 0.0).toString(),
-            maxTemperature = (it.day?.maxtempC ?: 0.0).toString(),
-            dateOfDay = getDayOfWeek(it.dateEpoch ?: 0)
+            day = convertEpochMillisecondsToDate(forecastday.dateEpoch ?: 0),
+            iconUrl = forecastday.day?.condition?.icon ?: "",
+            minTemperature = (forecastday.day?.mintempC ?: 0.0).toString(),
+            maxTemperature = (forecastday.day?.maxtempC ?: 0.0).toString(),
+            dateOfDay = if (index == 0) {
+                "Today"
+            } else {
+                getDayOfWeek(forecastday.dateEpoch ?: 0)
+            }
         )
     }
+
 }
 
 private fun convertEpochMillisecondsToDate(epochMilliseconds: Int): String {
