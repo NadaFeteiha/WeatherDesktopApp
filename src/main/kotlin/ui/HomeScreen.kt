@@ -79,7 +79,7 @@ fun HomeScreen(
             )
         }) {
             SearchCard(
-                modifier = Modifier.width(380.dp),
+                modifier = Modifier.width(380.dp).height(378.dp),
                 date = state.date,
                 cityName = state.cityName,
                 countryName = state.countryName,
@@ -95,7 +95,7 @@ fun HomeScreen(
 
         BlurredCard(modifier = Modifier.padding(bottom = 16.dp)) {
             HourlyForecast(
-                modifier = Modifier.padding(24.dp),
+                modifier = Modifier.height(378.dp).padding(horizontal = 24.dp, vertical = 16.dp),
                 forecastHourly = state.forecastHourly,
                 humidityDescription = state.humidityDescription,
                 humidityValue = state.humidityValue,
@@ -104,43 +104,54 @@ fun HomeScreen(
                 feelDescription = state.feelDescription
             )
         }
-        BlurredCard(
-            blurBackground = {
-                if (state.daysForecastUiState.isNotEmpty()) {
-                    WeatherImageLoader(
-                        url = state.daysForecastUiState[0].iconUrl,
-                        modifier = Modifier.size(300.dp).blur(80.dp, edgeTreatment = BlurredEdgeTreatment.Unbounded)
-                            .alpha(0.5f),
-                    )
-                }
-            }
+        Column(
+            modifier = Modifier.height(344.dp)
         ) {
-            val scrollState = rememberLazyListState()
-            val coroutineScope = rememberCoroutineScope()
-            LazyColumn(
-                state = scrollState,
-                verticalArrangement = Arrangement.spacedBy(20.dp),
-                modifier = Modifier
-                    .height(300.dp)
-                    .widthIn(390.dp)
-                    .draggable(
-                        orientation = Orientation.Vertical,
-                        state = rememberDraggableState { delta ->
-                            coroutineScope.launch {
-                                scrollState.scrollBy(-delta)
-                            }
-                        }),
-                contentPadding = PaddingValues(start = 16.dp, end = 16.dp, top = 24.dp, bottom = 8.dp)
+
+            Text(
+                text = "10 Day Forecast",
+                style = MaterialTheme.typography.h2,
+                modifier = Modifier.padding(bottom = 16.dp)
+            )
+
+            BlurredCard(
+                blurBackground = {
+                    if (state.daysForecastUiState.isNotEmpty()) {
+                        WeatherImageLoader(
+                            url = state.daysForecastUiState[0].iconUrl,
+                            modifier = Modifier.size(300.dp).blur(80.dp, edgeTreatment = BlurredEdgeTreatment.Unbounded)
+                                .alpha(0.5f),
+                        )
+                    }
+                }
             ) {
-                items(state.daysForecastUiState) { dayForecastUiState ->
-                    DayForecast(state = dayForecastUiState)
+                val scrollState = rememberLazyListState()
+                val coroutineScope = rememberCoroutineScope()
+                LazyColumn(
+                    state = scrollState,
+                    verticalArrangement = Arrangement.spacedBy(20.dp),
+                    modifier = Modifier
+                        .height(300.dp)
+                        .widthIn(390.dp)
+                        .draggable(
+                            orientation = Orientation.Vertical,
+                            state = rememberDraggableState { delta ->
+                                coroutineScope.launch {
+                                    scrollState.scrollBy(-delta)
+                                }
+                            }),
+                    contentPadding = PaddingValues(start = 16.dp, end = 16.dp, top = 24.dp, bottom = 8.dp)
+                ) {
+                    items(state.daysForecastUiState) { dayForecastUiState ->
+                        DayForecast(state = dayForecastUiState)
+                    }
                 }
             }
         }
 
         BlurredCard {
             Column(
-                modifier = Modifier.size(300.dp).padding(16.dp),
+                modifier = Modifier.width(300.dp).height(344.dp).padding(16.dp),
                 verticalArrangement = Arrangement.spacedBy(16.dp),
                 horizontalAlignment = Alignment.Start
             ) {
@@ -152,7 +163,7 @@ fun HomeScreen(
 
         BlurredCard {
             ProgressBar(
-                modifier = Modifier.size(300.dp),
+                modifier = Modifier.width(300.dp).height(344.dp),
                 indicatorValue = state.uvValue,
                 uvDescription = state.uvIndexDescription
             )
