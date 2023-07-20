@@ -36,7 +36,7 @@ fun HourlyForecast(
 
     Column(
         verticalArrangement = Arrangement.spacedBy(16.dp),
-        modifier = modifier.width(700.dp)
+        modifier = modifier
     ) {
 
         Text(
