@@ -16,9 +16,10 @@ Add your api key for WeatherApi
 
 
 ## Contributors
-<a href="https://github.com/nadafeteiha/WeatherDesktopApp/graphs/contributors">
-  <img src="https://contrib.rocks/image?repo=nadafeteiha/WeatherDesktopApp" />
+<a href="https://github.com/NadaFeteiha/WeatherDesktopApp/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=NadaFeteiha/WeatherDesktopApp" />
 </a>
+
 
 
 ## Official Documentations
