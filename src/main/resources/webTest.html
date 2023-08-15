@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA7e_X2BpJw1mOgMR478aGHmuBt37LI9Z4"></script>
+    <script>
+                            var map;
+                            var marker;
+
+                            function initialize() {
+                                var mapOptions = {
+                                    center: { lat: 47.812972, lng: -122.2228419 },
+                                    zoom: 15,
+                                    mapTypeId: 'roadmap',
+                                    disableDefaultUI: false,
+                                    zoomControl: true,
+                                    streetViewControl: true
+                                };
+                                map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
+                                google.maps.event.addListener(map, 'click', function(event) {
+
+                                    if (marker) {
+                                        marker.setMap(null);
+                                    }
+                                    placeMarker(event.latLng);
+
+                                });
+                            }
+
+                            function placeMarker(location) {
+                                marker = new google.maps.Marker({
+                                    position: location,
+                                    map: map
+                                });
+                            }
+
+                            function getLocation() {
+                                if (marker) {
+                                    var lat = marker.getPosition().lat();
+                                    var lng = marker.getPosition().lng();
+                                    return lat + ',' + lng;
+                                }
+                                return '';
+                            }
+
+                            google.maps.event.addDomListener(window, 'load', initialize);
+
+    </script>
+</head>
+<body>
+<div id="map-canvas" style="width: 800px; height: 600px;"></div>
+</body>
+</html>

@@ -5,10 +5,15 @@ plugins {
     kotlin("jvm") version "1.8.20"
     id("org.jetbrains.compose") version "1.4.0"
     kotlin("plugin.serialization") version "1.8.20"
+//    id("org.openjfx.javafxplugin") version "0.0.10"
+    id( "org.openjfx.javafxplugin" ) version "0.0.13"
+
+
 }
 
 group = "me.nadafeteiha"
 version = "1.0"
+
 
 repositories {
     google()
@@ -18,6 +23,7 @@ repositories {
 
 dependencies {
     implementation(compose.desktop.currentOs)
+
 
     val ktor_version = "2.3.1"
     implementation("io.ktor:ktor-client-core:$ktor_version")
@@ -38,6 +44,16 @@ dependencies {
     //image
     api("io.github.qdsfdhvh:image-loader:1.2.8")
 
+    implementation(compose.desktop.currentOs)
+    //Optional other deps
+    implementation(compose.uiTooling)
+    implementation(compose.runtime)
+    implementation(compose.foundation)
+    implementation(compose.material)
+    implementation(compose.animation)
+    implementation(compose.animationGraphics)
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.2.2")
+
 }
 
 compose.desktop {
@@ -48,10 +64,17 @@ compose.desktop {
             packageName = "WeatherApp"
             packageVersion = "1.0.0"
         }
+
+
     }
 }
 val compileKotlin: KotlinCompile by tasks
 
 tasks.withType<KotlinCompile> {
-    kotlinOptions.jvmTarget = "11"
+    kotlinOptions.jvmTarget = "17"
+}
+
+javafx {
+    version = "17"
+    modules = listOf("javafx.controls", "javafx.swing", "javafx.web", "javafx.graphics")
 }
