@@ -14,7 +14,6 @@ import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.application
 import androidx.compose.ui.window.rememberWindowState
 import javafx.application.Platform
-import javafx.concurrent.Worker
 import javafx.embed.swing.JFXPanel
 import javafx.event.EventHandler
 import javafx.scene.Scene
@@ -83,7 +82,7 @@ fun main() = application {
                 background = DarkGray.toCompose(),
                 modifier = Modifier.fillMaxSize(),
                 factory = {
-                    SwingComponent4()
+                    SwingComponent5()
                 }
             )
         }
@@ -127,7 +126,45 @@ class Testttt {
 }
 
 
+fun createWebViewComponent(): JFXPanel {
+    val jfxPanel = JFXPanel()
+    Platform.runLater {
+        val webView = WebView()
+        val webEngine: WebEngine = webView.engine
+        val scene = Scene(webView)
+        jfxPanel.scene = scene
 
+        webEngine.load("https://www.google.com/maps/dir/33.294358,44.4269828")
+        //  webEngine.load("https://www.openstreetmap.org/#map=4/58.1/97.4")
+
+        webEngine.locationProperty().addListener { a, b, newLocation ->
+            println("Location: ${newLocation.split(",")[0].substringAfter("@")}")
+            println("a: $a")
+            println("b: $b")
+        }
+
+        webEngine.javaScriptEnabledProperty().set(true)
+        println("userAgent: ${webEngine.userAgent}")
+    }
+    return jfxPanel
+}
+
+fun SwingComponent5(): JPanel {
+    val jPanel = JPanel().apply {
+        background = DarkGray
+        border = EmptyBorder(20, 20, 20, 20)
+        layout = BorderLayout()
+
+        val webViewPanel = createWebViewComponent()
+        add(webViewPanel, BorderLayout.CENTER)
+    }
+
+    SwingUtilities.invokeLater {
+        jPanel.revalidate()
+        jPanel.repaint()
+    }
+    return jPanel
+}
 
 
 
