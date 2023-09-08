@@ -185,5 +185,12 @@ fun HomeScreen(
                 )
             }
         }
+    @Composable
+    inline fun <reified T : ScreenModel> getScreenModel(
+        qualifier: Qualifier? = null,
+        noinline parameters: ParametersDefinition? = null,
+    ): T {
+        val koin = KoinPlatform.getKoin()
+        return rememberScreenModel(tag = qualifier?.value) { koin.get(qualifier, parameters) }
     }
 }
