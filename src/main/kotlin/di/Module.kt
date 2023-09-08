@@ -17,10 +17,10 @@ import org.koin.core.module.dsl.bind
 import org.koin.core.module.dsl.factoryOf
 import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.module
-import viewModel.HomeViewModel
+import viewModel.HomeScreenModel
 
 
-val AppModule = module {
+fun appModules() = module {
     includes(
         ServiceModule,
         NetworkModule,
@@ -75,5 +75,5 @@ val ServiceModule = module {
 }
 
 val ScreenModelsModule = module {
-    factoryOf(::HomeViewModel)
+    factoryOf(::HomeScreenModel)
 }
