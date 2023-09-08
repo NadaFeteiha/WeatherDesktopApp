@@ -9,19 +9,22 @@ import io.ktor.client.call.*
 import io.ktor.client.request.*
 import io.ktor.client.statement.*
 import io.ktor.util.*
-import org.koin.core.component.KoinComponent
 
-class WeatherServiceImpl(private val client: HttpClient, private val attributes: Attributes) : WeatherService,
-    KoinComponent {
+class WeatherServiceImpl(private val client: HttpClient, private val attributes: Attributes) : WeatherService {
 
     override suspend fun getWeatherByCityName(city: String, numDays: Int): Weather =
-        tryToExecute<Weather>(APIS.WEATHER_API) { get("forecast.json?q=${city}&days=$numDays") }
+        tryToExecute<Weather>(APIS.WEATHER_API) {
+            get("forecast.json") {
+                parameter("q", city)
+                parameter("days", numDays)
+            }
+        }
 
     override suspend fun getLocation(): LocationFromIP =
         tryToExecute<LocationFromIP>(APIS.LOCATION_API) { get("check") }
 
     override suspend fun searchWeatherByCityName(city: String): List<SearchItem> =
-        tryToExecute<List<SearchItem>>(APIS.WEATHER_API) { get("search.json?q=${city}") }
+        tryToExecute<List<SearchItem>>(APIS.WEATHER_API) { get("search.json") { parameter("q", city) } }
 
     private suspend inline fun <reified T> tryToExecute(
         api: APIS,
