@@ -13,8 +13,6 @@ import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -24,23 +22,22 @@ import androidx.compose.ui.draw.blur
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.WindowState
 import androidx.compose.ui.window.rememberWindowState
-import cafe.adriel.voyager.core.model.ScreenModel
-import cafe.adriel.voyager.core.model.rememberScreenModel
-import cafe.adriel.voyager.core.screen.Screen
+import cafe.adriel.voyager.navigator.Navigator
 import kotlinx.coroutines.launch
-import org.koin.core.parameter.ParametersDefinition
-import org.koin.core.qualifier.Qualifier
-import org.koin.mp.KoinPlatform
+import presentation.base.BaseScreen
 import presentation.composables.*
 
-object HomeScreen : Screen {
+
+object HomeScreen : BaseScreen<HomeScreenModel, HomeUiEffect, HomeUIState, HomeInteractionListener>() {
+
+
+    override fun onEffect(effect: HomeUiEffect, navigator: Navigator) {
+
+    }
 
     @Composable
-    override fun Content() {
-
+    override fun OnRender(state: HomeUIState, listener: HomeInteractionListener) {
         val viewModel = getScreenModel<HomeScreenModel>()
-
-        val state by viewModel.state.collectAsState()
         val windowState = rememberWindowState()
 
         HomeScreenContent(
@@ -48,6 +45,11 @@ object HomeScreen : Screen {
             listener = viewModel,
             state = state
         )
+    }
+
+    @Composable
+    override fun Content() {
+        Init(getScreenModel<HomeScreenModel>())
     }
 
     @OptIn(ExperimentalLayoutApi::class)
@@ -213,14 +215,5 @@ object HomeScreen : Screen {
                 }
             }
         }
-    }
-
-    @Composable
-    inline fun <reified T : ScreenModel> getScreenModel(
-        qualifier: Qualifier? = null,
-        noinline parameters: ParametersDefinition? = null,
-    ): T {
-        val koin = KoinPlatform.getKoin()
-        return rememberScreenModel(tag = qualifier?.value) { koin.get(qualifier, parameters) }
     }
 }

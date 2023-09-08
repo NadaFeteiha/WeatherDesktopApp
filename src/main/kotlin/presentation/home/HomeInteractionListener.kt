@@ -1,6 +1,8 @@
 package presentation.home
 
-interface HomeInteractionListener {
+import presentation.base.BaseInteractionListener
+
+interface HomeInteractionListener : BaseInteractionListener {
 
     fun search()
 

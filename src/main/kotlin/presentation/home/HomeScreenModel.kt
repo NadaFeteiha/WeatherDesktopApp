@@ -1,15 +1,13 @@
 package presentation.home
 
-import cafe.adriel.voyager.core.model.StateScreenModel
-import cafe.adriel.voyager.core.model.coroutineScope
 import data.WeatherService
 import data.dto.SearchItem
 import data.dto.Weather
-import kotlinx.coroutines.*
-import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.Job
 import presentation.ErrorState
+import presentation.base.BaseScreenModel
 
-class HomeScreenModel(private val service: WeatherService) : StateScreenModel<HomeUIState>(HomeUIState()),
+class HomeScreenModel(private val service: WeatherService) : BaseScreenModel<HomeUIState, HomeUiEffect>(HomeUIState()),
     HomeInteractionListener {
 
     private var searchJob: Job? = null
@@ -80,42 +78,4 @@ class HomeScreenModel(private val service: WeatherService) : StateScreenModel<Ho
             onError = ::onError
         )
     }
-
-    private fun <T> tryToExecute(
-        callee: suspend () -> T,
-        onSuccess: (T) -> Unit,
-        onError: (ErrorState) -> Unit,
-        inScope: CoroutineScope = coroutineScope,
-    ): Job {
-        return runWithErrorCheck(inScope = inScope, onError = onError) {
-            val result = callee()
-            onSuccess(result)
-        }
-    }
-
-    private fun <T> runWithErrorCheck(
-        inScope: CoroutineScope = coroutineScope,
-        onError: (ErrorState) -> Unit,
-        callee: suspend () -> T,
-    ): Job {
-        return inScope.launch(Dispatchers.IO) {
-            callee()
-            try {
-            } catch (exception: Exception) {
-                onError(ErrorState.UnKnownError)
-            }
-        }
-    }
-
-    private fun updateState(updater: (HomeUIState) -> HomeUIState) {
-        mutableState.update(updater)
-    }
-
-    private fun launchDelayed(duration: Long, block: suspend CoroutineScope.() -> Unit): Job {
-        return coroutineScope.launch(Dispatchers.IO) {
-            delay(duration)
-            block()
-        }
-    }
-
 }
