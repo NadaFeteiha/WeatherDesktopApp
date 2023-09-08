@@ -3,10 +3,9 @@ package viewModel
 import cafe.adriel.voyager.core.model.StateScreenModel
 import cafe.adriel.voyager.core.model.coroutineScope
 import data.remote.WeatherService
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
+import data.remote.dto.SearchItem
+import data.remote.dto.Weather
+import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import org.koin.core.component.KoinComponent
@@ -14,8 +13,7 @@ import org.koin.core.component.KoinComponent
 class HomeScreenModel(private val service: WeatherService) : StateScreenModel<HomeUIState>(HomeUIState()),
     HomeInteractionListener {
 
-    private val _uiState = MutableStateFlow(HomeUIState())
-    val uiState = _uiState.asStateFlow()
+    private var searchJob: Job? = null
 
     init {
         getData()
@@ -44,6 +42,23 @@ class HomeScreenModel(private val service: WeatherService) : StateScreenModel<Ho
                 _uiState.update { it.copy(suggestion = cities, isExpandMenuSuggestion = cities.isNotEmpty()) }
             }
         }
+
+    override fun onSearchTermChanged(term: String) {
+        updateState { it.copy(keyword = term) }
+        launchSearchJob()
+    }
+
+    override fun search() {
+        tryToExecute(
+            { service.searchWeatherByCityName(state.value.keyword) },
+            onSuccess = ::onSearchSuccess,
+            onError = ::onError
+        )
+    }
+
+    private fun launchSearchJob() {
+        searchJob?.cancel()
+        searchJob = launchDelayed(300L) { search() }
     }
 
     override fun onDropDownMenuExpand(expand: Boolean) {
