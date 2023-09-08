@@ -7,8 +7,6 @@ import data.remote.dto.SearchItem
 import data.remote.dto.Weather
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.update
-import kotlinx.coroutines.launch
-import org.koin.core.component.KoinComponent
 
 class HomeScreenModel(private val service: WeatherService) : StateScreenModel<HomeUIState>(HomeUIState()),
     HomeInteractionListener {
@@ -20,28 +18,32 @@ class HomeScreenModel(private val service: WeatherService) : StateScreenModel<Ho
     }
 
     override fun getData() {
-        CoroutineScope(Dispatchers.IO).launch {
-            _uiState.update { it.copy(isLoading = true, error = "") }
-            try {
-                _uiState.emit(service.getWeatherByCityName(service.getLocation().city).toUIState())
-            } catch (e: Throwable) {
-                _uiState.update { it.copy(isLoading = false, error = e.message.toString()) }
-            }
-        }
+        updateState { it.copy(isLoading = true, error = null) }
+        tryToExecute(
+            { service.getWeatherByCityName(service.getLocation().city) },
+            onSuccess = ::onGetWeatherByCitySuccess,
+            onError = ::onError
+        )
+    }
+
+    private fun onGetWeatherByCitySuccess(weather: Weather) {
+        updateState { it.copy(weatherUIState = weather.toUIState(), isLoading = false, error = null) }
     }
 
     override fun onSearchExpand(state: Boolean) {
-        _uiState.update { it.copy(isSearchExpanded = state) }
+        updateState { it.copy(isSearchExpanded = state) }
     }
 
-    override fun search(keyword: String) {
-        CoroutineScope(Dispatchers.IO).launch {
-            _uiState.update { it.copy(keyword = keyword, isSearchExpanded = true) }
-            if (keyword.trim().isNotEmpty()) {
-                val cities = service.searchWeatherByCityName(keyword).mapNotNull { it.name }
-                _uiState.update { it.copy(suggestion = cities, isExpandMenuSuggestion = cities.isNotEmpty()) }
-            }
+    private fun onSearchSuccess(searchItems: List<SearchItem>) {
+        val cities = searchItems.mapNotNull { it.name }
+        updateState {
+            it.copy(
+                isSearchExpanded = true,
+                suggestion = cities,
+                isExpandMenuSuggestion = cities.isNotEmpty()
+            )
         }
+    }
 
     override fun onSearchTermChanged(term: String) {
         updateState { it.copy(keyword = term) }
@@ -62,16 +64,20 @@ class HomeScreenModel(private val service: WeatherService) : StateScreenModel<Ho
     }
 
     override fun onDropDownMenuExpand(expand: Boolean) {
-        CoroutineScope(Dispatchers.IO).launch {
-            _uiState.update { it.copy(isExpandMenuSuggestion = expand) }
-        }
+        updateState { it.copy(isExpandMenuSuggestion = expand) }
+    }
+
+    private fun onError(error: ErrorState) {
+        updateState { it.copy(error = error, isLoading = false) }
     }
 
     override fun onSearchCitySelected(city: String) {
-        _uiState.update { it.copy(isLoading = true, isSearchExpanded = false) }
-        CoroutineScope(Dispatchers.IO).launch {
-            _uiState.emit(service.getWeatherByCityName(city).toUIState())
-        }
+        updateState { it.copy(isLoading = true, isSearchExpanded = false) }
+        tryToExecute(
+            { service.getWeatherByCityName(city) },
+            onSuccess = ::onGetWeatherByCitySuccess,
+            onError = ::onError
+        )
     }
 
     private fun <T> tryToExecute(
