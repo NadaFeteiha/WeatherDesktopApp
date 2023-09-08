@@ -85,5 +85,15 @@ class HomeScreenModel(private val service: WeatherService) : StateScreenModel<Ho
         }
     }
 
+    private fun updateState(updater: (HomeUIState) -> HomeUIState) {
+        mutableState.update(updater)
+    }
+
+    private fun launchDelayed(duration: Long, block: suspend CoroutineScope.() -> Unit): Job {
+        return coroutineScope.launch(Dispatchers.IO) {
+            delay(duration)
+            block()
+        }
+    }
 
 }
