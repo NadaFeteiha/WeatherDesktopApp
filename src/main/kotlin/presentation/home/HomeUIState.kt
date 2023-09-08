@@ -1,6 +1,6 @@
 package presentation.home
 
-import presentation.ErrorState
+import presentation.base.ErrorState
 
 data class HomeUIState(
     val isLoading: Boolean = false,

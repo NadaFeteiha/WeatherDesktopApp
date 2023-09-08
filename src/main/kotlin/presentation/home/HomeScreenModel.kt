@@ -4,8 +4,8 @@ import data.WeatherService
 import data.dto.SearchItem
 import data.dto.Weather
 import kotlinx.coroutines.Job
-import presentation.ErrorState
 import presentation.base.BaseScreenModel
+import presentation.base.ErrorState
 
 class HomeScreenModel(private val service: WeatherService) : BaseScreenModel<HomeUIState, HomeUiEffect>(HomeUIState()),
     HomeInteractionListener {

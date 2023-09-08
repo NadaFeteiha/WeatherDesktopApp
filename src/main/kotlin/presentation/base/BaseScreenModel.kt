@@ -4,7 +4,6 @@ import cafe.adriel.voyager.core.model.StateScreenModel
 import cafe.adriel.voyager.core.model.coroutineScope
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.*
-import presentation.ErrorState
 
 abstract class BaseScreenModel<S, E>(initialState: S) : StateScreenModel<S>(initialState),
     BaseInteractionListener {

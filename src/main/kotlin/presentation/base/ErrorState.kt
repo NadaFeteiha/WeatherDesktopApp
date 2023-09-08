@@ -1,4 +1,4 @@
-package presentation
+package presentation.base
 
 sealed interface ErrorState {
 
