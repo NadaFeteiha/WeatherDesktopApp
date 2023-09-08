@@ -11,9 +11,9 @@ import cafe.adriel.voyager.navigator.Navigator
 import cafe.adriel.voyager.transitions.SlideTransition
 import di.appModules
 import org.koin.core.context.startKoin
-import ui.HomeScreen
-import ui.theme.LightColor
-import ui.theme.WeatherTypography
+import presentation.home.HomeScreen
+import presentation.theme.LightColor
+import presentation.theme.WeatherTypography
 import java.awt.Dimension
 
 @OptIn(ExperimentalAnimationApi::class)

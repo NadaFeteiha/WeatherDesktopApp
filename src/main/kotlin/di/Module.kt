@@ -1,8 +1,8 @@
 package di
 
-import data.remote.WeatherService
-import data.remote.WeatherServiceImpl
-import data.remote.dto.APIS
+import data.WeatherService
+import data.WeatherServiceImpl
+import data.dto.APIS
 import io.ktor.client.*
 import io.ktor.client.engine.cio.*
 import io.ktor.client.plugins.*
@@ -17,7 +17,7 @@ import org.koin.core.module.dsl.bind
 import org.koin.core.module.dsl.factoryOf
 import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.module
-import viewModel.HomeScreenModel
+import presentation.home.HomeScreenModel
 
 
 fun appModules() = module {
