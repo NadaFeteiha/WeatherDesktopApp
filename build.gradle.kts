@@ -33,6 +33,9 @@ dependencies {
     api(libs.ktor.logging)
     api(libs.ktor.gson)
 
+    implementation(libs.voyager.navigator)
+    implementation(libs.voyager.transitions)
+
     //coroutines
     implementation(libs.kotlin.coroutines)
 
