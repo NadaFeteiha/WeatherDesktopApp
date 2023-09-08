@@ -1,5 +1,7 @@
 package viewModel
 
+import cafe.adriel.voyager.core.model.StateScreenModel
+import cafe.adriel.voyager.core.model.coroutineScope
 import data.remote.WeatherService
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -9,7 +11,8 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import org.koin.core.component.KoinComponent
 
-class HomeViewModel(private val service: WeatherService) : HomeInteractionListener, KoinComponent {
+class HomeScreenModel(private val service: WeatherService) : StateScreenModel<HomeUIState>(HomeUIState()),
+    HomeInteractionListener {
 
     private val _uiState = MutableStateFlow(HomeUIState())
     val uiState = _uiState.asStateFlow()
@@ -55,5 +58,32 @@ class HomeViewModel(private val service: WeatherService) : HomeInteractionListen
             _uiState.emit(service.getWeatherByCityName(city).toUIState())
         }
     }
+
+    private fun <T> tryToExecute(
+        callee: suspend () -> T,
+        onSuccess: (T) -> Unit,
+        onError: (ErrorState) -> Unit,
+        inScope: CoroutineScope = coroutineScope,
+    ): Job {
+        return runWithErrorCheck(inScope = inScope, onError = onError) {
+            val result = callee()
+            onSuccess(result)
+        }
+    }
+
+    private fun <T> runWithErrorCheck(
+        inScope: CoroutineScope = coroutineScope,
+        onError: (ErrorState) -> Unit,
+        callee: suspend () -> T,
+    ): Job {
+        return inScope.launch(Dispatchers.IO) {
+            callee()
+            try {
+            } catch (exception: Exception) {
+                onError(ErrorState.UnKnownError)
+            }
+        }
+    }
+
 
 }
