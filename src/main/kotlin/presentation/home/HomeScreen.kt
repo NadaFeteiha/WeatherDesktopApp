@@ -73,143 +73,143 @@ object HomeScreen : Screen {
                     modifier = Modifier.fillMaxSize(),
                     contentAlignment = Alignment.Center
                 ) {
-                    if (state.isLoading) {
-                        LoadingAnimation()
-                    } else {
-                        Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                            Text("Error Internet Connection", style = MaterialTheme.typography.h1)
-                            Button(
-                                onClick = listener::getData,
-                                colors = ButtonDefaults.buttonColors(
-                                    backgroundColor = MaterialTheme.colors.secondary
-                                )
-                            ) {
-                                Text("Try Again")
+                    LoadingAnimation()
+                }
+            } else if (state.error != null) {
+                Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                    Text("Error Internet Connection", style = MaterialTheme.typography.h1)
+                    Button(
+                        onClick = listener::getData,
+                        colors = ButtonDefaults.buttonColors(
+                            backgroundColor = MaterialTheme.colors.secondary
+                        )
+                    ) {
+                        Text("Try Again")
+                    }
+                }
+            } else {
+
+                BlurredCard(modifier = Modifier.padding(bottom = 16.dp), blurBackground = {
+                    WeatherImageLoader(
+                        url = state.weatherUIState.icon,
+                        modifier = Modifier.size(300.dp).blur(70.dp, edgeTreatment = BlurredEdgeTreatment.Unbounded)
+                            .alpha(0.5f),
+                    )
+                }) {
+                    SearchCard(
+                        modifier = Modifier.width(374.dp).height(378.dp),
+                        date = state.weatherUIState.date,
+                        cityName = state.weatherUIState.cityName,
+                        countryName = state.weatherUIState.countryName,
+                        temperature = state.weatherUIState.temperature,
+                        icon = state.weatherUIState.icon,
+                        keyword = state.keyword,
+                        suggestion = state.suggestion,
+                        isExpandMenuSuggestion = state.isExpandMenuSuggestion,
+                        isSearchExpanded = state.isSearchExpanded,
+                        listener = listener
+                    )
+                }
+
+                BlurredCard(modifier = Modifier.padding(bottom = 16.dp)) {
+                    HourlyForecast(
+                        modifier = Modifier.height(378.dp).width(782.dp).padding(horizontal = 24.dp, vertical = 16.dp),
+                        forecastHourly = state.weatherUIState.forecastHourly,
+                        humidityDescription = state.weatherUIState.humidityDescription,
+                        humidityValue = state.weatherUIState.humidityValue,
+                        visibilityAvg = state.weatherUIState.visibilityAvg,
+                        feelsLike = state.weatherUIState.feelsLike,
+                        feelDescription = state.weatherUIState.feelDescription
+                    )
+                }
+
+                BlurredCard(
+                    blurBackground = {
+                        if (state.weatherUIState.daysForecastUiState.isNotEmpty()) {
+                            WeatherImageLoader(
+                                url = state.weatherUIState.daysForecastUiState[0].iconUrl,
+                                modifier = Modifier.size(300.dp)
+                                    .blur(80.dp, edgeTreatment = BlurredEdgeTreatment.Unbounded)
+                                    .alpha(0.5f),
+                            )
+                        }
+                    }
+                ) {
+                    Column(
+                        modifier = Modifier.height(344.dp).width(374.dp)
+                    ) {
+                        Text(
+                            text = "10 Day Forecast",
+                            style = MaterialTheme.typography.h2,
+                            modifier = Modifier.padding(16.dp)
+                        )
+
+                        val scrollState = rememberLazyListState()
+                        val coroutineScope = rememberCoroutineScope()
+                        LazyColumn(
+                            state = scrollState,
+                            verticalArrangement = Arrangement.spacedBy(20.dp),
+                            modifier = Modifier
+                                .widthIn(390.dp)
+                                .draggable(
+                                    orientation = Orientation.Vertical,
+                                    state = rememberDraggableState { delta ->
+                                        coroutineScope.launch {
+                                            scrollState.scrollBy(-delta)
+                                        }
+                                    }),
+                            contentPadding = PaddingValues(start = 16.dp, end = 16.dp, bottom = 8.dp)
+                        ) {
+                            items(state.weatherUIState.daysForecastUiState) { dayForecastUiState ->
+                                DayForecast(state = dayForecastUiState)
                             }
                         }
                     }
                 }
-            }
 
-            BlurredCard(modifier = Modifier.padding(bottom = 16.dp), blurBackground = {
-                WeatherImageLoader(
-                    url = state.weatherUIState.icon,
-                    modifier = Modifier.size(300.dp).blur(70.dp, edgeTreatment = BlurredEdgeTreatment.Unbounded)
-                        .alpha(0.5f),
-                )
-            }) {
-                SearchCard(
-                    modifier = Modifier.width(374.dp).height(378.dp),
-                    date = state.weatherUIState.date,
-                    cityName = state.weatherUIState.cityName,
-                    countryName = state.weatherUIState.countryName,
-                    temperature = state.weatherUIState.temperature,
-                    icon = state.weatherUIState.icon,
-                    keyword = state.keyword,
-                    suggestion = state.suggestion,
-                    isExpandMenuSuggestion = state.isExpandMenuSuggestion,
-                    isSearchExpanded = state.isSearchExpanded,
-                    listener = listener
-                )
-            }
 
-            BlurredCard(modifier = Modifier.padding(bottom = 16.dp)) {
-                HourlyForecast(
-                    modifier = Modifier.height(378.dp).width(782.dp).padding(horizontal = 24.dp, vertical = 16.dp),
-                    forecastHourly = state.weatherUIState.forecastHourly,
-                    humidityDescription = state.weatherUIState.humidityDescription,
-                    humidityValue = state.weatherUIState.humidityValue,
-                    visibilityAvg = state.weatherUIState.visibilityAvg,
-                    feelsLike = state.weatherUIState.feelsLike,
-                    feelDescription = state.weatherUIState.feelDescription
-                )
-            }
+                BlurredCard {
+                    Column(
+                        modifier = Modifier.width(250.dp).height(344.dp).padding(16.dp),
+                        verticalArrangement = Arrangement.spacedBy(16.dp),
+                        horizontalAlignment = Alignment.Start
+                    ) {
+                        Text(
+                            "Wind Status",
+                            style = MaterialTheme.typography.h2,
+                            modifier = Modifier.padding(bottom = 16.dp)
+                        )
 
-            BlurredCard(
-                blurBackground = {
-                    if (state.weatherUIState.daysForecastUiState.isNotEmpty()) {
-                        WeatherImageLoader(
-                            url = state.weatherUIState.daysForecastUiState[0].iconUrl,
-                            modifier = Modifier.size(300.dp).blur(80.dp, edgeTreatment = BlurredEdgeTreatment.Unbounded)
-                                .alpha(0.5f),
+                        Compass(windKph = state.weatherUIState.windKph, windDegree = state.weatherUIState.windDegree)
+                    }
+                }
+
+                BlurredCard {
+                    ProgressBar(
+                        modifier = Modifier.width(250.dp).height(344.dp),
+                        indicatorValue = state.weatherUIState.uvValue,
+                        uvDescription = state.weatherUIState.uvIndexDescription
+                    )
+                }
+
+                BlurredCard {
+                    Column(
+                        modifier = Modifier.width(250.dp).height(344.dp),
+                    ) {
+                        Text(
+                            "Sunrise & Sunset",
+                            style = MaterialTheme.typography.h2,
+                            modifier = Modifier.padding(top = 16.dp, start = 24.dp)
+                        )
+
+                        SunriseSunsetView(
+                            sunriseTimeLong = sunRiseTime,
+                            sunsetTimeLong = sunSetTime,
+                            currentTime = state.weatherUIState.currentTime,
+                            sunsetTime = state.weatherUIState.sunsetTime,
+                            sunriseTime = state.weatherUIState.sunriseTime
                         )
                     }
-                }
-            ) {
-                Column(
-                    modifier = Modifier.height(344.dp).width(374.dp)
-                ) {
-                    Text(
-                        text = "10 Day Forecast",
-                        style = MaterialTheme.typography.h2,
-                        modifier = Modifier.padding(16.dp)
-                    )
-
-                    val scrollState = rememberLazyListState()
-                    val coroutineScope = rememberCoroutineScope()
-                    LazyColumn(
-                        state = scrollState,
-                        verticalArrangement = Arrangement.spacedBy(20.dp),
-                        modifier = Modifier
-                            .widthIn(390.dp)
-                            .draggable(
-                                orientation = Orientation.Vertical,
-                                state = rememberDraggableState { delta ->
-                                    coroutineScope.launch {
-                                        scrollState.scrollBy(-delta)
-                                    }
-                                }),
-                        contentPadding = PaddingValues(start = 16.dp, end = 16.dp, bottom = 8.dp)
-                    ) {
-                        items(state.weatherUIState.daysForecastUiState) { dayForecastUiState ->
-                            DayForecast(state = dayForecastUiState)
-                        }
-                    }
-                }
-            }
-
-
-            BlurredCard {
-                Column(
-                    modifier = Modifier.width(250.dp).height(344.dp).padding(16.dp),
-                    verticalArrangement = Arrangement.spacedBy(16.dp),
-                    horizontalAlignment = Alignment.Start
-                ) {
-                    Text(
-                        "Wind Status",
-                        style = MaterialTheme.typography.h2,
-                        modifier = Modifier.padding(bottom = 16.dp)
-                    )
-
-                    Compass(windKph = state.weatherUIState.windKph, windDegree = state.weatherUIState.windDegree)
-                }
-            }
-
-            BlurredCard {
-                ProgressBar(
-                    modifier = Modifier.width(250.dp).height(344.dp),
-                    indicatorValue = state.weatherUIState.uvValue,
-                    uvDescription = state.weatherUIState.uvIndexDescription
-                )
-            }
-
-            BlurredCard {
-                Column(
-                    modifier = Modifier.width(250.dp).height(344.dp),
-                ) {
-                    Text(
-                        "Sunrise & Sunset",
-                        style = MaterialTheme.typography.h2,
-                        modifier = Modifier.padding(top = 16.dp, start = 24.dp)
-                    )
-
-                    SunriseSunsetView(
-                        sunriseTimeLong = sunRiseTime,
-                        sunsetTimeLong = sunSetTime,
-                        currentTime = state.weatherUIState.currentTime,
-                        sunsetTime = state.weatherUIState.sunsetTime,
-                        sunriseTime = state.weatherUIState.sunriseTime
-                    )
                 }
             }
         }
