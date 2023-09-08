@@ -3,7 +3,6 @@ package viewModel
 import data.remote.dto.Forecastday
 import data.remote.dto.Hour
 import data.remote.dto.Weather
-import io.ktor.http.HttpHeaders.Date
 import utils.convertDate
 import utils.convertDateToMilliseconds
 import utils.convertTimeToHourAMPM
@@ -11,8 +10,8 @@ import utils.getHourNow
 import java.text.SimpleDateFormat
 import java.util.*
 
-fun Weather.toUIState(): HomeUIState {
-    return HomeUIState(
+fun Weather.toUIState(): WeatherUIState {
+    return WeatherUIState(
         forecastHourly = forecast.forecastday[0].hour?.subList(getHourNow(location?.localtime ?: ""), 24)
             ?.mapIndexed { index, hour ->
                 hour.toUIState(index)
