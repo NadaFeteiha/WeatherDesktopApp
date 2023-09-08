@@ -51,7 +51,7 @@ class HomeScreenModel(private val service: WeatherService) : BaseScreenModel<Hom
 
     override fun search() {
         tryToExecute(
-            { service.searchWeatherByCityName(state.value.keyword) },
+            { service.searchWeatherByCityName(state.value.keyword.ifBlank { service.getLocation().city }) },
             onSuccess = ::onSearchSuccess,
             onError = ::onError
         )

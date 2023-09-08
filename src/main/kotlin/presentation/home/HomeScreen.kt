@@ -63,21 +63,18 @@ object HomeScreen : BaseScreen<HomeScreenModel, HomeUiEffect, HomeUIState, HomeI
         val sunRiseTime = timeToMilliseconds(state.weatherUIState.sunRise)
         val sunSetTime = timeToMilliseconds(state.weatherUIState.sunSet)
 
-        FlowRow(
-            modifier = modifier
-                .fillMaxSize()
-                .width(windowState.size.width)
-                .padding(24.dp),
-            horizontalArrangement = Arrangement.spacedBy(16.dp),
-        ) {
-            if (state.isLoading) {
-                Box(
-                    modifier = Modifier.fillMaxSize(),
-                    contentAlignment = Alignment.Center
-                ) {
-                    LoadingAnimation()
-                }
-            } else if (state.error != null) {
+        if (state.isLoading) {
+            Box(
+                modifier = Modifier.fillMaxSize(),
+                contentAlignment = Alignment.Center
+            ) {
+                LoadingAnimation()
+            }
+        } else if (state.error != null) {
+            Box(
+                modifier = Modifier.fillMaxSize(),
+                contentAlignment = Alignment.Center
+            ) {
                 Column(horizontalAlignment = Alignment.CenterHorizontally) {
                     Text("Error Internet Connection", style = MaterialTheme.typography.h1)
                     Button(
@@ -89,7 +86,15 @@ object HomeScreen : BaseScreen<HomeScreenModel, HomeUiEffect, HomeUIState, HomeI
                         Text("Try Again")
                     }
                 }
-            } else {
+            }
+        } else {
+            FlowRow(
+                modifier = modifier
+                    .fillMaxSize()
+                    .width(windowState.size.width)
+                    .padding(24.dp),
+                horizontalArrangement = Arrangement.spacedBy(16.dp),
+            ) {
 
                 BlurredCard(modifier = Modifier.padding(bottom = 16.dp), blurBackground = {
                     WeatherImageLoader(
