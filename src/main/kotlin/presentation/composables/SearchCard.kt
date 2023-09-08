@@ -46,7 +46,7 @@ fun SearchCard(
             onSearchExpand = listener::onSearchExpand
         )
 
-        WeatherImageLoader(modifier = Modifier.size(110.dp).padding(top = 16.dp), url = icon)
+        WeatherImageLoader(modifier = Modifier.size(200.dp), url = icon)
 
         Row(modifier = Modifier.padding(top = 8.dp)) {
             Text(temperature, style = MaterialTheme.typography.h3)

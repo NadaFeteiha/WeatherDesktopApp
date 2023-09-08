@@ -27,7 +27,7 @@ fun HourlyForecastItem(
     ) {
         Text(time, style = TextStyle(color = Color.White, fontSize = 18.sp, fontWeight = Bold))
 
-        WeatherImageLoader(modifier = Modifier.size(24.dp), url = icon)
+        WeatherImageLoader(modifier = Modifier.size(56.dp), url = icon)
 
         Text("$temperature \u00B0", style = TextStyle(color = Color.White, fontSize = 18.sp, fontWeight = Bold))
     }
