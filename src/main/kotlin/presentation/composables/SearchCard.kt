@@ -35,7 +35,7 @@ fun SearchCard(
     ) {
 
         IconSearch(
-            modifier = Modifier.align(Alignment.End),
+            modifier = Modifier.align(Alignment.Start),
             suggestion = suggestion,
             onSearch = listener::onSearchTermChanged,
             isExpandMenuSuggestion = isExpandMenuSuggestion,
