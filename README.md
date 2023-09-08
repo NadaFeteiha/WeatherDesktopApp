@@ -2,7 +2,7 @@
 <h5 align="center"> Weather desktop app using Jetpack compose</h5>
 
 ## Video
- [![Weathe app](http://img.youtube.com/vi/gT2Sx0LAYGc/hqdefault.jpg)](https://youtu.be/gT2Sx0LAYGc?autoplay=1) 
+[Screencast from 09-09-23 00:31:14.webm](https://github.com/NadaFeteiha/WeatherDesktopApp/assets/92039633/e44ba734-59be-416e-8967-07293fc09d11)
 
 ## Tech stack
 - [Ktor](https://ktor.io/docs/getting-started-ktor-client.html) a modern asynchronous framework backed by Kotlin coroutines, used to make HTTP network requests to an API  
