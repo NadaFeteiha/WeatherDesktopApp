@@ -13,6 +13,7 @@ import io.ktor.http.*
 import io.ktor.serialization.kotlinx.json.*
 import io.ktor.util.*
 import kotlinx.serialization.json.Json
+import me.nadafeteiha.WeatherApp.BuildConfig
 import org.koin.core.module.dsl.bind
 import org.koin.core.module.dsl.factoryOf
 import org.koin.core.module.dsl.singleOf
@@ -47,12 +48,12 @@ val NetworkModule = module {
                     APIS.WEATHER_API.value -> {
                         url("http://api.weatherapi.com/v1/")
                         header(HttpHeaders.ContentType, "application/json")
-                        url.parameters.append("key", "3aed1336391c477ea48154514230907")
+                        url.parameters.append("key", BuildConfig.WEATHER_API_KEY)
                     }
 
                     APIS.LOCATION_API.value -> {
                         url("http://apiip.net/api/")
-                        url.parameters.append("accessKey", "633cc30c-cdd9-4a91-bd9c-a76885121aa5")
+                        url.parameters.append("accessKey", BuildConfig.LOCATION_API_KEY)
                     }
                 }
             }

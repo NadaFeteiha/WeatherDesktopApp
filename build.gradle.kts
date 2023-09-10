@@ -1,6 +1,8 @@
 @file:Suppress("DSL_SCOPE_VIOLATION")
 import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+import java.io.FileInputStream
+import java.util.*
 
 
 plugins {
@@ -8,6 +10,7 @@ plugins {
     kotlin("plugin.serialization") version "1.8.20"
     alias(libs.plugins.jetbrains.compose)
     alias(libs.plugins.kotlinKsp)
+    id("com.github.gmazzo.buildconfig") version "4.1.2"
 }
 
 group = "me.nadafeteiha"
@@ -17,6 +20,18 @@ repositories {
     google()
     mavenCentral()
     maven("https://maven.pkg.jetbrains.space/public/p/compose/dev")
+}
+
+val localProperties = Properties().apply {
+    val localPropertiesFile = rootProject.file("local.properties")
+    if (localPropertiesFile.exists()) {
+        load(FileInputStream(localPropertiesFile))
+    }
+}
+
+buildConfig {
+    buildConfigField("String", "WEATHER_API_KEY", "\"${localProperties.getProperty("WEATHER_API_KEY")}\"")
+    buildConfigField("String", "LOCATION_API_KEY", "\"${localProperties.getProperty("LOCATION_API_KEY")}\"")
 }
 
 dependencies {
