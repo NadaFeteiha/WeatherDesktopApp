@@ -12,7 +12,15 @@
 
 
 # How to build on your environment
-Add your api key for WeatherApi
+
+Add your api keys for [WeatherApi](http://api.weatherapi.com) & [Location API](tp://apiip.net) to the *
+*`local.properties`** file
+
+```
+WEATHER_API_KEY=<your api key>
+LOCATION_API_KEY=<your api key>
+```
+
 
 
 ## Contributors
