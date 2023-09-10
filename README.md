@@ -9,6 +9,10 @@
 - [Coroutines](https://developer.android.com/kotlin/coroutines) to write asynchronous code, which can improve performance and responsiveness.
 - [Koin](https://insert-koin.io/docs/reference/koin-ktor/ktor/) to manage dependencies, which can help to improve code quality and maintainability.
 - [ImageLoader](https://github.com/qdsfdhvh/compose-imageloader) Compose Image library for Kotlin Multiplatform.
+- [Gradle-buildconfig-plugin](https://github.com/gmazzo/gradle-buildconfig-plugin) A plugin for generating
+  BuildConstants for any kind of Gradle projects: Java, Kotlin, Groovy, etc. Designed for KTS scripts.
+- [Voyager](https://github.com/adrielcafe/voyager) A multiplatform ScreenModels & Navigation library built for, and
+  seamlessly integrated with, Jetpack Compose.
 
 
 # How to build on your environment
